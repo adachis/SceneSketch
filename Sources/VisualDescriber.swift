@@ -31,17 +31,13 @@ struct VisualDescriber {
         let identifier = "mlx-community/Qwen3.5-2B-4bit"
         TextEncoderModelDownloader.customModelsDirectory = modelRoot
         TextEncoderModelDownloader.reconfigureHubApi()
-        var directory = modelRoot.appendingPathComponent(identifier)
+        let directory = modelRoot.appendingPathComponent(identifier)
         if !FileManager.default.fileExists(atPath: directory.appendingPathComponent("config.json").path) {
-            directory = try await TextEncoderModelDownloader().downloadByRepoId(identifier)
+            throw ModelError.notInstalled(.vision)
         }
         let template = directory.appendingPathComponent("chat_template.jinja")
         if !FileManager.default.fileExists(atPath: template.path) {
-            let url = URL(string: "https://huggingface.co/" + identifier + "/resolve/main/chat_template.jinja")!
-            let (data, response) = try await URLSession.shared.data(from: url)
-            guard (response as? HTTPURLResponse)?.statusCode == 200, data.count < 200_000,
-                  String(data: data, encoding: .utf8)?.contains("messages") == true else { throw DescriptionError.uncertain }
-            try data.write(to: template, options: .atomic)
+            throw ModelError.notInstalled(.vision)
         }
         let model = try await VLMModelFactory.shared.loadContainer(from: directory, using: LocalTokenizerLoader())
         let session = ChatSession(model, generateParameters: .init(maxTokens: 280, temperature: 0), additionalContext: ["enable_thinking": false])
@@ -64,7 +60,7 @@ struct VisualDescriber {
 
 enum DescriptionError: LocalizedError {
     case uncertain
-    var errorDescription: String? { "The image didn’t yield a reliable description.  It is still saved as a visual reference; you can describe it manually." }
+    var errorDescription: String? { L("The image didn’t yield a reliable description.  It is still saved as a visual reference; you can describe it manually.") }
 }
 
 struct LocationAppearance {

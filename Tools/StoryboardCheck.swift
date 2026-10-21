@@ -12,7 +12,18 @@ struct StoryboardCheck {
         let root = try RenderService.modelDirectory()
         TextEncoderModelDownloader.customModelsDirectory = root
         TextEncoderModelDownloader.reconfigureHubApi()
-        if mode == "library-layout" {
+        if mode == "lettering-check" {
+            for path in args.dropFirst() {
+                let image = try ReferenceImages.cgImage(Data(contentsOf: URL(fileURLWithPath: path)), maximumEdge: 2048)
+                print("\(URL(fileURLWithPath: path).lastPathComponent): \(RenderTextPolicy.letteringScore(image))")
+            }
+        } else if mode == "ui-language" {
+            try await InterfaceChecks.render(language: args[1], output: URL(fileURLWithPath: args[2]))
+        } else if mode == "models" {
+            try await ModelChecks.run(catalogURL: URL(fileURLWithPath: args[1]), server: URL(string: args[2])!)
+        } else if mode == "exports" {
+            try ExportChecks.run(output: URL(fileURLWithPath: args[1]), image: URL(fileURLWithPath: args[2]))
+        } else if mode == "library-layout" {
             try await LibraryLayoutChecks.run()
         } else if mode == "batch-check" {
             var document = StoryboardDocument()

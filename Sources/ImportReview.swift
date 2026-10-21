@@ -8,9 +8,9 @@ struct ImportReview: View {
     @State private var excludedShots = Set<UUID>()
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Review screenplay import").font(.title2.bold())
-            TextField("Story title", text: $draft.title)
-            Text("\(draft.scenes.count-excluded.count) scenes · \(draft.frames.filter { !excluded.contains($0.sceneID ?? UUID()) && !excludedShots.contains($0.id) }.count) proposed shots").foregroundStyle(.secondary)
+            Text(L("Review screenplay import")).font(.title2.bold())
+            TextField(L("Story title"), text: $draft.title)
+            Text(L("Scenes: %@ · Proposed shots: %@", String(draft.scenes.count-excluded.count), String(draft.frames.filter { !excluded.contains($0.sceneID ?? UUID()) && !excludedShots.contains($0.id) }.count))).foregroundStyle(.secondary)
             TabView {
                 List {
                     ForEach(draft.scenes) { scene in
@@ -22,14 +22,14 @@ struct ImportReview: View {
                             Toggle(scene.title, isOn: Binding(get: { !excluded.contains(scene.id) }, set: { if $0 { excluded.remove(scene.id) } else { excluded.insert(scene.id) } }))
                         }
                     }
-                }.tabItem { Text("Scenes and shots") }
-                entityList(.character).tabItem { Text("Characters") }
-                entityList(.location).tabItem { Text("Locations") }
+                }.tabItem { Text(L("Scenes and shots")) }
+                entityList(.character).tabItem { Text(L("Characters")) }
+                entityList(.location).tabItem { Text(L("Locations")) }
             }
             ForEach(draft.warnings, id: \.self) { Text($0).font(.caption).foregroundStyle(.secondary) }
             HStack {
-                Button("Cancel") { dismiss() }; Spacer()
-                Button("Import into story") {
+                Button(L("Cancel")) { dismiss() }; Spacer()
+                Button(L("Import into story")) {
                     var result = draft
                     result.scenes.removeAll { excluded.contains($0.id) }
                     result.frames.removeAll { excluded.contains($0.sceneID ?? UUID()) || excludedShots.contains($0.id) }
@@ -42,8 +42,8 @@ struct ImportReview: View {
         List {
             ForEach(draft.entities.indices.filter { draft.entities[$0].kind == kind }, id: \.self) { index in
                 VStack(alignment: .leading) {
-                    TextField("Name", text: $draft.entities[index].name).font(.headline)
-                    TextField("Description", text: $draft.entities[index].description, axis: .vertical).lineLimit(2...4)
+                    TextField(L("Name"), text: $draft.entities[index].name).font(.headline)
+                    TextField(L("Description"), text: $draft.entities[index].description, axis: .vertical).lineLimit(2...4)
                 }.padding(.vertical, 6)
             }
         }

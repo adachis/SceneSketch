@@ -27,6 +27,8 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.adachis.storyboard
+        PRODUCT_NAME: SceneSketch
+        PRODUCT_MODULE_NAME: SceneSketch
     sources:
       - path: Sources
       - path: Resources
@@ -50,20 +52,21 @@ targets:
       path: build/Info.plist
       properties:
         CFBundleIdentifier: com.adachis.storyboard
-        CFBundleName: Storyboard
-        CFBundleDisplayName: Storyboard
-        CFBundleShortVersionString: '0.2.1'
-        CFBundleVersion: '3'
+        CFBundleName: SceneSketch
+        CFBundleDisplayName: SceneSketch
+        CFBundleIconFile: AppIcon
+        CFBundleShortVersionString: '0.3.0'
+        CFBundleVersion: '4'
         LSMinimumSystemVersion: '15.0'
         NSHighResolutionCapable: true
         CFBundleDocumentTypes:
-          - CFBundleTypeName: Storyboard
+          - CFBundleTypeName: SceneSketch storyboard
             CFBundleTypeRole: Editor
             LSHandlerRank: Owner
             LSItemContentTypes: [com.adachis.storyboard.document]
         UTExportedTypeDeclarations:
           - UTTypeIdentifier: com.adachis.storyboard.document
-            UTTypeDescription: Storyboard
+            UTTypeDescription: SceneSketch storyboard
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
               public.filename-extension: sketchboard

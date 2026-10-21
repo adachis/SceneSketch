@@ -35,7 +35,7 @@ struct ScreenplayDraft: Identifiable, Sendable {
             for (old, new) in mapping { frame.description = frame.description.replacingOccurrences(of: EntityTokens.token(old), with: EntityTokens.token(new)) }
             result.frames.append(frame)
         }
-        if original.title == "Untitled story" { result.title = title }
+        if original.title == "Untitled story" || original.title == L("Untitled story") { result.title = title }
         return result
     }
 }
@@ -66,7 +66,7 @@ enum ScreenplayImporter {
             var paragraphs: [ScriptParagraph] = []; var ocrCount = 0; var inDialogue = false
             for index in 0..<pdf.pageCount {
                 guard let page = pdf.page(at: index) else { continue }
-                progress("Reading page \(index + 1) of \(pdf.pageCount)…")
+                progress(L("Reading page %@ of %@…", String(index + 1), String(pdf.pageCount)))
                 let text = page.string ?? ""
                 var lines: [PositionedScriptLine] = []
                 if text.trimmingCharacters(in: .whitespacesAndNewlines).count > 30 {
@@ -91,7 +91,7 @@ enum ScreenplayImporter {
                 paragraphs += positionedParagraphs(lines, inDialogue: &inDialogue)
             }
             var draft = parse(paragraphs, title: title)
-            if ocrCount > 0 { draft.warnings.append("\(ocrCount) pages used text recognition.  Review names, scene headings, and shot breaks.") }
+            if ocrCount > 0 { draft.warnings.append(L("Pages read with text recognition: %@. Review names, scene headings, and shot breaks.", String(ocrCount))) }
             return draft
         default:
             return parseText(try String(contentsOf: url, encoding: .utf8), title: title)
@@ -207,7 +207,7 @@ enum ScreenplayImporter {
                 scenes.append(StoryScene(title: heading, locationID: location.id, sourceText: text)); speaker = ""
             } else if paragraph.kind == "Character" { speaker = cleanCue(text).capitalized }
             else {
-                if scenes.isEmpty { scenes.append(StoryScene(title: "Scene 1")) }
+                if scenes.isEmpty { scenes.append(StoryScene(title: L("Scene 1"))) }
                 let sceneIndex = scenes.count - 1
                 scenes[sceneIndex].sourceText += "\n\n" + (paragraph.kind == "Dialogue" ? speaker + ": " : "") + text
                 if paragraph.kind == "Action" {
@@ -223,7 +223,7 @@ enum ScreenplayImporter {
                         let regex = try! NSRegularExpression(pattern: "(?<![\\p{L}\\p{N}])" + NSRegularExpression.escapedPattern(for: entity.name) + "(?![\\p{L}\\p{N}])", options: .caseInsensitive)
                         description = regex.stringByReplacingMatches(in: description, range: NSRange(location: 0, length: (description as NSString).length), withTemplate: EntityTokens.token(entity.id))
                     }
-                    var frame = StoryboardFrame(title: "Shot \(frames.filter { $0.sceneID == scenes[sceneIndex].id }.count + 1)", description: description, sceneID: scenes[sceneIndex].id)
+                    var frame = StoryboardFrame(title: L("Shot %@", String(frames.filter { $0.sceneID == scenes[sceneIndex].id }.count + 1)), description: description, sceneID: scenes[sceneIndex].id)
                     frame.sourceText = text; frames.append(frame)
                 } else if paragraph.kind == "Dialogue" {
                     if let i = frames.indices.last, frames[i].sceneID == scenes[sceneIndex].id { frames[i].sourceText += "\n" + speaker + ": " + text }
@@ -231,10 +231,10 @@ enum ScreenplayImporter {
             }
         }
         for scene in scenes where !frames.contains(where: { $0.sceneID == scene.id }) {
-            frames.append(StoryboardFrame(title: "Shot 1", description: "Establishing view of \(entities.first { $0.id == scene.locationID }?.name ?? scene.title).", sceneID: scene.id))
+            frames.append(StoryboardFrame(title: L("Shot %@", "1"), description: "Establishing view of \(entities.first { $0.id == scene.locationID }?.name ?? scene.title).", sceneID: scene.id))
         }
-        var warnings = ["Shot breaks are proposed from action paragraphs.  Review staging before rendering."]
-        if firstHeading == nil { warnings.append("No standard scene headings were found.  The text was placed in one scene.") }
+        var warnings = [L("Shot breaks are proposed from action paragraphs.  Review staging before rendering.")]
+        if firstHeading == nil { warnings.append(L("No standard scene headings were found.  The text was placed in one scene.")) }
         return ScreenplayDraft(title: title, entities: entities, scenes: scenes, frames: frames, warnings: warnings)
     }
 }
@@ -255,7 +255,7 @@ private final class FDXReader: NSObject, XMLParserDelegate {
 
 enum ImportError: LocalizedError {
     case tooLarge, invalid
-    var errorDescription: String? { self == .tooLarge ? "Choose a screenplay smaller than 50 MB and 400 pages." : "This screenplay couldn’t be read.  Try a PDF, Final Draft, Fountain, or UTF-8 text file." }
+    var errorDescription: String? { self == .tooLarge ? L("Choose a screenplay smaller than 50 MB and 400 pages.") : L("This screenplay couldn’t be read.  Try a PDF, Final Draft, Fountain, or UTF-8 text file.") }
 }
 
 private extension String {

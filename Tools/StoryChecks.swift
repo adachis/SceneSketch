@@ -17,6 +17,10 @@ import PDFKit
         precondition(context.description == "Mara opens the door.")
         precondition(context.references.count == 3 && context.missingSelectionCount == 2)
         let prompt = try context.prompt(sceneDescription: context.description); precondition(prompt.contains("angular face"))
+        precondition(prompt.contains("wordless composition") && prompt.contains("blank panels"))
+        let unlettered = RenderTextPolicy.prepare("A menu board and framed sign that says 'COFFEE' stand beside a woman.")
+        precondition(!unlettered.contains("COFFEE") && !unlettered.contains("menu") && unlettered.contains("woman"))
+        precondition(RenderTextPolicy.prepare("A woman uses sign language.") == "A woman uses sign language.")
         doc.entities[0].name = "Marisol"
         let renamed = try StoryContext(frame: doc.frames[0], document: doc); precondition(renamed.description == "Marisol opens the door.")
         doc.frames[0].selectedReferenceIDs = []
@@ -57,7 +61,7 @@ import PDFKit
         do { _ = try StoryContext(frame: bad, document: doc); preconditionFailure("Must reject over-limit input") } catch StoryContextError.tooManyReferences {}
         let legacy: [String: Any] = ["version": 1, "frames": [["id": UUID().uuidString, "title": "Legacy", "description": "An old frame.", "shot": "Wide shot", "seed": 22]]]
         let migrated = try StoryboardDocument(data: JSONSerialization.data(withJSONObject: legacy))
-        precondition(migrated.frames[0].sceneID == migrated.scenes[0].id && migrated.version == 2)
+        precondition(migrated.frames[0].sceneID == migrated.scenes[0].id && migrated.version == 3)
         var mergeDoc = restored
         let duplicate = StoryEntity(kind: .character, name: "Alias", description: "Same person")
         mergeDoc.entities.append(duplicate)

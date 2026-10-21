@@ -1,52 +1,72 @@
-# Storyboard 0.2.1 — local Mac app
+# SceneSketch 0.3.0
 
-## Open and review
+SceneSketch is an Apple Silicon Mac app for making sketch storyboards with local models.  It requires macOS 15 or later.  Story files use the existing `.sketchboard` extension.
 
-Extract `Storyboard.zip`, move the app to Applications, and open it.  The build targets Apple Silicon and macOS 15 or later.  The build is signed, notarized, and stapled.  Gatekeeper accepted the final app.  Open `Story Library Demo.sketchboard` to explore the new library and scene controls.
+## Install and set up
 
-Version 0.2.1 fixes the Story Library’s initial layout so its list and editor fill the sheet immediately, including before any entry is selected.
+Extract `SceneSketch.zip`, move SceneSketch.app to Applications, and open it.  The release is Developer ID signed, notarized, and stapled.  Quit an older Storyboard copy before opening SceneSketch: both versions deliberately share the same app identity, preferences, and document association.
 
-## Story files and libraries
+The first-launch setup offers one download for drawing, prompt cleanup, and image descriptions.  A new installation downloads approximately **12.4 GB**; the exact remaining size appears before downloading.  The trained sketch LoRA is already in the app.  Existing Storyboard model files are reused.  Downloads can pause, resume, and retry, and each completed file is checked against its pinned SHA-256 hash.  All creative processing works offline after setup.  Initial downloads contact Hugging Face; story content and reference images stay on the Mac.
 
-Each `.sketchboard` file contains one story, its ordered scenes and shots, its character and location records, and its reference images.  Images travel with the file; they do not depend on the original photo paths.  Version 1 documents migrate when opened.
+**SceneSketch → Settings** controls the interface language, short-prompt cleanup, export defaults, and model storage.  The Models tab also downloads, verifies, removes, or repairs models.  Choosing a different storage folder uses that folder; it does not silently move or delete the old cache.  Model changes are disabled while rendering or generating a scene.
 
-Use **Story Library** to add and edit characters or locations.  Images can be selected or dropped into the library.  Choose a primary reference, remove unneeded images, or merge duplicate entries.  Merging preserves descriptions and images and redirects linked shots.
+The default paper setting is **Ask when exporting**.  Choose Letter or A4 in the export sheet, or save a preference in Settings.
 
-Adding images offers **Visual references only**, **Enhance existing description**, or **Recreate description** when a description already exists.  A new entry instead offers creation.  Generated changes appear in an editable review before they can replace saved text.  Character image analysis passes only permitted physical appearance fields; clothing and accessories cannot be emitted through that filter.  Manually entered details are retained when enhancing.
+## Stories, characters, and locations
 
-## Shots and references
+Each file contains one story, ordered scenes and shots, character and location records, reference images, and optional production metadata.  Images are embedded, so the document does not depend on original photo paths.  Versions 1 and 2 migrate when opened and saved.
 
-Use **Insert** in a shot description to add character or location pills.  The pills retain stable IDs; renaming a library entry updates its meaning without rewriting every shot.  Rendering resolves the current descriptions, scene context, and selected visual references.
+Use **Story Library** to add or edit characters and locations.  Drop or select reference images, choose a primary reference, remove images, or merge duplicate records.  Adding references to an existing description offers **Visual references only**, **Enhance existing description**, or **Recreate description**.  Generated text is reviewed before replacing saved text.  Character image analysis focuses on stable physical appearance and filters out clothing and accessories; clothing can still be added manually.
 
-The **References** meter shows the images used for that shot.  The current native engine accepts three.  Automatic selection takes shot images first, then primary images for linked characters and locations.  Choose images in the picker to override that selection.  Extra library images remain available without being sent to the renderer.  Each reference is bounded to 65,536 pixels during encoding.  Character conditioning uses a face-focused crop when a face is detected.
+Use **Insert** to place character or location pills in shot descriptions.  Pills use stable IDs, so later library edits are reflected when rendering.  References are selected from the shot and its linked records.  The meter shows the three-image rendering limit.  Extra library images stay available without being sent to the renderer.  Reference encoding is bounded to 256 × 256 pixels per image; detected character faces receive a focused crop.
 
-Add scenes and shots from the toolbar.  Scenes can collapse and move up or down; shots can be reordered within a scene or assigned to another scene.  Generate one frame or the current scene.  **Stop after frame** stops a batch without losing completed images.  PNG export and native document saving remain available.
+Scenes can collapse and move, and shots can be reordered or moved between scenes.  Generate a frame or its whole scene.  **Stop after frame** retains completed renders.  The Story Library fills its sheet immediately, including before an entry is selected.
 
 ## Screenplay import
 
-Import PDF, scanned PDF, Final Draft `.fdx`, Fountain, or UTF-8 text.  PDF import uses text positions to distinguish action, dialogue cues, and wrapped scene headings.  Scanned pages use Apple's on-device text recognition.  Final Draft uses its typed XML paragraphs; Fountain uses screenplay syntax.
+Import PDF, scanned PDF, Final Draft `.fdx`, Fountain, or UTF-8 text.  PDFs use text positions to recover screenplay structure; scans use Apple's on-device text recognition.  Review detected scenes, shots, characters, and locations before importing, and uncheck items you do not want.  Import preserves existing descriptions when merging matching entities.  Source passages stay attached for reference.
 
-Review scenes, proposed shots, character names, locations, and available description data before importing.  Uncheck scenes or individual shots you do not want.  Import merges matching entity names and preserves existing descriptions.  Source text stays attached to scenes and shots for checking.  Missing appearance information is left for manual entry or image references instead of being invented.
+Shot proposals follow action beats and need editorial review.  Long screenplays can produce many shots.  The importer does not invent missing physical appearance details.
 
-Shot proposals follow action beats, not a finished director's shooting plan.  Long scripts can produce hundreds of proposals; review and regroup them as needed.  The four supplied sample scripts are included in the validation summary, not redistributed in this folder.
+## Export and print
 
-## Local models and validation
+Choose **File → Export Storyboard** or the Export toolbar control.  Select scenes and whether to include shots that have not been rendered.
 
-The image engine remains four-bit FLUX.2 Klein 4B with the trained storyboard LoRA.  Prompt cleanup uses local Qwen3 0.6B.  Image descriptions use Qwen3.5 2B in four-bit form; smaller vision models failed the appearance test.  Vision analysis and image generation share a serialized compute gate and release cached memory between operations.
+- **PDF:** Letter or A4, landscape or portrait, with 2, 3, 4, 6, 12, or 16 panels.  Choose descriptions, optional metadata, and whether each scene starts on a new page.  The live preview shows the result before saving.  Long notes continue on extra pages instead of being discarded.
+- **Images and data:** PNG frames, a CSV shot list, and structured JSON scene data in a new folder.
+- **Shot list:** CSV alone for a spreadsheet or production tool.
 
-Reference-conditioned test renders peaked around 7.6 GB on an M5 Max with 128 GiB unified memory.  Character image analysis peaked around 3.7 GB.  These are measurements on this Mac, not certification on a 16 GB machine.  No new Modal training was used for this update.  Model files download once when needed; cached generation and analysis work offline.
+Production details include company, director, storyboard artist, revision, and date.  Each shot can also store a production number, lens, duration, camera movement, dialogue, and notes.  These fields are optional.  The layouts are original implementations informed by the supplied printable templates.
 
-Generation can still duplicate a subject, invent lettering, or drift in fine facial details.  The library and image references improve continuity; they do not make the image model infallible.  A failed duplicate-person frame is retained in `Validation/` so this limit is visible.
+## Languages and prompts
 
-`Source/` includes the app source and pinned dependencies.  `Validation/` includes parser summaries, runtime logs, and build checks.  `Training/` and `LoRA/` retain the previous training provenance and both formats of the selected adapter.
+The interface includes machine translations for the 119 languages and dialects listed by the bundled Qwen3 model.  Settings uses each language's native name, and the default follows the system language.  Arabic, Hebrew, Persian, Urdu, and related right-to-left interfaces mirror their layout.  Some macOS menus follow a changed language after relaunching.
 
-## Research
+Descriptions in other languages are translated locally into English for the image model, including linked character and location descriptions.  Original story text remains unchanged.  Translation reuses the four-bit Qwen3 4B text encoder already downloaded for drawing.  Short English prompt cleanup uses Qwen3 0.6B.  Image descriptions use Qwen3.5 2B in four-bit form.
 
-- [Fountain syntax](https://fountain.io/syntax/) informs text parsing.
-- [BFL reference editing](https://help.bfl.ai/articles/6546682167-what-is-multi-reference-editing) explains image conditioning.  The pinned Swift engine enforces its own three-image limit.
-- [Qwen3.5](https://huggingface.co/Qwen/Qwen3.5-2B) provides the small local vision model.
-- [EmbeddingGemma 2](https://ai.google.dev/gemma/docs/embeddinggemma/model_card_2?hl=en) produces representations for matching and retrieval.  It was not added: screenplay structure extraction does not require an embedding model.
+Rendered compositions request blank signs, covers, and other unmarked surfaces.  Common text-bearing props are neutralized only in the rendering prompt; dialogue, captions, and notes remain available in the document and exports.  An on-device text check triggers at most one additional render when lettering is detected, and keeps the result with less detected text.  The extra attempt can take additional time.  Image models and text recognition can still miss or invent marks, so inspect the result.
+
+Translations were checked for complete resource coverage and matching format placeholders, with representative interface and prompt tests.  They have not all received native-speaker review, and language quality varies by model and language.  English remains the fallback for missing strings.
+
+## Runtime and validation
+
+The tested drawing configuration is unchanged: FLUX.2 Klein 4B, four-bit execution, four steps, 1024 × 576 output, and the bundled sketch LoRA.  Loading it requires more disk storage than runtime memory because the transformer is stored in its source precision and quantized when loaded.  Text, vision, and image operations run serially and release model memory between operations.
+
+Prior reference-conditioned renders peaked around 7.6 GB on an M5 Max with 128 GiB unified memory, and image descriptions around 3.7 GB.  These are measurements on that machine, **not validation on a 16 GB Mac**.  No additional Modal training was used for this release.  Current release checks and samples are in `Validation/` and `Examples/`.
+
+The model can still duplicate subjects or drift in facial details.  Library descriptions and reference images help continuity but do not guarantee identical characters.
+
+## Before a public release
+
+The next priorities are testing first launch and sustained rendering on a real 16 GB Mac; native-speaker and accessibility review; a signed update mechanism; and explicit undo/recovery plus image-version history.  Confirm redistribution permissions for the training images and all shipped model/dependency assets before public distribution.
 
 ## Build from source
 
-Use Xcode with the Swift 6.3 toolchain and XcodeGen.  In the source directory, run `./build.sh`.  The script copies the adjacent `../LoRA/StoryboardStyle.safetensors` when needed, resolves the pinned dependencies, and packages `dist/Storyboard.zip`.  Set `STORYBOARD_SIGN_IDENTITY` to your signing identity to produce a Developer ID build; otherwise it uses development ad hoc signing.
+Use Xcode with Swift 6.3 and XcodeGen.  Run `./build.sh` from `Source/`.  The script can copy the adjacent `../LoRA/StoryboardStyle.safetensors`, resolves pinned dependencies, and writes `dist/SceneSketch.zip`.  Set `STORYBOARD_SIGN_IDENTITY` to a Developer ID identity for signing; otherwise the script uses ad hoc signing.  Notarization is a separate release step.  Internal target and preference identifiers retain the original Storyboard name for compatibility.
+
+## Model and format references
+
+- [Qwen3 languages](https://qwenlm.github.io/blog/qwen3/)
+- [FLUX.2 Klein 4B](https://huggingface.co/black-forest-labs/FLUX.2-klein-4B)
+- [Qwen3.5 2B](https://huggingface.co/Qwen/Qwen3.5-2B)
+- [Fountain syntax](https://fountain.io/syntax/)

@@ -17,10 +17,10 @@ BUILD_ROOT="${STORYBOARD_DERIVED_DATA:-$PROJECT_ROOT/build}"
 xcodebuild -project Storyboard.xcodeproj -scheme Storyboard -configuration Release \
   -derivedDataPath "$BUILD_ROOT" -onlyUsePackageVersionsFromResolvedFile \
   -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO build
-APP_PATH="$BUILD_ROOT/Build/Products/Release/Storyboard.app"
+APP_PATH="$BUILD_ROOT/Build/Products/Release/SceneSketch.app"
 SIGN_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/storyboard-sign.XXXXXX")"
 trap 'rm -rf "$SIGN_ROOT"' EXIT
-STAGED_APP="$SIGN_ROOT/Storyboard.app"
+STAGED_APP="$SIGN_ROOT/SceneSketch.app"
 ditto --norsrc --noextattr "$APP_PATH" "$STAGED_APP"
 xattr -cr "$STAGED_APP"
 SIGN_IDENTITY="${STORYBOARD_SIGN_IDENTITY:--}"
@@ -31,5 +31,5 @@ else
 fi
 codesign --verify --deep --strict "$STAGED_APP"
 mkdir -p "$PROJECT_ROOT/dist"
-ditto --norsrc --noextattr -c -k --keepParent "$STAGED_APP" "$PROJECT_ROOT/dist/Storyboard.zip"
-echo "Built $PROJECT_ROOT/dist/Storyboard.zip"
+ditto --norsrc --noextattr -c -k --keepParent "$STAGED_APP" "$PROJECT_ROOT/dist/SceneSketch.zip"
+echo "Built $PROJECT_ROOT/dist/SceneSketch.zip"

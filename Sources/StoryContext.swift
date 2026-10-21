@@ -36,9 +36,9 @@ enum StoryContextError: LocalizedError {
     case missingEntity, tooManyReferences, descriptionTooLong
     var errorDescription: String? {
         switch self {
-        case .missingEntity: "A linked character or location is missing.  Remove or replace its pill."
-        case .tooManyReferences: "Choose up to three reference images for this frame."
-        case .descriptionTooLong: "Shorten the frame or appearance descriptions before generating."
+        case .missingEntity: L("A linked character or location is missing.  Remove or replace its pill.")
+        case .tooManyReferences: L("Choose up to three reference images for this frame.")
+        case .descriptionTooLong: L("Shorten the frame or appearance descriptions before generating.")
         }
     }
 }
@@ -86,12 +86,12 @@ struct StoryContext: Sendable {
         references = available.filter { chosenSet.contains($0.id) }
         missingSelectionCount = available.count - references.count
     }
-    func prompt(sceneDescription: String) throws -> String {
-        let identities = entities.map { "\($0.kind == .character ? "Character" : "Location") \($0.name): \($0.description)" }.joined(separator: "\n")
+    func prompt(sceneDescription: String, englishDescriptions: [UUID: String] = [:], englishScene: String? = nil) throws -> String {
+        let identities = entities.map { "\($0.kind == .character ? "Character" : "Location") \($0.name): \(englishDescriptions[$0.id] ?? $0.description)" }.joined(separator: "\n")
         let guide = references.enumerated().map { index, ref in
             "Reference image \(index + 1): \(ref.label)." + (ref.kind == .character ? " Preserve this person's face and physical identity; use only clothing specified for this shot." : ref.kind == .location ? " Preserve this location's architecture and layout." : " Use for this shot's staging.")
         }.joined(separator: "\n")
-        let result = "SBFRM7. One continuous shot, with each named character shown once and no inset portraits. A single full-color cinematic storyboard frame with loose colored-pencil outlines, visible hatching, and soft painted shading. \(frame.shot.rawValue). \(sceneDescription)\nScene: \(sceneContext)\n\(identities)\n\(guide)"
+        let result = "SBFRM7. One continuous shot, with each named character shown once and no inset portraits. A single full-color cinematic storyboard frame with loose colored-pencil outlines, visible hatching, and soft painted shading. Clean wordless composition. Every surface is plain and unmarked, with blank panels, undecorated walls, and solid-color covers. \(frame.shot.rawValue). \(sceneDescription)\nScene: \(englishScene ?? sceneContext)\n\(identities)\n\(guide)\nPlain unmarked surfaces and blank panels throughout."
         guard result.count <= 5000 else { throw StoryContextError.descriptionTooLong }
         return result
     }

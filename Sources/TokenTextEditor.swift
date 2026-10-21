@@ -16,7 +16,7 @@ struct TokenTextEditor: NSViewRepresentable {
         view.isVerticallyResizable = true; view.isHorizontallyResizable = false
         view.autoresizingMask = [.width]; view.textContainer?.widthTracksTextView = true
         view.entities = entities
-        view.delegate = context.coordinator; view.setAccessibilityLabel("Shot description")
+        view.delegate = context.coordinator; view.setAccessibilityLabel(L("Shot description"))
         scroll.documentView = view; context.coordinator.editor = view
         context.coordinator.refresh(text, entities: entities)
         return scroll
@@ -44,7 +44,7 @@ struct TokenTextEditor: NSViewRepresentable {
         var updating = false
         var handledInsertion: UUID?
         init(_ parent: TokenTextEditor) { self.parent = parent }
-        func refresh(_ text: String, entities: [StoryEntity]) {
+        @MainActor func refresh(_ text: String, entities: [StoryEntity]) {
             guard let view = editor else { return }; updating = true; defer { updating = false }
             let rendered = NSMutableAttributedString(string: "")
             let source = text as NSString; var offset = 0
@@ -52,7 +52,7 @@ struct TokenTextEditor: NSViewRepresentable {
             for item in EntityTokens.matches(text) {
                 rendered.append(NSAttributedString(string: source.substring(with: NSRange(location: offset, length: item.range.location-offset)), attributes: attributes))
                 if let entity = entities.first(where: { $0.id == item.id }) { rendered.append(NSAttributedString(attachment: EntityAttachment(entity))) }
-                else { rendered.append(NSAttributedString(string: "[Missing reference]", attributes: attributes)) }
+                else { rendered.append(NSAttributedString(string: L("[Missing reference]"), attributes: attributes)) }
                 offset = NSMaxRange(item.range)
             }
             rendered.append(NSAttributedString(string: source.substring(from: offset), attributes: attributes))

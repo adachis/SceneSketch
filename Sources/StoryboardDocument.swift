@@ -6,8 +6,25 @@ extension UTType {
 }
 
 enum CameraShot: String, Codable, CaseIterable, Identifiable, Sendable {
-    case wide = "Wide shot", medium = "Medium shot", close = "Close-up", shoulder = "Over the shoulder"
+    case extremeWide = "Extreme wide shot", wide = "Wide shot", medium = "Medium shot", mediumClose = "Medium close-up", close = "Close-up", extremeClose = "Extreme close-up", shoulder = "Over the shoulder"
     var id: String { rawValue }
+}
+
+struct ProductionDetails: Codable, Equatable, Sendable {
+    var production = ""
+    var director = ""
+    var artist = ""
+    var revision = ""
+    var date = ""
+}
+
+struct ShotDetails: Codable, Equatable, Sendable {
+    var number = ""
+    var lens = ""
+    var duration = ""
+    var movement = ""
+    var dialogue = ""
+    var notes = ""
 }
 
 enum EntityKind: String, Codable, CaseIterable, Identifiable, Sendable {
@@ -33,7 +50,7 @@ struct ReferenceImage: Identifiable, Codable, Equatable, Sendable {
 
 struct StoryScene: Identifiable, Codable, Equatable, Sendable {
     var id = UUID()
-    var title = "Scene 1"
+    var title = L("Scene 1")
     var synopsis = ""
     var locationID: UUID?
     var sourceText = ""
@@ -41,7 +58,7 @@ struct StoryScene: Identifiable, Codable, Equatable, Sendable {
 
 struct StoryboardFrame: Identifiable, Codable, Sendable {
     var id = UUID()
-    var title = "Untitled frame"
+    var title = L("Untitled frame")
     var description = ""
     var shot = CameraShot.wide
     var seed = UInt64.random(in: 1...UInt64(UInt32.max))
@@ -52,9 +69,10 @@ struct StoryboardFrame: Identifiable, Codable, Sendable {
     var referenceIDs: [UUID] = []
     var selectedReferenceIDs: [UUID]?
     var sourceText = ""
+    var details = ShotDetails()
 
-    enum CodingKeys: String, CodingKey { case id, title, description, shot, seed, image, renderedPrompt, imageRevision, sceneID, referenceIDs, selectedReferenceIDs, sourceText }
-    init(title: String = "Untitled frame", description: String = "", shot: CameraShot = .wide, image: Data? = nil, sceneID: UUID? = nil) {
+    enum CodingKeys: String, CodingKey { case id, title, description, shot, seed, image, renderedPrompt, imageRevision, sceneID, referenceIDs, selectedReferenceIDs, sourceText, details }
+    init(title: String = L("Untitled frame"), description: String = "", shot: CameraShot = .wide, image: Data? = nil, sceneID: UUID? = nil) {
         self.title = title; self.description = description; self.shot = shot; self.image = image; self.sceneID = sceneID
     }
     init(from decoder: Decoder) throws {
@@ -71,13 +89,15 @@ struct StoryboardFrame: Identifiable, Codable, Sendable {
         referenceIDs = try c.decodeIfPresent([UUID].self, forKey: .referenceIDs) ?? []
         selectedReferenceIDs = try c.decodeIfPresent([UUID].self, forKey: .selectedReferenceIDs)
         sourceText = try c.decodeIfPresent(String.self, forKey: .sourceText) ?? ""
+        details = try c.decodeIfPresent(ShotDetails.self, forKey: .details) ?? ShotDetails()
     }
 }
 
 struct StoryboardDocument: FileDocument, Sendable {
     static var readableContentTypes: [UTType] { [.storyboard] }
-    var version = 2
-    var title = "Untitled story"
+    var version = 3
+    var title = L("Untitled story")
+    var production = ProductionDetails()
     var entities: [StoryEntity] = []
     var references: [ReferenceImage] = []
     var scenes = [StoryScene()]
@@ -90,8 +110,9 @@ struct StoryboardDocument: FileDocument, Sendable {
     }
     init(data: Data) throws {
         let payload = try JSONDecoder().decode(Payload.self, from: data)
-        guard (1...2).contains(payload.version) else { throw CocoaError(.fileReadUnsupportedScheme) }
-        title = payload.title ?? "Untitled story"
+        guard (1...3).contains(payload.version) else { throw CocoaError(.fileReadUnsupportedScheme) }
+        title = payload.title ?? L("Untitled story")
+        production = payload.production ?? ProductionDetails()
         entities = payload.entities ?? []; references = payload.references ?? []
         scenes = payload.scenes ?? [StoryScene()]; frames = payload.frames
         if scenes.isEmpty { scenes = [StoryScene()] }
@@ -104,11 +125,12 @@ struct StoryboardDocument: FileDocument, Sendable {
     }
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper { FileWrapper(regularFileWithContents: try encodedData()) }
     func encodedData() throws -> Data {
-        try JSONEncoder().encode(Payload(version: 2, title: title, entities: entities, references: references, scenes: scenes, frames: frames))
+        try JSONEncoder().encode(Payload(version: 3, title: title, production: production, entities: entities, references: references, scenes: scenes, frames: frames))
     }
     private struct Payload: Codable {
         var version: Int
         var title: String?
+        var production: ProductionDetails?
         var entities: [StoryEntity]?
         var references: [ReferenceImage]?
         var scenes: [StoryScene]?

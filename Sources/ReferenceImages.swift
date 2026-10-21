@@ -37,5 +37,5 @@ struct ReferenceImages {
 
 enum ImageError: LocalizedError {
     case tooLarge, invalid
-    var errorDescription: String? { self == .tooLarge ? "Choose an image smaller than 50 MB." : "This image couldn’t be opened.  Try a PNG, JPEG, or HEIC file." }
+    var errorDescription: String? { self == .tooLarge ? L("Choose an image smaller than 50 MB.") : L("This image couldn’t be opened.  Try a PNG, JPEG, or HEIC file.") }
 }
