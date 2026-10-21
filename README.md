@@ -1,14 +1,16 @@
-# Storyboard 0.2 — local Mac app
+# Storyboard 0.2.1 — local Mac app
 
 ## Open and review
 
 Extract `Storyboard.zip`, move the app to Applications, and open it.  The build targets Apple Silicon and macOS 15 or later.  The build is signed, notarized, and stapled.  Gatekeeper accepted the final app.  Open `Story Library Demo.sketchboard` to explore the new library and scene controls.
 
+Version 0.2.1 fixes the Story Library’s initial layout so its list and editor fill the sheet immediately, including before any entry is selected.
+
 ## Story files and libraries
 
 Each `.sketchboard` file contains one story, its ordered scenes and shots, its character and location records, and its reference images.  Images travel with the file; they do not depend on the original photo paths.  Version 1 documents migrate when opened.
 
-Use **Story library** to add and edit characters or locations.  Images can be selected or dropped into the library.  Choose a primary reference, remove unneeded images, or merge duplicate entries.  Merging preserves descriptions and images and redirects linked shots.
+Use **Story Library** to add and edit characters or locations.  Images can be selected or dropped into the library.  Choose a primary reference, remove unneeded images, or merge duplicate entries.  Merging preserves descriptions and images and redirects linked shots.
 
 Adding images offers **Visual references only**, **Enhance existing description**, or **Recreate description** when a description already exists.  A new entry instead offers creation.  Generated changes appear in an editable review before they can replace saved text.  Character image analysis passes only permitted physical appearance fields; clothing and accessories cannot be emitted through that filter.  Manually entered details are retained when enhancing.
 

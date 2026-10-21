@@ -21,62 +21,67 @@ struct LibraryEditor: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                Text("Story library").font(.title2.bold()); Spacer()
+                Text("Story Library").font(.title2.bold()); Spacer()
                 if working { ProgressView().controlSize(.small) }
                 Button("Done") { dismiss() }.keyboardShortcut(.defaultAction).disabled(working)
             }.padding()
             Divider()
-            HSplitView {
-                VStack {
-                    Picker("Library", selection: $kind) { ForEach(EntityKind.allCases) { Text($0.label).tag($0) } }.pickerStyle(.segmented)
-                    List(selection: $selection) { ForEach(document.entities.filter { $0.kind == kind }) { entity in Label(entity.name, systemImage: entity.kind.symbol).tag(entity.id) } }
-                    HStack {
-                        Button { let value = StoryEntity(kind: kind, name: kind == .character ? "New character" : "New location"); document.entities.append(value); selection = value.id } label: { Label("Add", systemImage: "plus") }
-                        Spacer()
-                        Button { deleteEntity = true } label: { Image(systemName: "trash") }.disabled(index == nil)
-                    }
-                }.padding().frame(minWidth: 220, idealWidth: 250, maxWidth: 300)
-                if let index {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 18) {
-                            HStack {
-                                TextField("Name", text: $document.entities[index].name).font(.title2)
-                                Menu("Merge with") {
-                                    ForEach(document.entities.filter { $0.kind == document.entities[index].kind && $0.id != selection }) { target in
-                                        Button(target.name) { mergeTarget = target.id; showMerge = true }
-                                    }
-                                }.disabled(document.entities.filter { $0.kind == document.entities[index].kind }.count < 2)
-                            }
-                            Text("Description").font(.headline)
-                            TextEditor(text: $document.entities[index].description).frame(height: 180).padding(6).overlay(RoundedRectangle(cornerRadius: 6).stroke(.quaternary))
-                            HStack { Text("Reference images").font(.headline); Spacer(); Button("Add images…") { importing = true }.disabled(document.entities[index].referenceIDs.count >= 12) }
-                            if !document.entities[index].referenceIDs.isEmpty {
-                                Button("Review description from images…") {
-                                    pendingImages = document.entities[index].referenceIDs.prefix(3).compactMap { id in document.references.first { $0.id == id } }
-                                    showUseChoice = true
+            GeometryReader { space in
+                HSplitView {
+                    VStack {
+                        Picker("Library", selection: $kind) { ForEach(EntityKind.allCases) { Text($0.label).tag($0) } }.pickerStyle(.segmented)
+                        List(selection: $selection) { ForEach(document.entities.filter { $0.kind == kind }) { entity in Label(entity.name, systemImage: entity.kind.symbol).tag(entity.id) } }
+                        HStack {
+                            Button { let value = StoryEntity(kind: kind, name: kind == .character ? "New character" : "New location"); document.entities.append(value); selection = value.id } label: { Label("Add", systemImage: "plus") }
+                            Spacer()
+                            Button { deleteEntity = true } label: { Image(systemName: "trash") }.disabled(index == nil)
+                        }
+                    }.padding().frame(minWidth: 220, idealWidth: 250, maxWidth: 300)
+                    .frame(maxHeight: .infinity, alignment: .topLeading)
+                    if let index {
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: 18) {
+                                HStack {
+                                    TextField("Name", text: $document.entities[index].name).font(.title2)
+                                    Menu("Merge with") {
+                                        ForEach(document.entities.filter { $0.kind == document.entities[index].kind && $0.id != selection }) { target in
+                                            Button(target.name) { mergeTarget = target.id; showMerge = true }
+                                        }
+                                    }.disabled(document.entities.filter { $0.kind == document.entities[index].kind }.count < 2)
                                 }
-                            }
-                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 130))], spacing: 12) {
-                                ForEach(document.entities[index].referenceIDs, id: \.self) { id in
-                                    if let image = document.references.first(where: { $0.id == id }) {
-                                        VStack(spacing: 6) {
-                                            ReferenceThumbnail(image: image).frame(height: 115)
-                                            Text(image.name).font(.caption).lineLimit(1)
-                                            HStack {
-                                                Button(document.entities[index].referenceIDs.first == id ? "Primary" : "Make primary") {
-                                                    document.entities[index].referenceIDs.removeAll { $0 == id }; document.entities[index].referenceIDs.insert(id, at: 0)
-                                                }.disabled(document.entities[index].referenceIDs.first == id)
-                                                Button { deleteReference = id } label: { Image(systemName: "xmark.circle") }
-                                            }.font(.caption)
+                                Text("Description").font(.headline)
+                                TextEditor(text: $document.entities[index].description).frame(height: 180).padding(6).overlay(RoundedRectangle(cornerRadius: 6).stroke(.quaternary))
+                                HStack { Text("Reference images").font(.headline); Spacer(); Button("Add images…") { importing = true }.disabled(document.entities[index].referenceIDs.count >= 12) }
+                                if !document.entities[index].referenceIDs.isEmpty {
+                                    Button("Review description from images…") {
+                                        pendingImages = document.entities[index].referenceIDs.prefix(3).compactMap { id in document.references.first { $0.id == id } }
+                                        showUseChoice = true
+                                    }
+                                }
+                                LazyVGrid(columns: [GridItem(.adaptive(minimum: 130))], spacing: 12) {
+                                    ForEach(document.entities[index].referenceIDs, id: \.self) { id in
+                                        if let image = document.references.first(where: { $0.id == id }) {
+                                            VStack(spacing: 6) {
+                                                ReferenceThumbnail(image: image).frame(height: 115)
+                                                Text(image.name).font(.caption).lineLimit(1)
+                                                HStack {
+                                                    Button(document.entities[index].referenceIDs.first == id ? "Primary" : "Make primary") {
+                                                        document.entities[index].referenceIDs.removeAll { $0 == id }; document.entities[index].referenceIDs.insert(id, at: 0)
+                                                    }.disabled(document.entities[index].referenceIDs.first == id)
+                                                    Button { deleteReference = id } label: { Image(systemName: "xmark.circle") }
+                                                }.font(.caption)
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            if !message.isEmpty { Text(message).font(.callout).foregroundStyle(.secondary) }
-                        }.padding(22)
-                    }.frame(minWidth: 470)
-                } else { ContentUnavailableView("Select a character or location", systemImage: kind.symbol).frame(minWidth: 470) }
-            }.disabled(working)
+                                if !message.isEmpty { Text(message).font(.callout).foregroundStyle(.secondary) }
+                            }.padding(22)
+                        }.frame(minWidth: 470, maxWidth: .infinity, maxHeight: .infinity)
+                    } else { ContentUnavailableView("Select a character or location", systemImage: kind.symbol).frame(minWidth: 470, maxWidth: .infinity, maxHeight: .infinity) }
+                }
+                .frame(width: space.size.width, height: space.size.height, alignment: .topLeading)
+                .disabled(working)
+            }
         }.frame(width: 850, height: 620)
         .onChange(of: kind) { _, _ in selection = document.entities.first(where: { $0.kind == kind })?.id }
         .fileImporter(isPresented: $importing, allowedContentTypes: [.image], allowsMultipleSelection: true) { result in

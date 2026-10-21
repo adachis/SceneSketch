@@ -60,7 +60,7 @@ struct BoardEditor: View {
                     Button("Add shot", action: addFrame)
                     Button("Add scene", action: addScene)
                 } label: { Label("Add", systemImage: "plus") }.disabled(busy)
-                Button { showLibrary = true } label: { Label("Story library", systemImage: "person.2.crop.square.stack") }.disabled(busy)
+                Button { showLibrary = true } label: { Label("Story Library", systemImage: "person.2.crop.square.stack") }.disabled(busy)
                 Button { importingScript = true } label: { Label("Import screenplay", systemImage: "doc.badge.arrow.up") }.disabled(busy)
                 Menu {
                     Button("Generate this scene") { generate(ids: document.frames.filter { $0.sceneID == currentSceneID }.map(\.id)) }

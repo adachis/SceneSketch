@@ -12,7 +12,9 @@ struct StoryboardCheck {
         let root = try RenderService.modelDirectory()
         TextEncoderModelDownloader.customModelsDirectory = root
         TextEncoderModelDownloader.reconfigureHubApi()
-        if mode == "batch-check" {
+        if mode == "library-layout" {
+            try await LibraryLayoutChecks.run()
+        } else if mode == "batch-check" {
             var document = StoryboardDocument()
             document.frames[0].description = "A traveler waits alone beside a river in a small town at sunrise. A wooden bridge crosses the water."
             for index in 0..<3 {

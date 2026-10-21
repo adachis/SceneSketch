@@ -52,8 +52,8 @@ targets:
         CFBundleIdentifier: com.adachis.storyboard
         CFBundleName: Storyboard
         CFBundleDisplayName: Storyboard
-        CFBundleShortVersionString: '0.2.0'
-        CFBundleVersion: '2'
+        CFBundleShortVersionString: '0.2.1'
+        CFBundleVersion: '3'
         LSMinimumSystemVersion: '15.0'
         NSHighResolutionCapable: true
         CFBundleDocumentTypes:
