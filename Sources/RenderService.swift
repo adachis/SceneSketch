@@ -33,7 +33,7 @@ actor RenderService {
                 progress("Using your original description…")
             }
             MLX.Memory.clearCache()
-            let prompt = "SBFRM7. \(frame.shot.rawValue). \(cleaned)"
+            let prompt = "SBFRM7. A single full-color storyboard drawing with loose colored-pencil outlines, visible hatching, and soft watercolor shading. \(frame.shot.rawValue). \(cleaned)"
             progress("Preparing the image model…")
             let textDirectory = root.appendingPathComponent("text")
             let localText = FileManager.default.fileExists(atPath: textDirectory.appendingPathComponent("config.json").path) ? textDirectory : nil
