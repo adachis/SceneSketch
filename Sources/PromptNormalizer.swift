@@ -6,6 +6,12 @@ import FluxTextEncoders
 
 struct PromptNormalizer {
     static func rewrite(_ description: String, shot: String, modelRoot: URL) async throws -> String {
+        let clean = description.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Keep complete descriptions unchanged; rewriting them introduces avoidable drift.
+        if clean.split(whereSeparator: { $0.isWhitespace }).count >= 12,
+           clean.contains(".") {
+            return clean
+        }
         let identifier = "mlx-community/Qwen3-0.6B-4bit"
         var directory = modelRoot.appendingPathComponent(identifier)
         if !FileManager.default.fileExists(atPath: directory.appendingPathComponent("config.json").path) {

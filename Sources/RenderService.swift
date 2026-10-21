@@ -14,10 +14,10 @@ actor RenderService {
     static let shared = RenderService()
     private var busy = false
 
-    func render(frame: StoryboardFrame, progress: @escaping @Sendable (String) -> Void) async throws -> RenderedFrame {
+    func render(frame: StoryboardFrame, adapterURL: URL? = nil, progress: @escaping @Sendable (String) -> Void) async throws -> RenderedFrame {
         guard !busy else { throw RenderError.busy }
         busy = true
-        defer { busy = false }
+        defer { busy = false; MLX.Memory.clearCache() }
         return try await Task.detached(priority: .userInitiated) {
             let root = try Self.modelDirectory()
             ModelRegistry.customModelsDirectory = root
@@ -50,10 +50,10 @@ actor RenderService {
             try await pipeline.loadModels { fraction, _ in
                 progress("Downloading image model: \(Int(fraction * 100))%")
             }
-            guard let adapter = Bundle.main.url(forResource: "StoryboardStyle", withExtension: "safetensors") else {
+            guard let adapter = adapterURL ?? Bundle.main.url(forResource: "StoryboardStyle", withExtension: "safetensors") else {
                 throw RenderError.missingAdapter
             }
-            _ = try pipeline.loadLoRA(.init(filePath: adapter.path, scale: 2.5))
+            _ = try pipeline.loadLoRA(.init(filePath: adapter.path, scale: 3.0))
             try Task.checkCancellation()
             progress("Drawing the frame…")
             let image = try await pipeline.generateTextToImage(

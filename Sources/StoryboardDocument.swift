@@ -5,7 +5,7 @@ extension UTType {
     static let storyboard = UTType(exportedAs: "com.adachis.storyboard.document", conformingTo: .json)
 }
 
-enum CameraShot: String, Codable, CaseIterable, Identifiable {
+enum CameraShot: String, Codable, CaseIterable, Identifiable, Sendable {
     case wide = "Wide shot"
     case medium = "Medium shot"
     case close = "Close-up"
@@ -13,7 +13,7 @@ enum CameraShot: String, Codable, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
-struct StoryboardFrame: Identifiable, Codable {
+struct StoryboardFrame: Identifiable, Codable, Sendable {
     var id = UUID()
     var title = "Untitled frame"
     var description = ""
@@ -34,14 +34,19 @@ struct StoryboardDocument: FileDocument {
         guard let data = configuration.file.regularFileContents else {
             throw CocoaError(.fileReadCorruptFile)
         }
+        try self.init(data: data)
+    }
+    init(data: Data) throws {
         let payload = try JSONDecoder().decode(Payload.self, from: data)
         guard payload.version == 1 else { throw CocoaError(.fileReadUnsupportedScheme) }
         version = payload.version
         frames = payload.frames
     }
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper {
-        let data = try JSONEncoder().encode(Payload(version: version, frames: frames))
-        return FileWrapper(regularFileWithContents: data)
+        FileWrapper(regularFileWithContents: try encodedData())
+    }
+    func encodedData() throws -> Data {
+        try JSONEncoder().encode(Payload(version: version, frames: frames))
     }
     private struct Payload: Codable {
         var version: Int

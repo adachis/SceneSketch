@@ -64,17 +64,8 @@ struct BoardEditor: View {
                                 .padding(8).background(.background, in: RoundedRectangle(cornerRadius: 6))
                                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(.quaternary))
                         }
-                        HStack {
-                            Text("Variation").foregroundStyle(.secondary)
-                            Spacer()
-                            TextField("Seed", value: $document.frames[index].seed, format: .number.grouping(.never))
-                                .multilineTextAlignment(.trailing).frame(width: 120)
-                            Button { document.frames[index].seed = UInt64.random(in: 1...UInt64(UInt32.max)) }
-                            label: { Image(systemName: "shuffle") }
-                            .help("New variation")
-                        }
                         Button { generate(index) } label: {
-                            Label(busy ? "Generating…" : "Generate frame", systemImage: "pencil.and.outline")
+                            Label(busy ? "Generating…" : (document.frames[index].image == nil ? "Generate frame" : "Generate another"), systemImage: "pencil.and.outline")
                                 .frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.borderedProminent).controlSize(.large)
@@ -119,14 +110,17 @@ struct BoardEditor: View {
         selectedID = document.frames.isEmpty ? nil : document.frames[min(index, document.frames.count - 1)].id
     }
     private func generate(_ index: Int) {
-        let frame = document.frames[index]
+        var frame = document.frames[index]
+        if frame.image != nil { frame.seed = UInt64.random(in: 1...UInt64(UInt32.max)) }
+        let request = frame
         busy = true; status = "Preparing…"
         task = Task {
             do {
-                let result = try await RenderService.shared.render(frame: frame) { update in
+                let result = try await RenderService.shared.render(frame: request) { update in
                     Task { @MainActor in status = update }
                 }
                 if let destination = document.frames.firstIndex(where: { $0.id == frame.id }) {
+                    document.frames[destination].seed = request.seed
                     document.frames[destination].image = result.image
                     document.frames[destination].imageRevision = UUID()
                     document.frames[destination].renderedPrompt = result.prompt

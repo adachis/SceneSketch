@@ -24,6 +24,9 @@ targets:
   Storyboard:
     type: application
     platform: macOS
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.adachis.storyboard
     sources:
       - path: Sources
       - path: Resources
@@ -54,10 +57,32 @@ targets:
         CFBundleDocumentTypes:
           - CFBundleTypeName: Storyboard
             CFBundleTypeRole: Editor
+            LSHandlerRank: Owner
             LSItemContentTypes: [com.adachis.storyboard.document]
         UTExportedTypeDeclarations:
           - UTTypeIdentifier: com.adachis.storyboard.document
             UTTypeDescription: Storyboard
             UTTypeConformsTo: [public.json]
             UTTypeTagSpecification:
-              public.filename-extension: storyboard
+              public.filename-extension: sketchboard
+
+  StoryboardCheck:
+    type: tool
+    platform: macOS
+    sources:
+      - path: Sources
+        excludes: [StoryboardApp.swift]
+      - path: Tools
+    dependencies:
+      - package: Flux2Swift
+        product: Flux2Core
+      - package: Flux2Swift
+        product: FluxTextEncoders
+      - package: MLXLM
+        product: MLXLLM
+      - package: MLXLM
+        product: MLXLMCommon
+      - package: MLX
+        product: MLX
+      - package: Transformers
+        product: Tokenizers
