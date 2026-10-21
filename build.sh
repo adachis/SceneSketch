@@ -23,7 +23,12 @@ trap 'rm -rf "$SIGN_ROOT"' EXIT
 STAGED_APP="$SIGN_ROOT/Storyboard.app"
 ditto --norsrc --noextattr "$APP_PATH" "$STAGED_APP"
 xattr -cr "$STAGED_APP"
-codesign --force --deep --sign - "$STAGED_APP"
+SIGN_IDENTITY="${STORYBOARD_SIGN_IDENTITY:--}"
+if [[ "$SIGN_IDENTITY" == "-" ]]; then
+  codesign --force --deep --sign - "$STAGED_APP"
+else
+  codesign --force --deep --options runtime --timestamp --sign "$SIGN_IDENTITY" "$STAGED_APP"
+fi
 codesign --verify --deep --strict "$STAGED_APP"
 mkdir -p "$PROJECT_ROOT/dist"
 ditto --norsrc --noextattr -c -k --keepParent "$STAGED_APP" "$PROJECT_ROOT/dist/Storyboard.zip"

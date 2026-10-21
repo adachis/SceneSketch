@@ -37,6 +37,8 @@ targets:
       - package: Flux2Swift
         product: FluxTextEncoders
       - package: MLXLM
+        product: MLXVLM
+      - package: MLXLM
         product: MLXLLM
       - package: MLXLM
         product: MLXLMCommon
@@ -50,8 +52,8 @@ targets:
         CFBundleIdentifier: com.adachis.storyboard
         CFBundleName: Storyboard
         CFBundleDisplayName: Storyboard
-        CFBundleShortVersionString: '0.1.0'
-        CFBundleVersion: '1'
+        CFBundleShortVersionString: '0.2.0'
+        CFBundleVersion: '2'
         LSMinimumSystemVersion: '15.0'
         NSHighResolutionCapable: true
         CFBundleDocumentTypes:
@@ -78,6 +80,8 @@ targets:
         product: Flux2Core
       - package: Flux2Swift
         product: FluxTextEncoders
+      - package: MLXLM
+        product: MLXVLM
       - package: MLXLM
         product: MLXLLM
       - package: MLXLM

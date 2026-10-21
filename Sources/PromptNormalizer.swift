@@ -40,7 +40,7 @@ struct PromptNormalizer {
     }
 }
 
-private struct LocalTokenizerLoader: MLXLMCommon.TokenizerLoader {
+struct LocalTokenizerLoader: MLXLMCommon.TokenizerLoader {
     func load(from directory: URL) async throws -> any MLXLMCommon.Tokenizer {
         TokenizerBridge(tokenizer: try await AutoTokenizer.from(modelFolder: directory))
     }

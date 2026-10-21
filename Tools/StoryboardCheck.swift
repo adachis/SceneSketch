@@ -12,7 +12,41 @@ struct StoryboardCheck {
         let root = try RenderService.modelDirectory()
         TextEncoderModelDownloader.customModelsDirectory = root
         TextEncoderModelDownloader.reconfigureHubApi()
-        if mode == "document" {
+        if mode == "batch-check" {
+            var document = StoryboardDocument()
+            document.frames[0].description = "A traveler waits alone beside a river in a small town at sunrise. A wooden bridge crosses the water."
+            for index in 0..<3 {
+                document.frames[0].seed = UInt64(5700 + index)
+                let result = try await RenderService.shared.render(frame: document.frames[0], document: document, adapterURL:URL(fileURLWithPath:args[1])) { _ in }
+                document.frames[0].image = result.image
+                print("Completed batch frame \(index+1)")
+            }
+        } else if mode == "ocr-test" {
+            try StoryChecks.ocr()
+        } else if mode == "parse" {
+            let value = try ScreenplayImporter.read(URL(fileURLWithPath: args[1])) { _ in }
+            let data = try JSONSerialization.data(withJSONObject: ["title":value.title,"scenes":value.scenes.map { scene in ["title":scene.title,"shots":value.frames.filter { $0.sceneID == scene.id }.count] },"characters":value.entities.filter { $0.kind == .character }.map { ["name":$0.name,"description":$0.description] },"locations":value.entities.filter { $0.kind == .location }.map(\.name),"shotCount":value.frames.count,"warnings":value.warnings], options: [.prettyPrinted,.sortedKeys])
+            if args.count > 2 { try data.write(to: URL(fileURLWithPath: args[2])) } else { print(String(decoding:data,as:UTF8.self)) }
+        } else if mode == "story" {
+            try StoryChecks.run()
+        } else if mode == "vision" {
+            let reference = try ReferenceImages.importFile(URL(fileURLWithPath: args[1]))
+            print(try await RenderService.shared.describe(image: reference, kind: args.count > 2 && args[2] == "location" ? .location : .character))
+        } else if mode == "reference" || mode == "character-reference" {
+            var document = StoryboardDocument()
+            let count = min(3, Int(args[3]) ?? 1)
+            for _ in 0..<count { let value = try ReferenceImages.importFile(URL(fileURLWithPath: args[1])); document.references.append(value); document.frames[0].referenceIDs.append(value.id) }
+            if mode == "character-reference" {
+                var character = StoryEntity(kind: .character, name: "Mara", description: "An adult woman with shoulder-length wavy brown hair and an oval face.")
+                character.referenceIDs = document.frames[0].referenceIDs
+                document.entities = [character]; document.frames[0].referenceIDs = []
+                document.frames[0].description = args[4].replacingOccurrences(of: "{character}", with: EntityTokens.token(character.id))
+            } else { document.frames[0].description = args[4] }
+            document.frames[0].seed = 5700
+            let result = try await RenderService.shared.render(frame: document.frames[0], document: document, adapterURL: URL(fileURLWithPath: args[2])) { print($0) }
+            try result.image.write(to: URL(fileURLWithPath: args[5]))
+            print(result.prompt)
+        } else if mode == "document" {
             var original = StoryboardDocument()
             original.frames[0].description = "Two hikers on a bridge"
             original.frames[0].image = Data([1, 2, 3])

@@ -1,39 +1,50 @@
-# Storyboard
+# Storyboard 0.2 — local Mac app
 
-A native macOS prototype for making color sketch storyboard frames locally.
+## Open and review
 
-## Current scope
+Extract `Storyboard.zip`, move the app to Applications, and open it.  The build targets Apple Silicon and macOS 15 or later.  It is signed with the available Developer ID certificate; notarization is a separate release check.  Open `Story Library Demo.sketchboard` to explore the new library and scene controls.
 
-- Editable, reorderable storyboard frames with a camera framing selector.
-- A local Qwen3 0.6B prompt normalizer followed by FLUX.2 Klein 4B generation.
-- A private sketch style LoRA, four denoising steps, and 1024×576 output.
-- Automatic `.sketchboard` document saving through the macOS document system, plus PNG export.
-- Models are downloaded once and cached locally.  No prompts or images are sent to a generation service.
+## Story files and libraries
 
-Screenplay import and character continuity are not implemented in this first prototype.
+Each `.sketchboard` file contains one story, its ordered scenes and shots, its character and location records, and its reference images.  Images travel with the file; they do not depend on the original photo paths.  Version 1 documents migrate when opened.
 
-## Build
+Use **Story library** to add and edit characters or locations.  Images can be selected or dropped into the library.  Choose a primary reference, remove unneeded images, or merge duplicate entries.  Merging preserves descriptions and images and redirects linked shots.
 
-Requires Apple Silicon, macOS 15+, Xcode with a Swift 6.3+ toolchain, and XcodeGen.
+Adding images offers **Visual references only**, **Enhance existing description**, or **Recreate description** when a description already exists.  A new entry instead offers creation.  Generated changes appear in an editable review before they can replace saved text.  Character image analysis passes only permitted physical appearance fields; clothing and accessories cannot be emitted through that filter.  Manually entered details are retained when enhancing.
 
-```sh
-./build.sh
-```
+## Shots and references
 
-`Package.resolved` pins the full dependency graph.  The build uses Xcode so MLX Metal shaders are included.
+Use **Insert** in a shot description to add character or location pills.  The pills retain stable IDs; renaming a library entry updates its meaning without rewriting every shot.  Rendering resolves the current descriptions, scene context, and selected visual references.
 
-The private adapter must be present at `Resources/StoryboardStyle.safetensors` before building.  The build script also copies it from an adjacent `../LoRA/StoryboardStyle.safetensors` when present.  It is supplied with the local deliverable and intentionally excluded from git.  The generated Xcode project is also excluded; `project.yml` is the source of truth.
+The **References** meter shows the images used for that shot.  The current native engine accepts three.  Automatic selection takes shot images first, then primary images for linked characters and locations.  Choose images in the picker to override that selection.  Extra library images remain available without being sent to the renderer.  Each reference is bounded to 65,536 pixels during encoding.  Character conditioning uses a face-focused crop when a face is detected.
 
-The build creates an ad hoc signed development app in `dist/Storyboard.zip`.  Extract it into Applications before running.  Distribution signing, notarization, model download hardening, and testing on an actual 16 GB Mac remain release tasks.
+Add scenes and shots from the toolbar.  Scenes can collapse and move up or down; shots can be reordered within a scene or assigned to another scene.  Generate one frame or the current scene.  **Stop after frame** stops a batch without losing completed images.  PNG export and native document saving remain available.
 
-## Model storage
+## Screenplay import
 
-Default: `~/Library/Application Support/Storyboard/Models`.
+Import PDF, scanned PDF, Final Draft `.fdx`, Fountain, or UTF-8 text.  PDF import uses text positions to distinguish action, dialogue cues, and wrapped scene headings.  Scanned pages use Apple's on-device text recognition.  Final Draft uses its typed XML paragraphs; Fountain uses screenplay syntax.
 
-For local development, `STORYBOARD_MODELS_DIR` can point to a prepared model folder containing `flux/transformer`, `text`, `vae`, and the prompt model cache.  The image engine loads the text encoder and image transformer in separate phases to reduce peak memory.
+Review scenes, proposed shots, character names, locations, and available description data before importing.  Uncheck scenes or individual shots you do not want.  Import merges matching entity names and preserves existing descriptions.  Source text stays attached to scenes and shots for checking.  Missing appearance information is left for manual entry or image references instead of being invented.
 
-The selected rank-128 adapter uses strength 3.5 with four denoising steps.  Local checks used about 7.6 GB peak memory footprint on an Apple M5 Max with 128 GiB unified memory.  That is a measured result for one frame, not certification for every 16 GB Mac or every document size.
+Shot proposals follow action beats, not a finished director's shooting plan.  Long scripts can produce hundreds of proposals; review and regroup them as needed.  The four supplied sample scripts are included in the validation summary, not redistributed in this folder.
 
-## Licenses
+## Local models and validation
 
-FLUX.2 Klein 4B and Qwen3 model licenses: Apache 2.0.  The Swift FLUX implementation is MIT licensed; its license is in `Resources/Flux2Core-LICENSE.txt`.  Upstream dependencies retain their own licenses.  The supplied sketch adapter and training data have not been published.
+The image engine remains four-bit FLUX.2 Klein 4B with the trained storyboard LoRA.  Prompt cleanup uses local Qwen3 0.6B.  Image descriptions use Qwen3.5 2B in four-bit form; smaller vision models failed the appearance test.  Vision analysis and image generation share a serialized compute gate and release cached memory between operations.
+
+Reference-conditioned test renders peaked around 7.6 GB on an M5 Max with 128 GiB unified memory.  Character image analysis peaked around 3.7 GB.  These are measurements on this Mac, not certification on a 16 GB machine.  No new Modal training was used for this update.  Model files download once when needed; cached generation and analysis work offline.
+
+Generation can still duplicate a subject, invent lettering, or drift in fine facial details.  The library and image references improve continuity; they do not make the image model infallible.  A failed duplicate-person frame is retained in `Validation/` so this limit is visible.
+
+`Source/` includes the app source and pinned dependencies.  `Validation/` includes parser summaries, runtime logs, and build checks.  `Training/` and `LoRA/` retain the previous training provenance and both formats of the selected adapter.
+
+## Research
+
+- [Fountain syntax](https://fountain.io/syntax/) informs text parsing.
+- [BFL reference editing](https://help.bfl.ai/articles/6546682167-what-is-multi-reference-editing) explains image conditioning.  The pinned Swift engine enforces its own three-image limit.
+- [Qwen3.5](https://huggingface.co/Qwen/Qwen3.5-2B) provides the small local vision model.
+- [EmbeddingGemma 2](https://ai.google.dev/gemma/docs/embeddinggemma/model_card_2?hl=en) produces representations for matching and retrieval.  It was not added: screenplay structure extraction does not require an embedding model.
+
+## Build from source
+
+Use Xcode with the Swift 6.3 toolchain and XcodeGen.  In the source directory, run `./build.sh`.  The script copies the adjacent `../LoRA/StoryboardStyle.safetensors` when needed, resolves the pinned dependencies, and packages `dist/Storyboard.zip`.  Set `STORYBOARD_SIGN_IDENTITY` to your signing identity to produce a Developer ID build; otherwise it uses development ad hoc signing.

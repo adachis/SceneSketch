@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 import Flux2Core
 import FluxTextEncoders
 import MLX
+import Tokenizers
 
 struct RenderedFrame: Sendable {
     let image: Data
@@ -14,11 +15,12 @@ actor RenderService {
     static let shared = RenderService()
     private var busy = false
 
-    func render(frame: StoryboardFrame, adapterURL: URL? = nil, progress: @escaping @Sendable (String) -> Void) async throws -> RenderedFrame {
+    func render(frame: StoryboardFrame, document: StoryboardDocument? = nil, adapterURL: URL? = nil, progress: @escaping @Sendable (String) -> Void) async throws -> RenderedFrame {
         guard !busy else { throw RenderError.busy }
         busy = true
         defer { busy = false; MLX.Memory.clearCache() }
         return try await Task.detached(priority: .userInitiated) {
+            let context = try StoryContext(frame: frame, document: document ?? StoryboardDocument())
             let root = try Self.modelDirectory()
             ModelRegistry.customModelsDirectory = root
             TextEncoderModelDownloader.customModelsDirectory = root
@@ -26,14 +28,14 @@ actor RenderService {
             try ModelRegistry.setPathOverride(root.appendingPathComponent("flux/transformer"), for: .transformer(.klein4B_bf16))
             try ModelRegistry.setPathOverride(root.appendingPathComponent("vae"), for: .vae(.smallDecoder))
             progress("Preparing the frame description…")
-            var cleaned = frame.description.trimmingCharacters(in: .whitespacesAndNewlines)
+            var cleaned = context.description.trimmingCharacters(in: .whitespacesAndNewlines)
             do {
-                cleaned = try await PromptNormalizer.rewrite(cleaned, shot: frame.shot.rawValue, modelRoot: root)
+                if context.entities.isEmpty { cleaned = try await PromptNormalizer.rewrite(cleaned, shot: frame.shot.rawValue, modelRoot: root) }
             } catch {
                 progress("Using your original description…")
             }
             MLX.Memory.clearCache()
-            let prompt = "SBFRM7. A single full-color cinematic storyboard frame with loose colored-pencil outlines, visible hatching, and soft painted shading. The composition fills the entire rectangular frame edge to edge. \(frame.shot.rawValue). \(cleaned)"
+            let prompt = try context.prompt(sceneDescription: cleaned)
             progress("Preparing the image model…")
             let textDirectory = root.appendingPathComponent("text")
             let localText = FileManager.default.fileExists(atPath: textDirectory.appendingPathComponent("config.json").path) ? textDirectory : nil
@@ -50,16 +52,35 @@ actor RenderService {
             try await pipeline.loadModels { fraction, _ in
                 progress("Downloading image model: \(Int(fraction * 100))%")
             }
+            let tokenizerDirectory = localText ?? TextEncoderModelDownloader.findQwen3ModelPath(for: .qwen3_4B_4bit)
+            if let tokenizerDirectory {
+                let tokenizer = try await AutoTokenizer.from(modelFolder: tokenizerDirectory)
+                let formatted = "<|im_start|>user\n" + prompt.replacingOccurrences(of: "[IMG]", with: "") + "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+                guard tokenizer.encode(text: formatted, addSpecialTokens: false).count <= 512 else { throw StoryContextError.descriptionTooLong }
+            }
             guard let adapter = adapterURL ?? Bundle.main.url(forResource: "StoryboardStyle", withExtension: "safetensors") else {
                 throw RenderError.missingAdapter
             }
             _ = try pipeline.loadLoRA(.init(filePath: adapter.path, scale: 3.5))
             try Task.checkCancellation()
             progress("Drawing the frame…")
-            let image = try await pipeline.generateTextToImage(
-                prompt: prompt, height: 576, width: 1024, steps: 4, guidance: 1,
-                seed: frame.seed, upsamplePrompt: false
-            ) { step, total in progress("Drawing \(step) of \(total)…") }
+            let image: CGImage
+            if context.references.isEmpty {
+                image = try await pipeline.generateTextToImage(
+                    prompt: prompt, height: 576, width: 1024, steps: 4, guidance: 1,
+                    seed: frame.seed, upsamplePrompt: false
+                ) { step, total in progress("Drawing \(step) of \(total)…") }
+            } else {
+                let images = try context.references.map { reference in
+                    let source = try ReferenceImages.cgImage(reference.image.data, maximumEdge: 1024)
+                    return reference.kind == .character ? ReferenceImages.faceCrop(source) : source
+                }
+                image = try await pipeline.generateImageToImage(
+                    prompt: prompt, images: images, height: 576, width: 1024,
+                    steps: 4, guidance: 1, seed: frame.seed, upsamplePrompt: false,
+                    maxReferencePixels: StoryContext.referenceEdge * StoryContext.referenceEdge
+                ) { step, total in progress("Drawing \(step) of \(total)…") }
+            }
             let data = NSMutableData()
             guard let destination = CGImageDestinationCreateWithData(data, UTType.png.identifier as CFString, 1, nil) else {
                 throw RenderError.encoding
@@ -67,6 +88,15 @@ actor RenderService {
             CGImageDestinationAddImage(destination, image, nil)
             guard CGImageDestinationFinalize(destination) else { throw RenderError.encoding }
             return RenderedFrame(image: data as Data, prompt: prompt)
+        }.value
+    }
+
+    func describe(image: ReferenceImage, kind: EntityKind) async throws -> String {
+        guard !busy else { throw RenderError.busy }
+        busy = true
+        defer { busy = false; MLX.Memory.clearCache() }
+        return try await Task.detached(priority: .userInitiated) {
+            try await VisualDescriber.describe(image: image, kind: kind, modelRoot: Self.modelDirectory())
         }.value
     }
 
@@ -81,6 +111,7 @@ actor RenderService {
     }
 
     nonisolated static func userMessage(for error: Error) -> String {
+        if let error = error as? StoryContextError { return error.localizedDescription }
         switch error {
         case RenderError.busy: return "Another frame is still generating.  Try again when it finishes."
         case RenderError.missingAdapter: return "The sketch model is missing from this copy of Storyboard.  Reinstall the app."
