@@ -33,7 +33,7 @@ actor RenderService {
                 progress("Using your original description…")
             }
             MLX.Memory.clearCache()
-            let prompt = "SBFRM7. A single full-color storyboard drawing with loose colored-pencil outlines, visible hatching, and soft watercolor shading. \(frame.shot.rawValue). \(cleaned)"
+            let prompt = "SBFRM7. A single full-color cinematic storyboard frame with loose colored-pencil outlines, visible hatching, and soft painted shading. The composition fills the entire rectangular frame edge to edge. \(frame.shot.rawValue). \(cleaned)"
             progress("Preparing the image model…")
             let textDirectory = root.appendingPathComponent("text")
             let localText = FileManager.default.fileExists(atPath: textDirectory.appendingPathComponent("config.json").path) ? textDirectory : nil
@@ -53,7 +53,7 @@ actor RenderService {
             guard let adapter = adapterURL ?? Bundle.main.url(forResource: "StoryboardStyle", withExtension: "safetensors") else {
                 throw RenderError.missingAdapter
             }
-            _ = try pipeline.loadLoRA(.init(filePath: adapter.path, scale: 3.0))
+            _ = try pipeline.loadLoRA(.init(filePath: adapter.path, scale: 3.5))
             try Task.checkCancellation()
             progress("Drawing the frame…")
             let image = try await pipeline.generateTextToImage(

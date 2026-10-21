@@ -2,6 +2,14 @@
 set -euo pipefail
 PROJECT_ROOT="$(cd -- "$(dirname -- "$0")" && pwd)"
 cd "$PROJECT_ROOT"
+if [[ ! -f Resources/StoryboardStyle.safetensors && -f ../LoRA/StoryboardStyle.safetensors ]]; then
+  mkdir -p Resources
+  cp ../LoRA/StoryboardStyle.safetensors Resources/StoryboardStyle.safetensors
+fi
+if [[ ! -f Resources/StoryboardStyle.safetensors ]]; then
+  echo "Missing Resources/StoryboardStyle.safetensors" >&2
+  exit 1
+fi
 xcodegen generate
 mkdir -p Storyboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
 cp Package.resolved Storyboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved

@@ -22,7 +22,7 @@ Requires Apple Silicon, macOS 15+, Xcode with a Swift 6.3+ toolchain, and XcodeG
 
 `Package.resolved` pins the full dependency graph.  The build uses Xcode so MLX Metal shaders are included.
 
-The private adapter must be present at `Resources/StoryboardStyle.safetensors` before building.  It is supplied with the local deliverable and intentionally excluded from git.  The generated Xcode project is also excluded; `project.yml` is the source of truth.
+The private adapter must be present at `Resources/StoryboardStyle.safetensors` before building.  The build script also copies it from an adjacent `../LoRA/StoryboardStyle.safetensors` when present.  It is supplied with the local deliverable and intentionally excluded from git.  The generated Xcode project is also excluded; `project.yml` is the source of truth.
 
 The build creates an ad hoc signed development app in `dist/Storyboard.zip`.  Extract it into Applications before running.  Distribution signing, notarization, model download hardening, and testing on an actual 16 GB Mac remain release tasks.
 
@@ -32,7 +32,7 @@ Default: `~/Library/Application Support/Storyboard/Models`.
 
 For local development, `STORYBOARD_MODELS_DIR` can point to a prepared model folder containing `flux/transformer`, `text`, `vae`, and the prompt model cache.  The image engine loads the text encoder and image transformer in separate phases to reduce peak memory.
 
-The first local engine check used about 7.4 GB peak memory footprint on a 128 GB Apple Silicon Mac.  That is a measured result for one frame, not certification for every 16 GB Mac or every document size.
+The selected rank-128 adapter uses strength 3.5 with four denoising steps.  Local checks used about 7.6 GB peak memory footprint on an Apple M5 Max with 128 GiB unified memory.  That is a measured result for one frame, not certification for every 16 GB Mac or every document size.
 
 ## Licenses
 
