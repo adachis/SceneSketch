@@ -1,0 +1,63 @@
+name: Storyboard
+options:
+  deploymentTarget:
+    macOS: '15.0'
+packages:
+  Flux2Swift:
+    url: https://github.com/VincentGourbin/flux-2-swift-mlx
+    revision: 315c27e83187909bc5e1f880b4850918342d891b
+  MLXLM:
+    url: https://github.com/ml-explore/mlx-swift-lm
+    exactVersion: 3.31.4
+  MLX:
+    url: https://github.com/ml-explore/mlx-swift
+    exactVersion: 0.31.6
+  Transformers:
+    url: https://github.com/huggingface/swift-transformers
+    from: 1.3.3
+settings:
+  base:
+    SWIFT_VERSION: '6.0'
+    CODE_SIGNING_ALLOWED: NO
+    MACOSX_DEPLOYMENT_TARGET: '15.0'
+targets:
+  Storyboard:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources
+      - path: Resources
+        buildPhase: resources
+    dependencies:
+      - package: Flux2Swift
+        product: Flux2Core
+      - package: Flux2Swift
+        product: FluxTextEncoders
+      - package: MLXLM
+        product: MLXLLM
+      - package: MLXLM
+        product: MLXLMCommon
+      - package: MLX
+        product: MLX
+      - package: Transformers
+        product: Tokenizers
+    info:
+      path: build/Info.plist
+      properties:
+        CFBundleIdentifier: com.adachis.storyboard
+        CFBundleName: Storyboard
+        CFBundleDisplayName: Storyboard
+        CFBundleShortVersionString: '0.1.0'
+        CFBundleVersion: '1'
+        LSMinimumSystemVersion: '15.0'
+        NSHighResolutionCapable: true
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Storyboard
+            CFBundleTypeRole: Editor
+            LSItemContentTypes: [com.adachis.storyboard.document]
+        UTExportedTypeDeclarations:
+          - UTTypeIdentifier: com.adachis.storyboard.document
+            UTTypeDescription: Storyboard
+            UTTypeConformsTo: [public.json]
+            UTTypeTagSpecification:
+              public.filename-extension: storyboard

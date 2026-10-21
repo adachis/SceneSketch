@@ -1,0 +1,8 @@
+.build/
+build/
+*.xcodeproj/
+*.xcworkspace/
+.DS_Store
+Resources/*.safetensors
+Models/
+*.log
