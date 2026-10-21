@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Historitë dhe imazhet tuaja qëndrojnë në këtë Mac.";
 "[Missing reference]" = "[Referencë e munguar]";
 "__language_name__" = "Shqip";
+"Props" = "Rekuizita";
+"New prop" = "Rekuizitë e re";
+"Merge with" = "Bashko me";
+"Select a library entry" = "Zgjidh një hyrje biblioteke";
+"A linked library entry is missing.  Remove or replace its pill." = "Mungon një hyrje e lidhur biblioteke. Hiq ose zëvendëso pilulën e saj.";

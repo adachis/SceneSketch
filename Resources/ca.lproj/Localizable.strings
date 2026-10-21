@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "La teva història i imatges es queden en aquest Mac.";
 "[Missing reference]" = "[Referència perduda]";
 "__language_name__" = "Català";
+"Props" = "Atrezzo";
+"New prop" = "Nou element d'atrezzo";
+"Merge with" = "Fusiona amb";
+"Select a library entry" = "Selecciona una entrada de la biblioteca";
+"A linked library entry is missing.  Remove or replace its pill." = "Falta una entrada de la biblioteca enllaçada. Elimina o reemplaça la seva referència.";

@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "הסטורים והתמונות שלך נשארים במק זה.";
 "[Missing reference]" = "[הפניה חסרה]";
 "__language_name__" = "עברית";
+"Props" = "אביזרים";
+"New prop" = "אביזר חדש";
+"Merge with" = "מזג עם";
+"Select a library entry" = "בחר פריט ספרייה";
+"A linked library entry is missing.  Remove or replace its pill." = "חסר פריט ספרייה מקושר. הסר או החלף את התגית שלו.";

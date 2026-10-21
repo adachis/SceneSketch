@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Vaše zgodbe in slike ostanejo na tem Macu.";
 "[Missing reference]" = "[Manjkajoča referenca]";
 "__language_name__" = "slovenščina";
+"Props" = "Rekviziti";
+"New prop" = "Nov rekvizit";
+"Merge with" = "Združi z";
+"Select a library entry" = "Izberite vnos v knjižnici";
+"A linked library entry is missing.  Remove or replace its pill." = "Manjka povezan vnos v knjižnici. Odstranite ali zamenjajte njegovo referenčno oznako.";

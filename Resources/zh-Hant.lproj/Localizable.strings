@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "您的故事和影像會保留在此 Mac 上。";
 "[Missing reference]" = "[缺少參考]";
 "__language_name__" = "繁體中文";
+"Props" = "道具";
+"New prop" = "新增道具";
+"Merge with" = "合併至";
+"Select a library entry" = "選擇圖庫項目";
+"A linked library entry is missing.  Remove or replace its pill." = "連結的圖庫項目遺失。請移除或取代其參照藥丸。";

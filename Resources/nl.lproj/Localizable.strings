@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Uw verhalen en afbeeldingen blijven op deze Mac.";
 "[Missing reference]" = "[Ontbrekende referentie]";
 "__language_name__" = "Nederlands";
+"Props" = "Rekwisieten";
+"New prop" = "Nieuw rekwisiet";
+"Merge with" = "Samenvoegen met";
+"Select a library entry" = "Selecteer een bibliotheekitem";
+"A linked library entry is missing.  Remove or replace its pill." = "Een gekoppeld bibliotheekitem ontbreekt. Verwijder of vervang de pil.";

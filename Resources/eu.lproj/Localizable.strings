@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Zure istorioak eta irudiak Mac honetan geratzen dira.";
 "[Missing reference]" = "[Erreferentzia falta]";
 "__language_name__" = "Euskara";
+"Props" = "Atrezzoa";
+"New prop" = "Atrezzo berria";
+"Merge with" = "Batu honekin";
+"Select a library entry" = "Hautatu liburutegiko sarrera bat";
+"A linked library entry is missing.  Remove or replace its pill." = "Lotutako liburutegiko sarrera bat falta da. Kendu edo ordezkatu bere pilula.";

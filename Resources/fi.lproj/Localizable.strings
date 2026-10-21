@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Tarinoitasi ja kuviasi säilytetään tällä Macilla.";
 "[Missing reference]" = "[Puuttuva viittaus]";
 "__language_name__" = "Suomi";
+"Props" = "Rekvisiitta";
+"New prop" = "Uusi rekvisiitta";
+"Merge with" = "Yhdistä kohteeseen";
+"Select a library entry" = "Valitse kirjastokohde";
+"A linked library entry is missing.  Remove or replace its pill." = "Linkitetty kirjastokohde puuttuu. Poista tai korvaa sen pilleri.";

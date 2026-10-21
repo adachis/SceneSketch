@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Cerita dan gambar Anda tetap di Mac ini.";
 "[Missing reference]" = "[Referensi hilang]";
 "__language_name__" = "Indonesia";
+"Props" = "Properti";
+"New prop" = "Properti baru";
+"Merge with" = "Gabungkan dengan";
+"Select a library entry" = "Pilih entri perpustakaan";
+"A linked library entry is missing.  Remove or replace its pill." = "Entri perpustakaan tertaut hilang. Hapus atau ganti pilnya.";

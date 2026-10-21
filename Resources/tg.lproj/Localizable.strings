@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Ҳикояҳо ва тасвирҳои шумо дар ин Mac мемонанд.";
 "[Missing reference]" = "[Истиноди гумшуда]";
 "__language_name__" = "Тоҷикӣ";
+"Props" = "Реквизит";
+"New prop" = "Реквизити нав";
+"Merge with" = "Якҷоя кардан бо";
+"Select a library entry" = "Интихоби вуруди китобхона";
+"A linked library entry is missing.  Remove or replace its pill." = "Вуруди китобхонаи алоқаманд гум шудааст. Пиллаи онро хориҷ кунед ё иваз кунед.";

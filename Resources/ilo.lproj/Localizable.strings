@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Ag-talinaed dagiti istorya ken ladawan iti daytoy a Mac.";
 "[Missing reference]" = "[Nawaw-an a reperensia]";
 "__language_name__" = "Iloko";
+"Props" = "Rekuisitos";
+"New prop" = "Baro a rekuisito";
+"Merge with" = "Pagtiponen iti";
+"Select a library entry" = "Pilien ti maysa a naikabil iti biblioteka";
+"A linked library entry is missing.  Remove or replace its pill." = "Awan ti naikapet a naikabil iti biblioteka. Ikkat wenno sukatan ti pillna.";

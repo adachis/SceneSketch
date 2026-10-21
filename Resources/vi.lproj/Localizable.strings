@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Câu chuyện và ảnh của bạn vẫn ở trên máy Mac này.";
 "[Missing reference]" = "[Tham chiếu bị thiếu]";
 "__language_name__" = "Tiếng Việt";
+"Props" = "Đạo cụ";
+"New prop" = "Đạo cụ mới";
+"Merge with" = "Gộp với";
+"Select a library entry" = "Chọn một mục thư viện";
+"A linked library entry is missing.  Remove or replace its pill." = "Một mục thư viện được liên kết bị thiếu. Xóa hoặc thay thế thẻ của nó.";

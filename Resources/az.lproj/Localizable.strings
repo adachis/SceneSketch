@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Sizin hekayələriniz və şəkilləriniz bu Mac-da qalır.";
 "[Missing reference]" = "[İtirilmiş referans]";
 "__language_name__" = "Azərbaycan dili";
+"Props" = "Rekvizitlər";
+"New prop" = "Yeni rekvizit";
+"Merge with" = "Birləşdir";
+"Select a library entry" = "Kitabxana elementini seçin";
+"A linked library entry is missing.  Remove or replace its pill." = "Əlaqəli kitabxana elementi çatışmır. Onun həbini silin və ya dəyişdirin.";

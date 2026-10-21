@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "스토리와 이미지는 이 Mac에 유지됩니다.";
 "[Missing reference]" = "[누락된 참조]";
 "__language_name__" = "한국어";
+"Props" = "소품";
+"New prop" = "새 소품";
+"Merge with" = "다음과 병합";
+"Select a library entry" = "라이브러리 항목 선택";
+"A linked library entry is missing.  Remove or replace its pill." = "연결된 라이브러리 항목이 없습니다. 해당 필드를 제거하거나 교체하십시오.";

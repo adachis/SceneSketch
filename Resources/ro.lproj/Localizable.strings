@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Poveștile și imaginile dvs. rămân pe acest Mac.";
 "[Missing reference]" = "[Referință lipsă]";
 "__language_name__" = "Română";
+"Props" = "Recuzită";
+"New prop" = "Recuzită nouă";
+"Merge with" = "Îmbină cu";
+"Select a library entry" = "Selectează o intrare din bibliotecă";
+"A linked library entry is missing.  Remove or replace its pill." = "Lipsește o intrare din bibliotecă legată. Elimină sau înlocuiește pastila acesteia.";

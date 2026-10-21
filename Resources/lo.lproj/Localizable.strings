@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "ເລື່ອງ ແລະ ຮູບພາບຂອງທ່ານຍັງຄົງຢູ່ໃນ Mac ນີ້.";
 "[Missing reference]" = "[ການອ້າງອີງຂາດຫາຍໄປ]";
 "__language_name__" = "ລາວ";
+"Props" = "ອຸປະກອນປະກອບສາກ";
+"New prop" = "ອຸປະກອນປະກອບສາກໃໝ່";
+"Merge with" = "ລວມເຂົ້າກັບ";
+"Select a library entry" = "ເລືອກລາຍການໃນຄັງ";
+"A linked library entry is missing.  Remove or replace its pill." = "ລາຍການໃນຄັງທີ່ເຊື່ອມໂຍງຫາຍໄປ. ລຶບ ຫຼືປ່ຽນແທນປຸ່ມຂອງມັນ.";

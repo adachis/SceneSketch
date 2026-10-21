@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Вашите приказни и слики остануваат на овој Mac.";
 "[Missing reference]" = "[Недостасува референца]";
 "__language_name__" = "Македонски";
+"Props" = "Реквизити";
+"New prop" = "Нов реквизит";
+"Merge with" = "Спој со";
+"Select a library entry" = "Изберете запис од библиотеката";
+"A linked library entry is missing.  Remove or replace its pill." = "Недостасува поврзан запис од библиотеката. Отстранете ја или заменете ја неговата ознака.";

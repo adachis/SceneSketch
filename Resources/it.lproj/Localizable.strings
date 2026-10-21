@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Le tue storie e immagini rimangono su questo Mac.";
 "[Missing reference]" = "[Riferimento mancante]";
 "__language_name__" = "Italiano";
+"Props" = "Oggetti di scena";
+"New prop" = "Nuovo oggetto di scena";
+"Merge with" = "Unisci con";
+"Select a library entry" = "Seleziona una voce di libreria";
+"A linked library entry is missing.  Remove or replace its pill." = "Manca una voce di libreria collegata. Rimuovi o sostituisci la sua pillola.";

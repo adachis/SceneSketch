@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Tínar søgur og myndir verða verandi á hesi Mac.";
 "[Missing reference]" = "[Vantar tilvísing]";
 "__language_name__" = "Føroyskt";
+"Props" = "Revsir";
+"New prop" = "Nýggj rev";
+"Merge with" = "Slá saman við";
+"Select a library entry" = "Vel eina bókasavnsskrá";
+"A linked library entry is missing.  Remove or replace its pill." = "Ein tengd bókasavnsskrá vantar. Tak burtur ella skift hennara pillu út.";

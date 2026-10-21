@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Jūsų siužetai ir vaizdai lieka šiame Mac.";
 "[Missing reference]" = "[Trūksta nuoroda]";
 "__language_name__" = "Lietuvių";
+"Props" = "Rekvizitai";
+"New prop" = "Naujas rekvizitas";
+"Merge with" = "Sujungti su";
+"Select a library entry" = "Pasirinkite bibliotekos įrašą";
+"A linked library entry is missing.  Remove or replace its pill." = "Trūksta susieto bibliotekos įrašo. Pašalinkite arba pakeiskite jo nuorodą.";

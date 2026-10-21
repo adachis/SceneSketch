@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Vos histoires et images restent sur ce Mac.";
 "[Missing reference]" = "[Référence manquante]";
 "__language_name__" = "Français";
+"Props" = "Accessoires";
+"New prop" = "Nouvel accessoire";
+"Merge with" = "Fusionner avec";
+"Select a library entry" = "Sélectionner une entrée de bibliothèque";
+"A linked library entry is missing.  Remove or replace its pill." = "Une entrée de bibliothèque liée est manquante. Supprimez ou remplacez sa puce.";

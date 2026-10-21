@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "আপনার গল্প এবং ছবি এই Mac-এই থাকে।";
 "[Missing reference]" = "[অনুপস্থিত রেফারেন্স]";
 "__language_name__" = "বাংলা";
+"Props" = "প্রপস";
+"New prop" = "নতুন প্রপ";
+"Merge with" = "এর সাথে মার্জ করুন";
+"Select a library entry" = "একটি লাইব্রেরি এন্ট্রি নির্বাচন করুন";
+"A linked library entry is missing.  Remove or replace its pill." = "একটি লিঙ্ক করা লাইব্রেরি এন্ট্রি অনুপস্থিত। এর পিল সরান বা প্রতিস্থাপন করুন।";

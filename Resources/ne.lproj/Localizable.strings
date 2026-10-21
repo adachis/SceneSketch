@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "तपाईंका कथाहरू र छविहरू यस Mac मा रहन्छन्।";
 "[Missing reference]" = "[सन्दर्भ हराइरहेको]";
 "__language_name__" = "नेपाली";
+"Props" = "प्रप्स";
+"New prop" = "नयाँ प्रप";
+"Merge with" = "यसमा मर्ज गर्नुहोस्";
+"Select a library entry" = "एउटा पुस्तकालय प्रविष्टि चयन गर्नुहोस्";
+"A linked library entry is missing.  Remove or replace its pill." = "लिंक गरिएको पुस्तकालय प्रविष्टि हराइरहेको छ। यसको पिल हटाउनुहोस् वा बदल्नुहोस्।";

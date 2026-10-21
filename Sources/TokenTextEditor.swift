@@ -76,7 +76,8 @@ private final class EntityAttachment: NSTextAttachment {
     init(_ entity: StoryEntity) {
         entityID = entity.id
         super.init(data: nil, ofType: nil)
-        let label = (entity.kind == .character ? "● " : "◆ ") + entity.name
+        let symbol = entity.kind == .character ? "● " : entity.kind == .location ? "◆ " : "■ "
+        let label = symbol + entity.name
         let font = NSFont.systemFont(ofSize: 12, weight: .medium)
         let size = (label as NSString).size(withAttributes: [.font: font])
         let canvas = NSImage(size: NSSize(width: size.width+14, height: 23))

@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "As túas historias e imaxes permanecen neste Mac.";
 "[Missing reference]" = "[Referencia ausente]";
 "__language_name__" = "Galego";
+"Props" = "Atrezzo";
+"New prop" = "Novo atrezzo";
+"Merge with" = "Fusionar con";
+"Select a library entry" = "Seleccionar unha entrada da biblioteca";
+"A linked library entry is missing.  Remove or replace its pill." = "Falta unha entrada da biblioteca ligada. Eliminar ou substituír a súa pílula.";

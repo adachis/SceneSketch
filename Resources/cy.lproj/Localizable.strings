@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Mae eich storïau a'ch delweddau yn aros ar y Mac hwn.";
 "[Missing reference]" = "[Cyfeiriad ar goll]";
 "__language_name__" = "Cymraeg";
+"Props" = "Propiau";
+"New prop" = "Prop newydd";
+"Merge with" = "Cyfuno â";
+"Select a library entry" = "Dewiswch gofnod llyfrgell";
+"A linked library entry is missing.  Remove or replace its pill." = "Mae cofnod llyfrgell cysylltiedig ar goll. Tynnwch neu amnewidiwch ei bilsen.";

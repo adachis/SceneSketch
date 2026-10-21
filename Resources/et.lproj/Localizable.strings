@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Sinu lood ja pildid jäävad sellele Macile.";
 "[Missing reference]" = "[Puuduv viide]";
 "__language_name__" = "eesti";
+"Props" = "Rekvisiidid";
+"New prop" = "Uus rekvisiit";
+"Merge with" = "Ühenda";
+"Select a library entry" = "Vali teegi kirje";
+"A linked library entry is missing.  Remove or replace its pill." = "Lingitud teegi kirje puudub. Eemalda või asenda selle viide.";

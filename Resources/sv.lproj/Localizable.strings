@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Dina stories och bilder stannar på denna Mac.";
 "[Missing reference]" = "[Saknad referens]";
 "__language_name__" = "Svenska";
+"Props" = "Rekvisita";
+"New prop" = "Ny rekvisita";
+"Merge with" = "Slå samman med";
+"Select a library entry" = "Välj en bibliotekspost";
+"A linked library entry is missing.  Remove or replace its pill." = "En länkad bibliotekspost saknas. Ta bort eller ersätt dess referenspill.";

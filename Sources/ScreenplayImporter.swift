@@ -193,6 +193,14 @@ enum ScreenplayImporter {
                 else { entities.append(StoryEntity(kind: .character, name: name, description: description)) }
             }
         }
+        let propMentions = ScreenplayProps.consolidated(paragraphs.enumerated().filter { index, paragraph in
+            paragraph.kind == "Action" && (firstHeading == nil || index > firstHeading!)
+        }.flatMap { ScreenplayProps.mentions(in: $0.element.text) })
+        for mention in propMentions {
+            if let index = entities.firstIndex(where: { $0.kind == .prop && $0.name.normalizedName == mention.name.normalizedName }) {
+                if !entities[index].description.localizedCaseInsensitiveContains(mention.phrase) { entities[index].description += "; " + mention.phrase }
+            } else { entities.append(StoryEntity(kind: .prop, name: mention.name, description: mention.phrase)) }
+        }
         var scenes: [StoryScene] = []; var frames: [StoryboardFrame] = []; var speaker = ""
         for (index, paragraph) in paragraphs.enumerated() {
             let text = paragraph.text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -218,7 +226,7 @@ enum ScreenplayImporter {
                         }
                         entities[locationIndex].description = String(sentences.joined(separator: ". ").prefix(280))
                     }
-                    var description = text
+                    var description = ScreenplayProps.link(text, mentions: propMentions, entities: entities)
                     for entity in entities where entity.kind == .character {
                         let regex = try! NSRegularExpression(pattern: "(?<![\\p{L}\\p{N}])" + NSRegularExpression.escapedPattern(for: entity.name) + "(?![\\p{L}\\p{N}])", options: .caseInsensitive)
                         description = regex.stringByReplacingMatches(in: description, range: NSRange(location: 0, length: (description as NSString).length), withTemplate: EntityTokens.token(entity.id))

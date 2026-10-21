@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "သင်၏ ဇာတ်လမ်းများနှင့် ပုံများသည် ဤ Mac တွင် ရှိနေပါသည်။";
 "[Missing reference]" = "[ကိုးကားချက် ပျောက်ဆုံးနေသည်]";
 "__language_name__" = "မြန်မာ";
+"Props" = "ပစ္စည်းများ";
+"New prop" = "ပစ္စည်းအသစ်";
+"Merge with" = "ပေါင်းစည်းရန်";
+"Select a library entry" = "စာကြည့်တိုက်မှ အကြောင်းအရာတစ်ခုကို ရွေးပါ";
+"A linked library entry is missing.  Remove or replace its pill." = "ချိတ်ဆက်ထားသော စာကြည့်တိုက်မှ အကြောင်းအရာတစ်ခု ပျောက်ဆုံးနေပါသည်။ ၎င်း၏ pill ကို ဖယ်ရှားပါ သို့မဟုတ် အစားထိုးပါ။";

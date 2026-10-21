@@ -12,7 +12,9 @@ struct StoryboardCheck {
         let root = try RenderService.modelDirectory()
         TextEncoderModelDownloader.customModelsDirectory = root
         TextEncoderModelDownloader.reconfigureHubApi()
-        if mode == "lettering-check" {
+        if mode == "props" {
+            try PropChecks.run()
+        } else if mode == "lettering-check" {
             for path in args.dropFirst() {
                 let image = try ReferenceImages.cgImage(Data(contentsOf: URL(fileURLWithPath: path)), maximumEdge: 2048)
                 print("\(URL(fileURLWithPath: path).lastPathComponent): \(RenderTextPolicy.letteringScore(image))")
@@ -38,13 +40,13 @@ struct StoryboardCheck {
             try StoryChecks.ocr()
         } else if mode == "parse" {
             let value = try ScreenplayImporter.read(URL(fileURLWithPath: args[1])) { _ in }
-            let data = try JSONSerialization.data(withJSONObject: ["title":value.title,"scenes":value.scenes.map { scene in ["title":scene.title,"shots":value.frames.filter { $0.sceneID == scene.id }.count] },"characters":value.entities.filter { $0.kind == .character }.map { ["name":$0.name,"description":$0.description] },"locations":value.entities.filter { $0.kind == .location }.map(\.name),"shotCount":value.frames.count,"warnings":value.warnings], options: [.prettyPrinted,.sortedKeys])
+            let data = try JSONSerialization.data(withJSONObject: ["title":value.title,"scenes":value.scenes.map { scene in ["title":scene.title,"shots":value.frames.filter { $0.sceneID == scene.id }.count] },"characters":value.entities.filter { $0.kind == .character }.map { ["name":$0.name,"description":$0.description] },"locations":value.entities.filter { $0.kind == .location }.map(\.name),"props":value.entities.filter { $0.kind == .prop }.map { ["name":$0.name,"description":$0.description] },"shotCount":value.frames.count,"warnings":value.warnings], options: [.prettyPrinted,.sortedKeys])
             if args.count > 2 { try data.write(to: URL(fileURLWithPath: args[2])) } else { print(String(decoding:data,as:UTF8.self)) }
         } else if mode == "story" {
             try StoryChecks.run()
         } else if mode == "vision" {
             let reference = try ReferenceImages.importFile(URL(fileURLWithPath: args[1]))
-            print(try await RenderService.shared.describe(image: reference, kind: args.count > 2 && args[2] == "location" ? .location : .character))
+            print(try await RenderService.shared.describe(image: reference, kind: args.count > 2 ? EntityKind(rawValue: args[2]) ?? .character : .character))
         } else if mode == "reference" || mode == "character-reference" {
             var document = StoryboardDocument()
             let count = min(3, Int(args[3]) ?? 1)

@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Сезнең хикәяләрегез һәм рәсемнәрегез бу Mac'та кала.";
 "[Missing reference]" = "[Югалган сылтама]";
 "__language_name__" = "Татарча";
+"Props" = "Реквизитлар";
+"New prop" = "Яңа реквизит";
+"Merge with" = "Кушу";
+"Select a library entry" = "Китапханә язмасын сайлагыз";
+"A linked library entry is missing.  Remove or replace its pill." = "Бәйләнгән китапханә язмасы юк. Аның тамгасын бетерегез яки алыштырыгыз.";

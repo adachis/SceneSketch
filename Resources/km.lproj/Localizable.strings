@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "ເລື່ອງ ແລະ ຮູບພາບຂອງທ່ານຍັງຄົງຢູ່ໃນ Mac ນີ້.";
 "[Missing reference]" = "[ການອ້າງອິງຂາດຫາຍໄປ]";
 "__language_name__" = "English";
+"Props" = "វត្ថុប្រើប្រាស់";
+"New prop" = "វត្ថុប្រើប្រាស់ថ្មី";
+"Merge with" = "បញ្ចូលជាមួយ";
+"Select a library entry" = "ជ្រើសរើសធាតុបណ្ណាល័យ";
+"A linked library entry is missing.  Remove or replace its pill." = "ធាតុបណ្ណាល័យដែលបានភ្ជាប់បាត់។ លុប ឬជំនួសគ្រាប់ថ្នាំរបស់វា។";

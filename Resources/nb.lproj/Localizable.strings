@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Dine historier og bilder forblir på denne Mac-en.";
 "[Missing reference]" = "[Mangler referanse]";
 "__language_name__" = "Norsk";
+"Props" = "Rekvisitter";
+"New prop" = "Ny rekvisitt";
+"Merge with" = "Slå sammen med";
+"Select a library entry" = "Velg en bibliotekoppføring";
+"A linked library entry is missing.  Remove or replace its pill." = "En koblet bibliotekoppføring mangler. Fjern eller erstatt pillen.";

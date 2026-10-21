@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "உங்கள் கதைகள் மற்றும் படங்கள் இந்த Mac-இல் இருக்கும்.";
 "[Missing reference]" = "[குறிப்பு இல்லை]";
 "__language_name__" = "தமிழ்";
+"Props" = "முட்டுகள்";
+"New prop" = "புதிய முட்டு";
+"Merge with" = "இதனுடன் இணை";
+"Select a library entry" = "ஒரு நூலக உள்ளீட்டைத் தேர்ந்தெடுக்கவும்";
+"A linked library entry is missing.  Remove or replace its pill." = "இணைக்கப்பட்ட நூலக உள்ளீடு இல்லை. அதன் மாத்திரையை அகற்றவும் அல்லது மாற்றவும்.";

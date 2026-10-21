@@ -12,21 +12,21 @@ The first-launch setup offers one download for drawing, prompt cleanup, and imag
 
 The default paper setting is **Ask when exporting**.  Choose Letter or A4 in the export sheet, or save a preference in Settings.
 
-## Stories, characters, and locations
+## Stories, characters, locations, and props
 
-Each file contains one story, ordered scenes and shots, character and location records, reference images, and optional production metadata.  Images are embedded, so the document does not depend on original photo paths.  Versions 1 and 2 migrate when opened and saved.
+Each file contains one story, ordered scenes and shots, character, location, and prop records, reference images, and optional production metadata.  Images are embedded, so the document does not depend on original photo paths.  Versions 1 and 2 migrate when opened and saved.
 
-Use **Story Library** to add or edit characters and locations.  Drop or select reference images, choose a primary reference, remove images, or merge duplicate records.  Adding references to an existing description offers **Visual references only**, **Enhance existing description**, or **Recreate description**.  Generated text is reviewed before replacing saved text.  Character image analysis focuses on stable physical appearance and filters out clothing and accessories; clothing can still be added manually.
+Use **Story Library** to add or edit characters, locations, and props.  Drop or select reference images, choose a primary reference, remove images, or merge duplicate records.  Adding references to an existing description offers **Visual references only**, **Enhance existing description**, or **Recreate description**.  Generated text is reviewed before replacing saved text.  Character image analysis focuses on stable physical appearance and filters out clothing and accessories; clothing can still be added manually.
 
-Use **Insert** to place character or location pills in shot descriptions.  Pills use stable IDs, so later library edits are reflected when rendering.  References are selected from the shot and its linked records.  The meter shows the three-image rendering limit.  Extra library images stay available without being sent to the renderer.  Reference encoding is bounded to 256 × 256 pixels per image; detected character faces receive a focused crop.
+Use **Insert** to place character, location, or prop pills in shot descriptions.  Pills use stable IDs, so later library edits are reflected when rendering.  References are selected from the shot and its linked records.  The meter shows the three-image rendering limit.  Extra library images stay available without being sent to the renderer.  Reference encoding is bounded to 256 × 256 pixels per image; detected character faces receive a focused crop.
 
 Scenes can collapse and move, and shots can be reordered or moved between scenes.  Generate a frame or its whole scene.  **Stop after frame** retains completed renders.  The Story Library fills its sheet immediately, including before an entry is selected.
 
 ## Screenplay import
 
-Import PDF, scanned PDF, Final Draft `.fdx`, Fountain, or UTF-8 text.  PDFs use text positions to recover screenplay structure; scans use Apple's on-device text recognition.  Review detected scenes, shots, characters, and locations before importing, and uncheck items you do not want.  Import preserves existing descriptions when merging matching entities.  Source passages stay attached for reference.
+Import PDF, scanned PDF, Final Draft `.fdx`, Fountain, or UTF-8 text.  PDFs use text positions to recover screenplay structure; scans use Apple's on-device text recognition.  Review detected scenes, shots, characters, locations, and props before importing, and uncheck items you do not want.  Import preserves existing descriptions when merging matching entities.  Source passages stay attached for reference.
 
-Shot proposals follow action beats and need editorial review.  Long screenplays can produce many shots.  The importer does not invent missing physical appearance details.
+Shot proposals follow action beats and need editorial review.  Long screenplays can produce many shots.  The importer does not invent missing physical appearance details.  Props are proposed only when action text contains explicit visual details, such as a battered red leather suitcase or a watch with a brass rim.  Merely mentioning an object does not create a record.  Extraction is conservative and currently uses English visual terms; add missed props manually.  Ambiguous references to multiple similar props are left as plain text for review.  Prop image descriptions focus on shape, color, material, and distinctive features; they are reviewed before use, and the same visual-only, enhance, and replace choices apply.
 
 ## Export and print
 

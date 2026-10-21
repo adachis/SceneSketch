@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "داستان‌ها و تصاویر شما در این مک باقی می‌مانند.";
 "[Missing reference]" = "[مرجع گمشده]";
 "__language_name__" = "دری";
+"Props" = "لوازم";
+"New prop" = "لوازم جدید";
+"Merge with" = "ادغام با";
+"Select a library entry" = "یک ورودی کتابخانه را انتخاب کنید";
+"A linked library entry is missing.  Remove or replace its pill." = "یک ورودی کتابخانه پیوند شده وجود ندارد. پیل آن را حذف یا جایگزین کنید.";

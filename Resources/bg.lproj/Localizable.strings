@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Вашите истории и изображения остават на този Mac.";
 "[Missing reference]" = "[Липсваща референция]";
 "__language_name__" = "български";
+"Props" = "Реквизит";
+"New prop" = "Нов реквизит";
+"Merge with" = "Обединяване с";
+"Select a library entry" = "Изберете запис от библиотеката";
+"A linked library entry is missing.  Remove or replace its pill." = "Липсва свързан запис от библиотеката. Премахнете или заменете неговия чип.";

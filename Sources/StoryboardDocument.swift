@@ -28,10 +28,12 @@ struct ShotDetails: Codable, Equatable, Sendable {
 }
 
 enum EntityKind: String, Codable, CaseIterable, Identifiable, Sendable {
-    case character, location
+    case character, location, prop
     var id: String { rawValue }
-    var label: String { self == .character ? "Characters" : "Locations" }
-    var symbol: String { self == .character ? "person.crop.circle" : "mappin.and.ellipse" }
+    var label: String { switch self { case .character: "Characters"; case .location: "Locations"; case .prop: "Props" } }
+    var symbol: String { switch self { case .character: "person.crop.circle"; case .location: "mappin.and.ellipse"; case .prop: "cube" } }
+    var newName: String { switch self { case .character: L("New character"); case .location: L("New location"); case .prop: L("New prop") } }
+    var promptLabel: String { switch self { case .character: "Character"; case .location: "Location"; case .prop: "Prop" } }
 }
 
 struct StoryEntity: Identifiable, Codable, Equatable, Sendable {

@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Вашы гісторыі і выявы застаюцца на гэтым Mac.";
 "[Missing reference]" = "[Адсутная спасылка]";
 "__language_name__" = "Беларуская";
+"Props" = "Рэквізіт";
+"New prop" = "Новы рэквізіт";
+"Merge with" = "Аб'яднаць з";
+"Select a library entry" = "Выберыце запіс бібліятэкі";
+"A linked library entry is missing.  Remove or replace its pill." = "Адсутнічае звязаны запіс бібліятэкі. Выдаліце або заменіце яго маркер.";

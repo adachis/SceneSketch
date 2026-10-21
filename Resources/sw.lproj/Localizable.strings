@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Hadithi na picha zako hukaa kwenye Mac hii.";
 "[Missing reference]" = "[Marejeleo hayapo]";
 "__language_name__" = "Swahili";
+"Props" = "Vifaa";
+"New prop" = "Kifaa kipya";
+"Merge with" = "Unganisha na";
+"Select a library entry" = "Chagua kipengee cha maktaba";
+"A linked library entry is missing.  Remove or replace its pill." = "Kipengee cha maktaba kilichounganishwa kinakosekana. Ondoa au badilisha kidonge chake.";

@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Az Ön történetei és képei ezen a Mac-en maradnak.";
 "[Missing reference]" = "[Hiányzó referencia]";
 "__language_name__" = "Magyar";
+"Props" = "Kellékek";
+"New prop" = "Új kellék";
+"Merge with" = "Egyesítés ezzel:";
+"Select a library entry" = "Válasszon egy könyvtárbejegyzést";
+"A linked library entry is missing.  Remove or replace its pill." = "Hiányzik egy kapcsolt könyvtárbejegyzés. Távolítsa el vagy cserélje ki a hivatkozáspillt.";

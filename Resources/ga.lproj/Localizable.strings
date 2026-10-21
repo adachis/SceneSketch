@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Fanann do scéalta agus íomhánna ar an Mac seo.";
 "[Missing reference]" = "[Tagairt in easnamh]";
 "__language_name__" = "Gaeilge";
+"Props" = "Rudaí";
+"New prop" = "Rud nua";
+"Merge with" = "Cumaisc le";
+"Select a library entry" = "Roghnaigh iontráil leabharlainne";
+"A linked library entry is missing.  Remove or replace its pill." = "Tá iontráil leabharlainne nasctha in easnamh. Bain nó cuir a piolla in áit.";

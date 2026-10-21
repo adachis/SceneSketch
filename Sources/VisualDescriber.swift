@@ -47,14 +47,37 @@ struct VisualDescriber {
         if kind == .character {
             let schema = StableAppearance.choices.map { "\($0.0): \($0.1.joined(separator: " | ")) | unknown" }.joined(separator: "\n")
             prompt = "Describe only the visible person's permanent physical appearance. Ignore all clothes, glasses, jewelry, accessories, pose, expression, and background. Return a JSON object with exactly these keys, selecting one exact value for each; use unknown when uncertain.\n" + schema
-        } else {
+        } else if kind == .location {
             prompt = "Describe only permanent physical features of this location. Ignore people, animals, vehicles, portable objects, weather, time of day, and lighting. Return a JSON object with exactly these keys: architecture, materials, layout, terrain, landmarks. Each value must be one short factual phrase, or unknown. Do not invent details or name the location."
+        } else {
+            prompt = "Describe the main physical object or prop in this image for consistent storyboard appearances. Focus on the object itself, ignoring people, hands, background, lighting, camera angle, and other objects. Return a JSON object with exactly these keys: object, shape, colors, materials, distinctive_features. Every value must be a string containing one short factual phrase, or unknown; never use arrays. Use unknown when a material cannot be established from visible evidence. Do not invent unseen details, infer a brand, transcribe text, or describe an action."
         }
         let response = try await session.respond(to: prompt, image: .ciImage(CIImage(cgImage: cgImage)))
         if ProcessInfo.processInfo.environment["STORYBOARD_DIAGNOSTICS"] == "1" { print("Vision response: " + response) }
-        let result = kind == .character ? StableAppearance.description(from: response) : LocationAppearance.description(from: response)
+        let result: String
+        switch kind {
+        case .character: result = StableAppearance.description(from: response)
+        case .location: result = LocationAppearance.description(from: response)
+        case .prop: result = PropAppearance.description(from: response)
+        }
         guard !result.isEmpty, result.count < 2000 else { throw DescriptionError.uncertain }
         return result
+    }
+}
+
+struct PropAppearance {
+    static func description(from response: String) -> String {
+        guard let start = response.firstIndex(of: "{"), let end = response.lastIndex(of: "}"), start <= end,
+              let data = String(response[start...end]).data(using: .utf8),
+              let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return "" }
+        return ["object", "shape", "colors", "materials", "distinctive_features"].compactMap { key in
+            let raw = (object[key] as? String) ?? (object[key] as? [String])?.reduce(into: [String]()) { values, item in
+                if !values.contains(item) { values.append(item) }
+            }.joined(separator: ", ")
+            guard let value = raw?.trimmingCharacters(in: .whitespacesAndNewlines),
+                  !value.isEmpty, value.lowercased() != "unknown", value.count < 300 else { return nil }
+            return value
+        }.joined(separator: "; ")
     }
 }
 

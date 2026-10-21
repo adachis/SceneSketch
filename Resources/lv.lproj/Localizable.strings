@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Jūsu stāsti un attēli paliek šajā Mac datorā.";
 "[Missing reference]" = "[Trūkst atsauces]";
 "__language_name__" = "Latviešu";
+"Props" = "Rekvizīti";
+"New prop" = "Jauns rekvizīts";
+"Merge with" = "Apvienot ar";
+"Select a library entry" = "Atlasiet bibliotēkas ierakstu";
+"A linked library entry is missing.  Remove or replace its pill." = "Trūkst saistītā bibliotēkas ieraksta. Noņemiet vai aizstājiet tā \"pill\".";

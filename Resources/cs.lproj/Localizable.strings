@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Vaše příběhy a obrázky zůstávají na tomto Macu.";
 "[Missing reference]" = "[Chybějící odkaz]";
 "__language_name__" = "Čeština";
+"Props" = "Rekvizity";
+"New prop" = "Nová rekvizita";
+"Merge with" = "Sloučit s";
+"Select a library entry" = "Vyberte položku knihovny";
+"A linked library entry is missing.  Remove or replace its pill." = "Chybí propojená položka knihovny. Odeberte nebo nahraďte její pilulku.";

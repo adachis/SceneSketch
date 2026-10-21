@@ -6,10 +6,11 @@ enum LibraryLayoutChecks {
     static func run() async throws {
         let app = NSApplication.shared
         app.setActivationPolicy(.prohibited)
-        for count in [0, 2, 80] {
+        for kind in EntityKind.allCases {
+          for count in [0, 2, 80] {
             var document = StoryboardDocument()
-            document.entities = (0..<count).map { StoryEntity(kind: .character, name: "Character \($0 + 1)") }
-            let host = NSHostingView(rootView: LibraryEditor(document: .constant(document)))
+            document.entities = (0..<count).map { StoryEntity(kind: kind, name: "Entry \($0 + 1)") }
+            let host = NSHostingView(rootView: LibraryEditor(document: .constant(document), initialKind: kind))
             let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 850, height: 620), styleMask: [.titled], backing: .buffered, defer: false)
             window.contentView = host
             host.layoutSubtreeIfNeeded()
@@ -18,7 +19,7 @@ enum LibraryLayoutChecks {
             let splits = descendants(host).compactMap { $0 as? NSSplitView }
             guard let split = splits.first else { throw Failure("No library split view") }
             let rect = host.convert(split.bounds, from: split)
-            print("Library with \(count) entries: split \(rect), host \(host.bounds)")
+            print("\(kind.label) library with \(count) entries: split \(rect), host \(host.bounds)")
             guard rect.height >= 500, rect.width >= 800 else {
                 throw Failure("Library content collapsed on its first layout")
             }
@@ -26,6 +27,7 @@ enum LibraryLayoutChecks {
                 guard child.frame.height >= 500 else { throw Failure("Library column collapsed on its first layout") }
             }
             window.contentView = nil
+          }
         }
         print("PASS: initial Story Library layout with empty, short, and long lists, without activating a window")
     }

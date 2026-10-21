@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "تبقى قصصك وصورك على هذا الجهاز.";
 "[Missing reference]" = "[مرجع مفقود]";
 "__language_name__" = "العربية التونسية";
+"Props" = "دعائم";
+"New prop" = "دعائم جديدة";
+"Merge with" = "دمج مع";
+"Select a library entry" = "اختار مدخل من المكتبة";
+"A linked library entry is missing.  Remove or replace its pill." = "مدخل المكتبة المرتبط مفقود. نحّي ولا بدّل الـ pill متاعو.";

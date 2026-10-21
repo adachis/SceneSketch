@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Vòstras istòrias e imaginas demoran sus aqueste Mac.";
 "[Missing reference]" = "[Referéncia absenta]";
 "__language_name__" = "Occitan";
+"Props" = "Atrespo";
+"New prop" = "Atrespo novèl";
+"Merge with" = "Fusionar amb";
+"Select a library entry" = "Seleccionar una entrada de bibliotèca";
+"A linked library entry is missing.  Remove or replace its pill." = "Manca una entrada de bibliotèca ligada. Suprimir o remplaçar sa pílula.";

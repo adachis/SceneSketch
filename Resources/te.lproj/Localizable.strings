@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "మీ కథలు మరియు చిత్రాలు ఈ Macలో ఉంటాయి.";
 "[Missing reference]" = "[సూచన లేదు]";
 "__language_name__" = "తెలుగు";
+"Props" = "ప్రాప్‌లు";
+"New prop" = "కొత్త ప్రాప్";
+"Merge with" = "దీనితో విలీనం చేయండి";
+"Select a library entry" = "లైబ్రరీ ఎంట్రీని ఎంచుకోండి";
+"A linked library entry is missing.  Remove or replace its pill." = "లింక్ చేయబడిన లైబ్రరీ ఎంట్రీ లేదు. దాని పిల్ను తీసివేయండి లేదా భర్తీ చేయండి.";

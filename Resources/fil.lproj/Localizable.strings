@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Mananatili sa Mac na ito ang iyong mga kuwento at larawan.";
 "[Missing reference]" = "[Nawawalang reference]";
 "__language_name__" = "Filipino";
+"Props" = "Mga Props";
+"New prop" = "Bagong prop";
+"Merge with" = "Pagsamahin sa";
+"Select a library entry" = "Pumili ng entry sa library";
+"A linked library entry is missing.  Remove or replace its pill." = "May nawawalang naka-link na entry sa library. Alisin o palitan ang pill nito.";

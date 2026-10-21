@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "เรื่องราวและรูปภาพของคุณจะอยู่ใน Mac เครื่องนี้";
 "[Missing reference]" = "[การอ้างอิงหายไป]";
 "__language_name__" = "ไทย";
+"Props" = "อุปกรณ์ประกอบฉาก";
+"New prop" = "อุปกรณ์ประกอบฉากใหม่";
+"Merge with" = "รวมกับ";
+"Select a library entry" = "เลือกรายการในคลัง";
+"A linked library entry is missing.  Remove or replace its pill." = "รายการในคลังที่เชื่อมโยงหายไป ลบหรือแทนที่ป้ายกำกับ";

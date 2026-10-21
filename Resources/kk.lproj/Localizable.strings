@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Сіздің оқиғаларыңыз бен суреттеріңіз осы Mac компьютерінде қалады.";
 "[Missing reference]" = "[Жоқ сілтеме]";
 "__language_name__" = "Қазақ";
+"Props" = "Реквизиттер";
+"New prop" = "Жаңа реквизит";
+"Merge with" = "Біріктіру";
+"Select a library entry" = "Кітапхана жазбасын таңдаңыз";
+"A linked library entry is missing.  Remove or replace its pill." = "Байланыстырылған кітапхана жазбасы жоқ. Оның таңбашасын жойыңыз немесе ауыстырыңыз.";

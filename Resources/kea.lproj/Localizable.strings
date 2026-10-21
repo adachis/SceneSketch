@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Bu stórias y imajens fika nes Mac.";
 "[Missing reference]" = "[Referénsia ta falta]";
 "__language_name__" = "Kabuverdianu";
+"Props" = "Aderezu";
+"New prop" = "Novu aderezu";
+"Merge with" = "Fundi ku";
+"Select a library entry" = "Selexiona un entrada di biblioteka";
+"A linked library entry is missing.  Remove or replace its pill." = "Un entrada di biblioteka ligadu sta ta falta. Remove ô susbstitui se pilula.";

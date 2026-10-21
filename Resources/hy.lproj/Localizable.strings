@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Ձեր պատմությունները և պատկերները մնում են այս Mac-ում։";
 "[Missing reference]" = "[Բացակայող հղում]";
 "__language_name__" = "Հայերեն";
+"Props" = "Ռեքվիզիտներ";
+"New prop" = "Նոր ռեքվիզիտ";
+"Merge with" = "Միացնել հետ";
+"Select a library entry" = "Ընտրեք գրադարանի տարր";
+"A linked library entry is missing.  Remove or replace its pill." = "Բացակայում է կապակցված գրադարանի տարրը։ Հեռացրեք կամ փոխարինեք դրա դեղահաբը։";

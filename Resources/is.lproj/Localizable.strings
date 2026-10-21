@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Þínar sögur og myndir eru áfram á þessum Mac.";
 "[Missing reference]" = "[Vantar viðmiðun]";
 "__language_name__" = "Íslenska";
+"Props" = "Leikmunir";
+"New prop" = "Nýr leikmunur";
+"Merge with" = "Sameina með";
+"Select a library entry" = "Veldu færslu úr safni";
+"A linked library entry is missing.  Remove or replace its pill." = "Tengd safnfærsla vantar. Fjarlægðu eða skiptu um pilluna hennar.";

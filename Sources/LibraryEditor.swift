@@ -18,6 +18,10 @@ struct LibraryEditor: View {
     @State private var mergeTarget: UUID?
     @State private var showMerge = false
     private var index: Int? { document.entities.firstIndex { $0.id == selection } }
+    init(document: Binding<StoryboardDocument>, initialKind: EntityKind = .character) {
+        _document = document
+        _kind = State(initialValue: initialKind)
+    }
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -32,7 +36,7 @@ struct LibraryEditor: View {
                         Picker(L("Library"), selection: $kind) { ForEach(EntityKind.allCases) { Text(L($0.label)).tag($0) } }.pickerStyle(.segmented)
                         List(selection: $selection) { ForEach(document.entities.filter { $0.kind == kind }) { entity in Label(entity.name, systemImage: entity.kind.symbol).tag(entity.id) } }
                         HStack {
-                            Button { let value = StoryEntity(kind: kind, name: kind == .character ? L("New character") : L("New location")); document.entities.append(value); selection = value.id } label: { Label(L("Add"), systemImage: "plus") }
+                            Button { let value = StoryEntity(kind: kind, name: kind.newName); document.entities.append(value); selection = value.id } label: { Label(L("Add"), systemImage: "plus") }
                             Spacer()
                             Button { deleteEntity = true } label: { Image(systemName: "trash") }.disabled(index == nil)
                         }
@@ -43,7 +47,7 @@ struct LibraryEditor: View {
                             VStack(alignment: .leading, spacing: 18) {
                                 HStack {
                                     TextField(L("Name"), text: $document.entities[index].name).font(.title2)
-                                    Menu("Merge with") {
+                                    Menu(L("Merge with")) {
                                         ForEach(document.entities.filter { $0.kind == document.entities[index].kind && $0.id != selection }) { target in
                                             Button(target.name) { mergeTarget = target.id; showMerge = true }
                                         }
@@ -77,7 +81,7 @@ struct LibraryEditor: View {
                                 if !message.isEmpty { Text(message).font(.callout).foregroundStyle(.secondary) }
                             }.padding(22)
                         }.frame(minWidth: 470, maxWidth: .infinity, maxHeight: .infinity)
-                    } else { ContentUnavailableView(L("Select a character or location"), systemImage: kind.symbol).frame(minWidth: 470, maxWidth: .infinity, maxHeight: .infinity) }
+                    } else { ContentUnavailableView(L("Select a library entry"), systemImage: kind.symbol).frame(minWidth: 470, maxWidth: .infinity, maxHeight: .infinity) }
                 }
                 .frame(width: space.size.width, height: space.size.height, alignment: .topLeading)
                 .disabled(working)

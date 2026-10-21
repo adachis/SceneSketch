@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Dagiti istoriayo ken ladawan ket agtalinaed ditoy a Mac.";
 "[Missing reference]" = "[Nawawadawad a reference]";
 "__language_name__" = "Pangasinan";
+"Props" = "Sarag";
+"New prop" = "Balon sarag";
+"Merge with" = "Ipagtipon ed";
+"Select a library entry" = "Pilien so sakey ya entry ed library";
+"A linked library entry is missing.  Remove or replace its pill." = "Naandi so akakonekta ya entry ed library. Ikkaten odino salatan so pill to.";

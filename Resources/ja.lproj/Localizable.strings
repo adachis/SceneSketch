@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "あなたのストーリーと画像はこのMacに残ります。";
 "[Missing reference]" = "[参照が見つかりません]";
 "__language_name__" = "日本語";
+"Props" = "小道具";
+"New prop" = "新規小道具";
+"Merge with" = "と結合";
+"Select a library entry" = "ライブラリ項目を選択";
+"A linked library entry is missing.  Remove or replace its pill." = "リンクされたライブラリ項目が見つかりません。ピルを削除または置き換えてください。";

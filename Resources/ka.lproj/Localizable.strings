@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "თქვენი ისტორიები და სურათები რჩება ამ Mac-ზე.";
 "[Missing reference]" = "[მითითება აკლია]";
 "__language_name__" = "ქართული";
+"Props" = "რეკვიზიტები";
+"New prop" = "ახალი რეკვიზიტი";
+"Merge with" = "შერწყმა";
+"Select a library entry" = "აირჩიეთ ბიბლიოთეკის ჩანაწერი";
+"A linked library entry is missing.  Remove or replace its pill." = "დაკავშირებული ბიბლიოთეკის ჩანაწერი აკლია. წაშალეთ ან შეცვალეთ მისი პილი.";

@@ -264,3 +264,8 @@
 "Your stories and images stay on this Mac." = "Sizning hikoyalaringiz va rasmlaringiz shu Macda qoladi.";
 "[Missing reference]" = "[Havola yo'q]";
 "__language_name__" = "Oʻzbek";
+"Props" = "Rekvizitlar";
+"New prop" = "Yangi rekvizit";
+"Merge with" = "Birlashtirish";
+"Select a library entry" = "Kutubxona yozuvini tanlang";
+"A linked library entry is missing.  Remove or replace its pill." = "Bogʻlangan kutubxona yozuvi yoʻq. Uning tabletkasini olib tashlang yoki almashtiring.";
