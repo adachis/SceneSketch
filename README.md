@@ -17,13 +17,14 @@ Screenplay import and character continuity are not implemented in this first pro
 Requires Apple Silicon, macOS 15+, Xcode with a Swift 6.3+ toolchain, and XcodeGen.
 
 ```sh
-xcodegen generate
-xcodebuild -project Storyboard.xcodeproj -scheme Storyboard -configuration Release -derivedDataPath build -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO build
+./build.sh
 ```
+
+`Package.resolved` pins the full dependency graph.  The build uses Xcode so MLX Metal shaders are included.
 
 The private adapter must be present at `Resources/StoryboardStyle.safetensors` before building.  It is supplied with the local deliverable and intentionally excluded from git.  The generated Xcode project is also excluded; `project.yml` is the source of truth.
 
-This is an unsigned development build.  Release signing, notarization, model download hardening, and testing on an actual 16 GB Mac remain release tasks.
+The build creates an ad hoc signed development app in `dist/Storyboard.zip`.  Extract it into Applications before running.  Distribution signing, notarization, model download hardening, and testing on an actual 16 GB Mac remain release tasks.
 
 ## Model storage
 

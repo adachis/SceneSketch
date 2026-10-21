@@ -6,3 +6,4 @@ build/
 Resources/*.safetensors
 Models/
 *.log
+dist/
