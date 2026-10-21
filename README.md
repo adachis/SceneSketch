@@ -2,7 +2,7 @@
 
 ## Open and review
 
-Extract `Storyboard.zip`, move the app to Applications, and open it.  The build targets Apple Silicon and macOS 15 or later.  It is signed with the available Developer ID certificate; notarization is a separate release check.  Open `Story Library Demo.sketchboard` to explore the new library and scene controls.
+Extract `Storyboard.zip`, move the app to Applications, and open it.  The build targets Apple Silicon and macOS 15 or later.  The build is signed, notarized, and stapled.  Gatekeeper accepted the final app.  Open `Story Library Demo.sketchboard` to explore the new library and scene controls.
 
 ## Story files and libraries
 
