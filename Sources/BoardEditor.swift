@@ -13,7 +13,11 @@ struct BoardEditor: View {
         Binding(get: { storedDocument }, set: { DocumentEditing.apply($0, to: $storedDocument, undoManager: undoManager) })
     }
     @Environment(\.undoManager) private var undoManager
-    @State private var selectedID: UUID?
+    @State private var selectedIDs = Set<UUID>()
+    private var selectedID: UUID? {
+        get { selectedIDs.count == 1 ? selectedIDs.first : nil }
+        nonmutating set { selectedIDs = Set(newValue.map { [$0] } ?? []) }
+    }
     @State private var collapsedScenes = Set<UUID>()
     @State private var sceneID: UUID?
     @State private var busy = false
@@ -38,7 +42,13 @@ struct BoardEditor: View {
     @AppStorage("hasOfferedModelSetup") private var hasOfferedModelSetup = false
     @AppStorage("interfaceLanguage") private var interfaceLanguage = ""
     private var selectedIndex: Int? { document.frames.firstIndex { $0.id == selectedID } }
-    private var currentSceneID: UUID? { selectedIndex.flatMap { document.frames[$0].sceneID } ?? sceneID ?? document.scenes.first?.id }
+    private var selectedFrames: [StoryboardFrame] { document.frames.filter { selectedIDs.contains($0.id) } }
+    private var currentSceneID: UUID? {
+        if !selectedFrames.isEmpty {
+            return Set(selectedFrames.compactMap(\.sceneID)).count == 1 ? selectedFrames.first?.sceneID : nil
+        }
+        return sceneID ?? document.scenes.first?.id
+    }
 
     var body: some View {
         NavigationSplitView {
@@ -46,7 +56,7 @@ struct BoardEditor: View {
                 TextField(L("Story title"), text: documentBinding.title).font(.headline).textFieldStyle(.plain).padding(16)
                 Picker(L("Filter shots"), selection: $filter) { ForEach(ShotFilter.allCases) { Text(L($0.rawValue)).tag($0) } }
                     .labelsHidden().accessibilityLabel(L("Filter shots")).padding(.horizontal, 12).padding(.bottom, 8)
-                List(selection: $selectedID) {
+                List(selection: $selectedIDs) {
                     ForEach(document.scenes) { scene in
                         Section(isExpanded: Binding(get: { !collapsedScenes.contains(scene.id) }, set: { if $0 { collapsedScenes.remove(scene.id) } else { collapsedScenes.insert(scene.id) } })) {
                             ForEach(document.frames.filter { $0.sceneID == scene.id && filter.includes($0) }) { frame in
@@ -69,9 +79,12 @@ struct BoardEditor: View {
                         }
                     }
                 }.disabled(busy)
+                if selectedIDs.count > 1 { selectionFooter }
             }.navigationSplitViewColumnWidth(min: 220, ideal: 270, max: 340)
         } detail: {
-            if let index = selectedIndex {
+            if selectedIDs.count > 1 {
+                selectionDetails
+            } else if let index = selectedIndex {
                 FrameEditor(document: documentBinding, frameID: document.frames[index].id, busy: busy, status: status, showHistory: $showHistory, generate: { generate(ids: [document.frames[index].id]) })
             } else if let sceneIndex = document.scenes.firstIndex(where: { $0.id == currentSceneID }) {
                 sceneEditor(sceneIndex)
@@ -102,19 +115,22 @@ struct BoardEditor: View {
                     Button(L("Export selected image…"), action: exportImage).disabled(selectedIndex.flatMap { document.frames[$0].image } == nil)
                     Divider()
                     Button(L("Delete selected shot"), role: .destructive) { showDelete = true }.disabled(selectedIndex == nil)
-                    Button(L("Delete this scene…"), role: .destructive) { deleteScene = true }
+                    Button(L("Delete this scene…"), role: .destructive) { deleteScene = true }.disabled(currentSceneID == nil)
                 } label: { Label(L("Scene actions"), systemImage: "ellipsis.circle") }.disabled(busy)
                 if busy { Button(stopRequested ? L("Stopping…") : L("Stop after frame")) { stopRequested = true }.disabled(stopRequested) }
             }
         }
         .onAppear {
-            if selectedID == nil { selectedID = document.frames.first?.id }; sceneID = document.scenes.first?.id
+            if selectedIDs.isEmpty { selectedID = document.frames.first?.id }; sceneID = document.scenes.first?.id
             if !hasOfferedModelSetup && !models.allReady { hasOfferedModelSetup = true; showSetup = true }
         }
         .focusedSceneValue(\.boardCommands, BoardCommandContext(available: availableCommands, perform: perform))
         .onChange(of: storedDocument) { _, snapshot in
-            if let selectedID, !snapshot.frames.contains(where: { $0.id == selectedID && filter.includes($0) }) {
-                self.selectedID = snapshot.frames.first(where: { filter.includes($0) })?.id
+            let valid = Set(snapshot.frames.filter { filter.includes($0) }.map(\.id))
+            let previousSelection = selectedIDs
+            selectedIDs.formIntersection(valid)
+            if !previousSelection.isEmpty && selectedIDs.isEmpty {
+                selectedID = snapshot.frames.first(where: { filter.includes($0) })?.id
             }
             recoveryTask?.cancel()
             let session = recoverySession
@@ -127,7 +143,8 @@ struct BoardEditor: View {
             }
         }
         .onChange(of: filter) { _, value in
-            if !document.frames.contains(where: { $0.id == selectedID && value.includes($0) }) {
+            selectedIDs.formIntersection(Set(document.frames.filter { value.includes($0) }.map(\.id)))
+            if selectedIDs.isEmpty {
                 selectedID = document.frames.first(where: { value.includes($0) })?.id
             }
         }
@@ -162,6 +179,25 @@ struct BoardEditor: View {
         }
         .safeAreaInset(edge: .bottom) { if selectedIndex == nil { Text(status).font(.callout).foregroundStyle(.secondary).frame(maxWidth: .infinity, alignment: .leading).padding(10) } }
     }
+    private var selectionFooter: some View {
+        HStack {
+            Text(L("%@ shots selected", String(selectedIDs.count))).font(.caption).foregroundStyle(.secondary)
+            Spacer()
+            Button(L("Merge"), action: mergeSelectedShots)
+                .disabled(busy || !document.canMergeShots(selectedIDs))
+                .help(L("Merge selected shots"))
+        }.padding(12)
+    }
+    private var selectionDetails: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(L("%@ shots selected", String(selectedIDs.count))).font(.title2.bold())
+            Text(document.canMergeShots(selectedIDs)
+                 ? L("Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history.")
+                 : L("Select shots in one scene to merge."))
+                .foregroundStyle(.secondary)
+            List(selectedFrames) { frame in Text(frame.title) }
+        }.padding(24)
+    }
     private func sceneEditor(_ index: Int) -> some View {
         Form {
             TextField(L("Scene"), text: documentBinding.scenes[index].title)
@@ -179,7 +215,7 @@ struct BoardEditor: View {
     }
     private func addFrame() {
         if document.scenes.isEmpty { addScene() }
-        let id = currentSceneID
+        let id = currentSceneID ?? sceneID ?? document.scenes.first?.id
         let frame = StoryboardFrame(title: L("Shot %@", String(document.frames.filter { $0.sceneID == id }.count + 1)), sceneID: id)
         document.frames.append(frame); selectedID = frame.id
     }
@@ -202,6 +238,7 @@ struct BoardEditor: View {
         if showLibrary || showExport || showProduction || showSetup || showRecovery || showHistory || importingScript || showDelete || deleteScene || draft != nil { return [] }
         var result: Set<BoardAction> = [.library, .addShot, .addScene, .importScript, .export, .production, .setup, .recover]
         if currentSceneID != nil { result.formUnion([.renderScene, .renderMissing]) }
+        if document.canMergeShots(selectedIDs) { result.insert(.merge) }
         if !document.frames.isEmpty { result.formUnion([.previous, .next]) }
         if selectedIndex != nil {
             result.formUnion([.duplicate, .delete])
@@ -217,6 +254,7 @@ struct BoardEditor: View {
         case .addShot: addFrame()
         case .addScene: addScene()
         case .duplicate: duplicateFrame()
+        case .merge: mergeSelectedShots()
         case .importScript: importingScript = true
         case .export: showExport = true
         case .production: showProduction = true
@@ -246,6 +284,14 @@ struct BoardEditor: View {
         let copy = document.frames[i].duplicated()
         document.frames.insert(copy, at: i + 1); selectedID = copy.id
         filter = .all
+    }
+    private func mergeSelectedShots() {
+        guard !busy else { return }
+        var next = document
+        guard let id = next.mergeShots(selectedIDs) else { return }
+        DocumentEditing.apply(next, to: $storedDocument, undoManager: undoManager, name: L("Merge shots"))
+        filter = .all
+        selectedID = id
     }
     private func generate(ids: [UUID]) {
         models.refresh()

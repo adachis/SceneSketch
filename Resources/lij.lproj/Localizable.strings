@@ -301,3 +301,10 @@
 "Use image" = "Dêuviâ inmàgine";
 "History…" = "Stöia…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance o riscrîve e nòtte existénti con detàggi vixîvi. Recreate o coménsa da-e inmàgini. Tùtti doî són revisti prìmma de êse aplicæ.";
+
+"Merge" = "Unî";
+"Merge shots" = "Unî e inquadratûe";
+"Merge selected shots" = "Unî e inquadratûe seleçionæ";
+"%@ shots selected" = "%1$@ inquadratûe seleçionæ";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "L'unión a métte insemme descriçioìn, tèsto sorgénte, referénse e detàggi de l'inquadratûa. O tìtolo e a màchina da préiza da prìmma inquadratûa són mantegnûi, e ògni inmàgine renderizâ a rèsta inta stöia.";
+"Select shots in one scene to merge." = "Seleçionn-a inquadratûe inte 'na scêna pe unîle.";

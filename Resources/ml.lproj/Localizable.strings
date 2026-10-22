@@ -301,3 +301,10 @@
 "Use image" = "ചിത്രം ഉപയോഗിക്കുക";
 "History…" = "ചരിത്രം…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "മെച്ചപ്പെടുത്തുക എന്നത് നിലവിലുള്ള കുറിപ്പുകൾ ദൃശ്യപരമായ വിശദാംശങ്ങൾ ഉപയോഗിച്ച് മാറ്റിയെഴുതുന്നു. വീണ്ടും ഉണ്ടാക്കുക എന്നത് ചിത്രങ്ങളിൽ നിന്ന് ആരംഭിക്കുന്നു. രണ്ടും പ്രയോഗിക്കുന്നതിന് മുമ്പ് അവലോകനം ചെയ്യപ്പെടും.";
+
+"Merge" = "ലയിപ്പിക്കുക";
+"Merge shots" = "ഷോട്ടുകൾ ലയിപ്പിക്കുക";
+"Merge selected shots" = "തിരഞ്ഞെടുത്ത ഷോട്ടുകൾ ലയിപ്പിക്കുക";
+"%@ shots selected" = "%1$@ ഷോട്ടുകൾ തിരഞ്ഞെടുത്തു";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "ലയിപ്പിക്കുന്നത് വിവരണങ്ങൾ, ഉറവിട വാചകം, റഫറൻസുകൾ, ഷോട്ട് വിശദാംശങ്ങൾ എന്നിവ സംയോജിപ്പിക്കുന്നു. ആദ്യത്തെ ഷോട്ടിന്റെ തലക്കെട്ടും ക്യാമറയും നിലനിർത്തുന്നു, കൂടാതെ റെൻഡർ ചെയ്ത എല്ലാ ചിത്രങ്ങളും ചരിത്രത്തിൽ നിലനിൽക്കും.";
+"Select shots in one scene to merge." = "ലയിപ്പിക്കാൻ ഒരു സീനിലെ ഷോട്ടുകൾ തിരഞ്ഞെടുക്കുക.";

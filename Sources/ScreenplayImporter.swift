@@ -47,6 +47,7 @@ extension String {
 struct ScriptParagraph: Sendable {
     var kind: String
     var text: String
+    var startsPage = false
 }
 
 enum ScreenplayImporter {
@@ -64,6 +65,7 @@ enum ScreenplayImporter {
         case "pdf":
             guard let pdf = PDFDocument(url: url), pdf.pageCount <= 400 else { throw ImportError.tooLarge }
             var paragraphs: [ScriptParagraph] = []; var ocrCount = 0; var inDialogue = false
+            var actionMargin: CGFloat?
             for index in 0..<pdf.pageCount {
                 guard let page = pdf.page(at: index) else { continue }
                 progress(L("Reading page %@ of %@…", String(index + 1), String(pdf.pageCount)))
@@ -88,7 +90,10 @@ enum ScreenplayImporter {
                         return PositionedScriptLine(text: value, bounds: CGRect(x:r.minX*612,y:r.minY*792,width:r.width*612,height:r.height*792))
                     }.sorted { $0.bounds.midY > $1.bounds.midY }
                 }
-                paragraphs += positionedParagraphs(lines, inDialogue: &inDialogue)
+                if actionMargin == nil { actionMargin = lines.first(where: { isHeading($0.text) })?.bounds.minX }
+                var pageParagraphs = positionedParagraphs(lines, inDialogue: &inDialogue, leftMargin: actionMargin)
+                if !pageParagraphs.isEmpty { pageParagraphs[0].startsPage = true }
+                paragraphs += pageParagraphs
             }
             var draft = parse(paragraphs, title: title)
             if ocrCount > 0 { draft.warnings.append(L("Pages read with text recognition: %@. Review names, scene headings, and shot breaks.", String(ocrCount))) }
@@ -102,24 +107,27 @@ enum ScreenplayImporter {
         var text: String
         var bounds: CGRect
     }
-    static func positionedParagraphs(_ input: [PositionedScriptLine], inDialogue: inout Bool) -> [ScriptParagraph] {
+    static func positionedParagraphs(_ input: [PositionedScriptLine], inDialogue: inout Bool, leftMargin: CGFloat? = nil) -> [ScriptParagraph] {
         let lines = input.filter {
-            !$0.text.matches(#"^\d+\.?([ \t]+\d+\.?)?$"#) && !$0.text.matches(#"^(?:\(?CONTINUED\)?[:.]?|\(MORE\))$"#)
+            !$0.text.matches(#"^\d+[A-Z]?\.?([ \t]+\d+[A-Z]?\.?)?$"#) && !$0.text.matches(#"^(?:\(?CONTINUED\)?[:.]?(?:\s*\(\d+\))?|\(MORE\))$"#)
         }
-        let left = lines.map(\.bounds.minX).min() ?? 72
+        let left = leftMargin ?? lines.map(\.bounds.minX).min() ?? 72
         var result: [ScriptParagraph] = []; var current = ""; var kind = "Action"; var previous: CGRect?
         func flush() { if !current.isEmpty { result.append(ScriptParagraph(kind: kind, text: current)); current = "" } }
         for line in lines {
             let text = line.text
             if let last = result.indices.last, result[last].kind == "Scene Heading", current.isEmpty,
                text == text.uppercased(), line.bounds.minX <= left+15,
-               (previous.map { $0.minY - line.bounds.maxY < line.bounds.height } ?? false), !isHeading(text) {
+               (previous.map { $0.minY - line.bounds.maxY < line.bounds.height } ?? false), !isHeading(text), !ScreenplayStructure.isShotHeading(text), !ScreenplayStructure.isTransition(text) {
                 result[last].text += " " + text; previous = line.bounds; continue
             }
             if isHeading(text) {
                 flush(); result.append(.init(kind: "Scene Heading", text: text)); inDialogue = false; previous = line.bounds; continue
             }
-            if text.hasSuffix("TO:") || ["FADE IN:", "FADE OUT."].contains(text.uppercased()) { flush(); inDialogue = false; previous = line.bounds; continue }
+            if ScreenplayStructure.isTransition(text) { flush(); result.append(.init(kind: "Transition", text: text)); inDialogue = false; previous = line.bounds; continue }
+            if ScreenplayStructure.isShotHeading(text) {
+                flush(); result.append(.init(kind: "Action", text: text)); inDialogue = false; previous = line.bounds; continue
+            }
             if line.bounds.minX >= left+105 && isCue(text) {
                 flush()
                 if let last = result.indices.last, result[last].kind == "Character", (previous.map { $0.minY - line.bounds.maxY < 4 } ?? false) {
@@ -147,8 +155,11 @@ enum ScreenplayImporter {
         for (index, line) in lines.enumerated() {
             if line.isEmpty { flush(); dialogue = false; continue }
             if line.first == "#" || line == "===" || line.first == "~" { continue }
+            if line.first == "!" { flush(); dialogue = false; action.append(String(line.dropFirst())); continue }
             if isHeading(line) { flush(); dialogue = false; paragraphs.append(.init(kind: "Scene Heading", text: line)); continue }
-            if line.hasSuffix("TO:") || ["FADE IN:", "FADE OUT.", "CUT TO BLACK."].contains(line.uppercased()) { flush(); dialogue = false; continue }
+            let transition = line.hasPrefix(">") ? String(line.dropFirst()).trimmingCharacters(in: .whitespaces) : line
+            if ScreenplayStructure.isTransition(transition) { flush(); paragraphs.append(.init(kind: "Transition", text: transition)); dialogue = false; continue }
+            if ScreenplayStructure.isShotHeading(line) { flush(); dialogue = false; paragraphs.append(.init(kind: "Action", text: line)); continue }
             let next = index + 1 < lines.count ? lines[index + 1] : ""
             let isolated = index == 0 || lines[index - 1].isEmpty
             if (line.first == "@" || isolated), isCue(line), !next.isEmpty {
@@ -165,12 +176,13 @@ enum ScreenplayImporter {
     }
     private static func isCue(_ value: String) -> Bool {
         let text = cleanCue(value)
-        return !text.isEmpty && text.count < 45 && !text.contains(":") && !text.contains("!") && !text.contains("?") && (!text.hasSuffix(".") || text.hasSuffix("SR.") || text.hasSuffix("JR.")) && (value.first == "@" || text == text.uppercased()) && text.rangeOfCharacter(from: .letters) != nil
+        return !text.isEmpty && text.count < 45 && !ScreenplayStructure.isShotHeading(text) && !text.contains(":") && !text.contains("!") && !text.contains("?") && (!text.hasSuffix(".") || text.hasSuffix("SR.") || text.hasSuffix("JR.")) && (value.first == "@" || text == text.uppercased()) && text.rangeOfCharacter(from: .letters) != nil
     }
     private static func cleanCue(_ value: String) -> String {
         value.replacingOccurrences(of: #"\([^)]*\)"#, with: "", options: .regularExpression).trimmingCharacters(in: CharacterSet(charactersIn: "@^ "))
     }
     static func parse(_ paragraphs: [ScriptParagraph], title: String) -> ScreenplayDraft {
+        let paragraphs = ScreenplayStructure.grouped(paragraphs)
         var entities: [StoryEntity] = []
         let firstHeading = paragraphs.firstIndex { $0.kind == "Scene Heading" }
         for (index, paragraph) in paragraphs.enumerated() where paragraph.kind == "Character" {
@@ -183,7 +195,12 @@ enum ScreenplayImporter {
         for paragraph in paragraphs where paragraph.kind == "Action" {
             let value = paragraph.text as NSString
             for match in intro.matches(in: paragraph.text, range: NSRange(location: 0, length: value.length)) {
-                let name = value.substring(with: match.range(at: 1)).trimmingCharacters(in: .whitespaces).capitalized
+                let introduction = value.substring(with: match.range(at: 1)).trimmingCharacters(in: .whitespaces).capitalized
+                // An introduction such as "A NEWS ANCHORWOMAN" can refer to the existing ANCHORWOMAN cue.
+                let existingName = entities.filter { $0.kind == .character &&
+                    (introduction.normalizedName == $0.name.normalizedName || introduction.normalizedName.hasSuffix(" " + $0.name.normalizedName))
+                }.max { $0.name.count < $1.name.count }?.name
+                let name = existingName ?? introduction.replacingOccurrences(of: #"^(?:A|An|The)\s+"#, with: "", options: .regularExpression)
                 let age = value.substring(with: match.range(at: 2))
                 let rawDetails = value.substring(with: match.range(at: 3))
                 let end = rawDetails.range(of: #"\b(?:opens?|walks?|runs?|looks?|enters?|sits?|stands?|says?|wears?|wearing|carries?|carrying|peers?|interviewed)\b"#, options: [.regularExpression, .caseInsensitive])?.lowerBound ?? rawDetails.endIndex
@@ -243,8 +260,16 @@ enum ScreenplayImporter {
             }
         }
         for scene in scenes where !frames.contains(where: { $0.sceneID == scene.id }) {
-            frames.append(StoryboardFrame(title: L("Shot %@", "1"), description: "Establishing view of \(entities.first { $0.id == scene.locationID }?.name ?? scene.title).", sceneID: scene.id))
+            var frame = StoryboardFrame(title: L("Shot %@", "1"), description: "Establishing view of \(entities.first { $0.id == scene.locationID }?.name ?? scene.title).", sceneID: scene.id)
+            frame.sourceText = scene.sourceText
+            frames.append(frame)
         }
+        let sceneOrder = Dictionary(uniqueKeysWithValues: scenes.enumerated().map { ($0.element.id, $0.offset) })
+        frames = frames.enumerated().sorted {
+            let left = $0.element.sceneID.flatMap { sceneOrder[$0] } ?? 0
+            let right = $1.element.sceneID.flatMap { sceneOrder[$0] } ?? 0
+            return left == right ? $0.offset < $1.offset : left < right
+        }.map(\.element)
         var warnings = [L("Shot breaks are proposed from action paragraphs.  Review staging before rendering.")]
         if firstHeading == nil { warnings.append(L("No standard scene headings were found.  The text was placed in one scene.")) }
         return ScreenplayDraft(title: title, entities: entities, scenes: scenes, frames: frames, warnings: warnings)

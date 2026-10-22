@@ -301,3 +301,10 @@
 "Use image" = "تصوير استعمال ڪريو";
 "History…" = "تاريخ…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "بهتر ڪريو موجوده نوٽس کي بصري تفصيلن سان ٻيهر لکي ٿو. ٻيهر ٺاهيو تصويرن کان شروع ٿئي ٿو. ٻئي لاڳو ڪرڻ کان اڳ جائزو ورتا ويندا آهن.";
+
+"Merge" = "ضم ڪريو";
+"Merge shots" = "شاٽس ضم ڪريو";
+"Merge selected shots" = "چونڊيل شاٽس ضم ڪريو";
+"%@ shots selected" = "%1$@ شاٽس چونڊيل";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "ضم ڪرڻ سان تفصيل، ماخذ متن، حوالا، ۽ شاٽ جا تفصيل گڏ ٿين ٿا. پهرين شاٽ جو عنوان ۽ ڪئميرا برقرار رکيا ويندا، ۽ هر رينڊر ٿيل تصوير تاريخ ۾ رهندي.";
+"Select shots in one scene to merge." = "ضم ڪرڻ لاءِ هڪ منظر ۾ شاٽس چونڊيو.";

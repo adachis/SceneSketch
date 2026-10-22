@@ -301,3 +301,10 @@
 "Use image" = "Bruk bilete";
 "History…" = "Historie …";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Forbetre skriv om dei eksisterande notata med visuelle detaljar. Gjenopprett startar frå bileta. Begge blir vurderte før dei blir brukte.";
+
+"Merge" = "Slå saman";
+"Merge shots" = "Slå saman filmbilete";
+"Merge selected shots" = "Slå saman valde filmbilete";
+"%@ shots selected" = "%1$@ filmbilete valde";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Slå saman kombinerer skildringar, kjeldetekst, referansar og filmbiletdetaljar. Tittelen og kameraet til det fyrste filmbiletet vert behalde, og kvart rendra bilete vert verande i historia.";
+"Select shots in one scene to merge." = "Vel filmbilete i éin scene for å slå saman.";

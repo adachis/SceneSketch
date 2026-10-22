@@ -301,3 +301,10 @@
 "Use image" = "Bild verwenden";
 "History…" = "Verlauf…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "„Verbessern“ schreibt die vorhandenen Notizen mit visuellen Details neu. „Neu erstellen“ beginnt mit den Bildern. Beide werden vor der Anwendung überprüft.";
+
+"Merge" = "Zusammenführen";
+"Merge shots" = "Filmaufnahmen zusammenführen";
+"Merge selected shots" = "Ausgewählte Filmaufnahmen zusammenführen";
+"%@ shots selected" = "%1$@ Filmaufnahmen ausgewählt";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Zusammenführen kombiniert Beschreibungen, Quelltext, Referenzen und Aufnahmedetails. Titel und Kamera der ersten Aufnahme bleiben erhalten, und jedes gerenderte Bild bleibt in der Historie.";
+"Select shots in one scene to merge." = "Wählen Sie Filmaufnahmen in einer Szene zum Zusammenführen aus.";

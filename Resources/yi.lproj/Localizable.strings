@@ -301,3 +301,10 @@
 "Use image" = "ניצן בילד";
 "History…" = "געשיכטע…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "פֿאַרבעסערן שרײַבט איבער די עקזיסטירנדיקע נאָטיצן מיט וויזועלע דעטאַלן. איבערשאַפֿן הייבט אָן פֿון די בילדער. ביידע ווערן איבערגעקוקט פֿאַרן אַפּליקירן.";
+
+"Merge" = "צונויפשמעלצן";
+"Merge shots" = "צונויפשמעלצן שאָסן";
+"Merge selected shots" = "צונויפשמעלצן אויסגעקליבענע שאָסן";
+"%@ shots selected" = "%1$@ שאָסן אויסגעקליבן";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "צונויפשמעלצן פֿאַרבינדט באַשרײַבונגען, מקור-טעקסט, רעפֿערענצן, און שאָס-דעטאַלן. דער טיטל און קאַמערע פֿונעם ערשטן שאָס ווערן געהאַלטן, און יעדע געשאַפֿענע בילד בלײַבט אין היסטאָריע.";
+"Select shots in one scene to merge." = "קלײַבט אויס שאָסן אין איין סצענע צו צונויפשמעלצן.";

@@ -301,3 +301,10 @@
 "Use image" = "Naudoti vaizdą";
 "History…" = "Istorija…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "„Patobulinti“ perrašo esamas pastabas su vizualinėmis detalėmis. „Atkurti“ prasideda nuo vaizdų. Abu peržiūrimi prieš taikant.";
+
+"Merge" = "Sulieti";
+"Merge shots" = "Sulieti kadrus";
+"Merge selected shots" = "Sulieti pasirinktus kadrus";
+"%@ shots selected" = "Pasirinkti kadrai: %1$@";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Suliejant sujungiami aprašymai, pirminis tekstas, nuorodos ir kadro detalės. Pirmasis kadro pavadinimas ir kamera išsaugomi, o kiekvienas atvaizduotas vaizdas lieka istorijoje.";
+"Select shots in one scene to merge." = "Pasirinkite kadrus vienoje scenoje, kad juos sulietumėte.";

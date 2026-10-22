@@ -301,3 +301,10 @@
 "Use image" = "Օգտագործել պատկերը";
 "History…" = "Պատմություն…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Բարելավելը վերաշարադրում է առկա նշումները տեսողական մանրամասներով։ Վերստեղծելը սկսվում է պատկերներից։ Երկուսն էլ վերանայվում են կիրառելուց առաջ։";
+
+"Merge" = "Միացնել";
+"Merge shots" = "Միացնել կադրերը";
+"Merge selected shots" = "Միացնել ընտրված կադրերը";
+"%@ shots selected" = "Ընտրված է %1$@ կադր";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Միացումը համատեղում է նկարագրությունները, ելակետային տեքստը, հղումները և կադրի մանրամասները։ Առաջին կադրի վերնագիրը և տեսախցիկը պահպանվում են, և յուրաքանչյուր մատուցված պատկեր մնում է պատմության մեջ։";
+"Select shots in one scene to merge." = "Ընտրեք կադրեր մեկ տեսարանում՝ միացնելու համար։";

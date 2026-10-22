@@ -301,3 +301,10 @@
 "Use image" = "Выкарыстаць відарыс";
 "History…" = "Гісторыя…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Палепшыць перапісвае існуючыя нататкі візуальнымі дэталямі. Перастварыць пачынае з відарысаў. Абодва праглядаюцца перад прымяненнем.";
+
+"Merge" = "Аб'яднаць";
+"Merge shots" = "Аб'яднаць кадры";
+"Merge selected shots" = "Аб'яднаць выбраныя кадры";
+"%@ shots selected" = "Выбрана кадраў: %1$@";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Аб'яднанне спалучае апісанні, зыходны тэкст, спасылкі і дэталі кадра. Захоўваюцца назва і камера першага кадра, а кожны адлюстраваны відарыс застаецца ў гісторыі.";
+"Select shots in one scene to merge." = "Выберыце кадры ў адной сцэне для аб'яднання.";

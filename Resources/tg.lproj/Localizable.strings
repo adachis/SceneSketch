@@ -301,3 +301,10 @@
 "Use image" = "Истифодаи тасвир";
 "History…" = "Таърих…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance қайдҳои мавҷударо бо тафсилоти визуалӣ аз нав менависад. Recreate аз тасвирҳо оғоз меёбад. Ҳарду пеш аз татбиқ баррасӣ мешаванд.";
+
+"Merge" = "Якҷоя кардан";
+"Merge shots" = "Якҷоя кардани наворҳо";
+"Merge selected shots" = "Наворҳои интихобшударо якҷоя кунед";
+"%@ shots selected" = "%1$@ навор интихоб шуд";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Якҷоякунӣ тавсифҳо, матни манбаъ, истинодҳо ва тафсилоти наворро муттаҳид мекунад. Сарлавҳа ва камераи навори аввал нигоҳ дошта мешавад ва ҳар як тасвири рендершуда дар таърих мемонад.";
+"Select shots in one scene to merge." = "Барои якҷоя кардан наворҳоро дар як саҳна интихоб кунед.";

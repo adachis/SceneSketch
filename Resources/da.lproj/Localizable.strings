@@ -301,3 +301,10 @@
 "Use image" = "Brug billede";
 "History…" = "Historik…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Forbedr omskriver de eksisterende noter med visuelle detaljer. Genskab starter fra billederne. Begge gennemgås før anvendelse.";
+
+"Merge" = "Flet";
+"Merge shots" = "Flet film shots";
+"Merge selected shots" = "Flet valgte film shots";
+"%@ shots selected" = "%1$@ film shots valgt";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Fletning kombinerer beskrivelser, kildetekst, referencer og shot-detaljer. Det første shots titel og kamera bevares, og hvert gengivet billede forbliver i historikken.";
+"Select shots in one scene to merge." = "Vælg film shots i én scene for at flette.";

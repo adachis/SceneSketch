@@ -301,3 +301,10 @@
 "Use image" = "Kép használata";
 "History…" = "Előzmények…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Az „Enhance” (Javítás) vizuális részletekkel írja át a meglévő jegyzeteket. A „Recreate” (Újraalkotás) a képekből indul ki. Mindkettő felülvizsgálatra kerül az alkalmazás előtt.";
+
+"Merge" = "Egyesítés";
+"Merge shots" = "Jelenetek egyesítése";
+"Merge selected shots" = "Kiválasztott jelenetek egyesítése";
+"%@ shots selected" = "%1$@ jelenet kiválasztva";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Az egyesítés kombinálja a leírásokat, forrásszövegeket, hivatkozásokat és jelenet részleteket. Az első jelenet címe és kamerája megmarad, és minden renderelt kép a történetben marad.";
+"Select shots in one scene to merge." = "Válasszon ki jeleneteket egyetlen jelenetben az egyesítéshez.";

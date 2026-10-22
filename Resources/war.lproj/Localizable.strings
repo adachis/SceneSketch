@@ -301,3 +301,10 @@
 "Use image" = "Gamita an imahe";
 "History…" = "History…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Ginbabag-o han Enhance an nag-eeksister nga mga nota nga may visual nga detalye. Nagtitikang an Recreate tikang ha mga imahe. Pareho ini ginrerepaso san-o i-apply.";
+
+"Merge" = "Igsumpay";
+"Merge shots" = "Igsumpay an mga shot";
+"Merge selected shots" = "Igsumpay an napili nga mga shot";
+"%@ shots selected" = "%1$@ nga mga shot an napili";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "An pagsumpay nagbubug-os han mga deskripsyon, orihinal nga teksto, mga reperensya, ngan mga detalye han shot. An titulo ngan kamera han siyahan nga shot an ginpapabilin, ngan an tagsa nga na-render nga imahe nagpapabilin ha kasaysayan.";
+"Select shots in one scene to merge." = "Pagpili hin mga shot ha usa nga eksena para igsumpay.";

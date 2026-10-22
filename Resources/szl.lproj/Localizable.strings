@@ -301,3 +301,10 @@
 "Use image" = "Użyj uobrozka";
 "History…" = "Historyjŏ…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Ulepszanie przepisuje istniejōnce notatki wizualnymi detalami. Uodtwōrzanie zaczyno sie uod uobrozkōw. Uoba sōm sprawdzane przed zastosowaniym.";
+
+"Merge" = "Skup";
+"Merge shots" = "Skup ôbrazki";
+"Merge selected shots" = "Skup ôbrane ôbrazki";
+"%@ shots selected" = "%1$@ ôbrazki ôbrane";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Skupianie łōnczō ôpisy, tekst zdrzōdłowy, ôdniesienia i detale ôbrazka. Tytuł i kamera piyrszego ôbrazka sōm zachowane, a kożdy wyrenderowany ôbrŏz ôstŏwŏ w historyji.";
+"Select shots in one scene to merge." = "Ôbier ôbrazki w jednyj scynie, coby je skupić.";

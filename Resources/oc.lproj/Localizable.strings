@@ -301,3 +301,10 @@
 "Use image" = "Utilizar l'imatge";
 "History…" = "Istoric…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Melhorar reescriu las nòtas existentas amb de detalhs visuals. Recrear comença a partir de las imatges. Los dos son revisats abans d'èsser aplicats.";
+
+"Merge" = "Fusionar";
+"Merge shots" = "Fusionar plans";
+"Merge selected shots" = "Fusionar los plans seleccionats";
+"%@ shots selected" = "%1$@ plans seleccionats";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "La fusion combina las descripcions, lo tèxte font, las referéncias e los detalhs del plan. Lo títol e la camèra del primièr plan son conservats, e cada imatge rendut demòra dins l'istoric.";
+"Select shots in one scene to merge." = "Seleccionatz los plans d'una scèna per los fusionar.";

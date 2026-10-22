@@ -301,3 +301,10 @@
 "Use image" = "Usar imaxe";
 "History…" = "Historial…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Ameyorar reescribe les notes esistentes con detalles visuales. Recrear empieza dende les imáxenes. Dambos revísense enantes d'aplicar.";
+
+"Merge" = "Xunir";
+"Merge shots" = "Xunir tomes";
+"Merge selected shots" = "Xunir tomes seleicionaes";
+"%@ shots selected" = "%1$@ tomes seleicionaes";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Xunir combina descripciones, testu orixe, referencies y detalles de toma. Caltiénense'l títulu y la cámara de la primer toma, y cada imaxe renderizada caltiénse nel historial.";
+"Select shots in one scene to merge." = "Seleiciona tomes nuna escena pa xunir.";

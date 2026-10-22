@@ -301,3 +301,10 @@
 "Use image" = "Käytä kuvaa";
 "History…" = "Historia…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Paranna-toiminto kirjoittaa olemassa olevat muistiinpanot uudelleen visuaalisilla yksityiskohdilla. Luo uudelleen -toiminto aloittaa kuvista. Molemmat tarkistetaan ennen käyttöönottoa.";
+
+"Merge" = "Yhdistä";
+"Merge shots" = "Yhdistä otokset";
+"Merge selected shots" = "Yhdistä valitut otokset";
+"%@ shots selected" = "%1$@ otosta valittu";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Yhdistäminen yhdistää kuvaukset, lähdetekstin, viitteet ja otosten tiedot. Ensimmäisen otoksen otsikko ja kamera säilyvät, ja jokainen renderöity kuva pysyy historiassa.";
+"Select shots in one scene to merge." = "Valitse yhden kohtauksen otokset yhdistettäväksi.";

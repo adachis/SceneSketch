@@ -301,3 +301,10 @@
 "Use image" = "Anggo gambar";
 "History…" = "Riwayat…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance nulis ulang catetan anu tos aya kalayan detil visual. Recreate ngamimitian tina gambar. Duanana diulas sateuacan diterapkeun.";
+
+"Merge" = "Gabungkeun";
+"Merge shots" = "Gabungkeun shot";
+"Merge selected shots" = "Gabungkeun shot nu dipilih";
+"%@ shots selected" = "%1$@ shot dipilih";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Gabungkeun ngagabungkeun déskripsi, téks sumber, rujukan, jeung detil shot. Judul jeung kaméra shot kahiji ditahan, sarta unggal gambar nu diréndér tetep dina sajarah.";
+"Select shots in one scene to merge." = "Pilih shot dina hiji adegan pikeun digabungkeun.";

@@ -301,3 +301,10 @@
 "Use image" = "Izmantot attēlu";
 "History…" = "Vēsture…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Uzlabot pārraksta esošās piezīmes ar vizuālām detaļām. Atjaunot sāk no attēliem. Abi tiek pārskatīti pirms piemērošanas.";
+
+"Merge" = "Apvienot";
+"Merge shots" = "Apvienot kadrus";
+"Merge selected shots" = "Apvienot atlasītos kadrus";
+"%@ shots selected" = "Atlasīti %1$@ kadri";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Apvienošana apvieno aprakstus, avota tekstu, atsauces un kadru detaļas. Tiek saglabāts pirmā kadra nosaukums un kamera, un katrs renderētais attēls paliek vēsturē.";
+"Select shots in one scene to merge." = "Atlasiet kadrus vienā ainā, lai apvienotu.";

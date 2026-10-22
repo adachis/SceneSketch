@@ -301,3 +301,10 @@
 "Use image" = "Brúka mynd";
 "History…" = "Søga…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Betra um skrivar verandi notur við sjónligum smálutum. Endurskapa byrjar frá myndunum. Báðir verða eftirkannaðir áðrenn teir verða nýttir.";
+
+"Merge" = "Slá saman";
+"Merge shots" = "Slá saman filmmyndir";
+"Merge selected shots" = "Slá saman valdar filmmyndir";
+"%@ shots selected" = "%1$@ filmmyndir valdar";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Slá saman sameinar lýsingar, keldutekst, tilvísingar og upplýsingar um filmmyndir. Heiti og kamera á fyrstu filmmyndini verða varðveitt, og hvør mynd verður verandi í søguni.";
+"Select shots in one scene to merge." = "Vel filmmyndir í einari senu at sláa saman.";
