@@ -15,6 +15,7 @@ enum ExportChecks {
         let character = StoryEntity(kind: .character, name: "Mara", description: "Short wavy hair.")
         document.entities = [character]
         let imageData = try Data(contentsOf: image)
+        try ParticipantExportChecks.run(image: imageData)
         for (sceneIndex, scene) in document.scenes.enumerated() {
             for index in 0..<7 {
                 var frame = StoryboardFrame(title: "Shot \(index + 1)", description: EntityTokens.token(character.id) + " waits beside the café table. The window is on the left.", image: index == 6 ? nil : imageData, sceneID: scene.id)

@@ -35,6 +35,8 @@ struct StoryboardExportOptions: Equatable, Sendable {
     var includeMetadata = true
     var includeUnrendered = true
     var newPagePerScene = true
+    var includeCharacters = false
+    var includeProps = false
     var pageSize: CGSize {
         let s = paper.size
         return orientation == .landscape ? CGSize(width: s.height, height: s.width) : s
@@ -47,7 +49,14 @@ struct ExportShot: Sendable {
     let number: String
     let frame: StoryboardFrame
     let description: String
+    let characters: [ExportParticipant]
+    let props: [ExportParticipant]
     var label: String { L("Scene %@ · Shot %@", String(sceneNumber), number) }
+}
+
+struct ExportParticipant: Codable, Equatable, Sendable {
+    let id: UUID
+    let name: String
 }
 
 enum StoryboardExporter {
@@ -56,9 +65,12 @@ enum StoryboardExporter {
         for (sceneIndex, scene) in document.scenes.enumerated() where scenes.contains(scene.id) {
             for (index, frame) in document.frames.filter({ $0.sceneID == scene.id }).enumerated() {
                 if !includeUnrendered && frame.image == nil { continue }
+                let linked = EntityTokens.mentioned(frame.description, entities: document.entities)
                 result.append(ExportShot(sceneNumber: sceneIndex + 1, scene: scene,
                     number: frame.details.number.isEmpty ? String(index + 1) : frame.details.number,
-                    frame: frame, description: try EntityTokens.resolve(frame.description, entities: document.entities)))
+                    frame: frame, description: try EntityTokens.resolve(frame.description, entities: document.entities),
+                    characters: linked.filter { $0.kind == .character }.map { ExportParticipant(id: $0.id, name: $0.name) },
+                    props: linked.filter { $0.kind == .prop }.map { ExportParticipant(id: $0.id, name: $0.name) }))
             }
         }
         guard !result.isEmpty else { throw ExportError.noShots }
@@ -119,6 +131,8 @@ enum StoryboardExporter {
 
     private static func drawCard(_ context: CGContext, shot: ExportShot, card: CGRect, height: CGFloat, options: StoryboardExportOptions) -> String {
         let inset: CGFloat = 7
+        let notes = noteText(shot, options: options)
+        let hasNotes = !notes.isEmpty
         let labelHeight: CGFloat = options.includeMetadata ? 30 : 18
         context.setStrokeColor(gray: 0.7, alpha: 1); context.setLineWidth(0.5)
         context.stroke(flip(card, height))
@@ -127,9 +141,9 @@ enum StoryboardExporter {
             let details = [L(shot.frame.shot.rawValue), shot.frame.details.lens, shot.frame.details.duration].filter { !$0.isEmpty }.joined(separator: " · ")
             _ = text(context, details, rect: CGRect(x: card.minX + inset, y: card.minY + 18, width: card.width - inset * 2, height: 12), height: height, fontSize: 7)
         }
-        let sideNotes = options.includeDescriptions && options.orientation == .portrait && options.layout.rawValue <= 3
+        let sideNotes = hasNotes && options.orientation == .portrait && options.layout.rawValue <= 3
         let imageWidth = sideNotes ? (card.width - inset * 3) * 0.64 : card.width - inset * 2
-        let availableHeight = max(20, card.height - labelHeight - (options.includeDescriptions && !sideNotes ? 40 : 9))
+        let availableHeight = max(20, card.height - labelHeight - (hasNotes && !sideNotes ? 40 : 9))
         let imageHeight = min(imageWidth * 9 / 16, availableHeight)
         let imageRect = CGRect(x: card.minX + inset, y: card.minY + labelHeight, width: imageWidth, height: imageHeight)
         if let imageData = shot.frame.image, let source = CGImageSourceCreateWithData(imageData as CFData, nil),
@@ -142,8 +156,7 @@ enum StoryboardExporter {
             context.setFillColor(gray: 0.96, alpha: 1); context.fill(flip(imageRect, height))
             _ = text(context, L("Not rendered"), rect: CGRect(x: imageRect.minX + 6, y: imageRect.midY - 6, width: imageRect.width - 12, height: 14), height: height, fontSize: 8)
         }
-        guard options.includeDescriptions else { return "" }
-        let notes = noteText(shot, metadata: options.includeMetadata)
+        guard hasNotes else { return "" }
         let rect = sideNotes
             ? CGRect(x: imageRect.maxX + inset, y: card.minY + labelHeight, width: card.maxX - imageRect.maxX - inset * 2, height: card.height - labelHeight - 23)
             : CGRect(x: card.minX + inset, y: imageRect.maxY + 6, width: card.width - inset * 2, height: max(1, card.maxY - imageRect.maxY - 23))
@@ -155,9 +168,12 @@ enum StoryboardExporter {
         return ""
     }
 
-    private static func noteText(_ shot: ExportShot, metadata: Bool) -> String {
-        var parts = [shot.description]
-        if metadata {
+    private static func noteText(_ shot: ExportShot, options: StoryboardExportOptions) -> String {
+        var parts: [String] = []
+        if options.includeCharacters && !shot.characters.isEmpty { parts.append(L("Characters") + ": " + shot.characters.map(\.name).joined(separator: ", ")) }
+        if options.includeProps && !shot.props.isEmpty { parts.append(L("Props") + ": " + shot.props.map(\.name).joined(separator: ", ")) }
+        if options.includeDescriptions { parts.append(shot.description) }
+        if options.includeMetadata && options.includeDescriptions {
             if !shot.frame.details.movement.isEmpty { parts.append(L("Camera: %@", shot.frame.details.movement)) }
             if !shot.frame.details.dialogue.isEmpty { parts.append(L("Dialogue: %@", shot.frame.details.dialogue)) }
             if !shot.frame.details.notes.isEmpty { parts.append(L("Notes: %@", shot.frame.details.notes)) }
@@ -203,12 +219,17 @@ enum StoryboardExporter {
         return CTFrameGetVisibleStringRange(frame).length
     }
 
-    static func csv(document: StoryboardDocument, scenes: Set<UUID>, includeUnrendered: Bool = true) throws -> Data {
+    static func csv(document: StoryboardDocument, scenes: Set<UUID>, includeUnrendered: Bool = true, includeCharacters: Bool = false, includeProps: Bool = false) throws -> Data {
         let rows = try shots(document: document, scenes: scenes, includeUnrendered: includeUnrendered)
         var values = [["Scene", "Scene title", "Shot", "Shot title", "Shot size", "Description", "Lens", "Duration", "Camera movement", "Dialogue", "Notes", "Image"]]
+        if includeCharacters { values[0].append("Characters") }
+        if includeProps { values[0].append("Props") }
         values += rows.map { shot in
-            [String(shot.sceneNumber), shot.scene.title, shot.number, shot.frame.title, L(shot.frame.shot.rawValue), shot.description,
+            var row = [String(shot.sceneNumber), shot.scene.title, shot.number, shot.frame.title, L(shot.frame.shot.rawValue), shot.description,
              shot.frame.details.lens, shot.frame.details.duration, shot.frame.details.movement, shot.frame.details.dialogue, shot.frame.details.notes, shot.frame.image == nil ? "" : imageName(shot)]
+            if includeCharacters { row.append(shot.characters.map(\.name).joined(separator: ", ")) }
+            if includeProps { row.append(shot.props.map(\.name).joined(separator: ", ")) }
+            return row
         }
         let result = values.map { row in row.map { value in
             let safe = ["=", "+", "-", "@", "\t", "\r"].contains(where: { value.hasPrefix($0) }) ? "'" + value : value
@@ -217,7 +238,7 @@ enum StoryboardExporter {
         return Data(result.utf8)
     }
 
-    static func bundle(document: StoryboardDocument, scenes: Set<UUID>, to folder: URL, includeUnrendered: Bool = true) throws {
+    static func bundle(document: StoryboardDocument, scenes: Set<UUID>, to folder: URL, includeUnrendered: Bool = true, includeCharacters: Bool = false, includeProps: Bool = false) throws {
         let rows = try shots(document: document, scenes: scenes, includeUnrendered: includeUnrendered)
         let fm = FileManager.default
         guard !fm.fileExists(atPath: folder.path) else { throw ExportError.destinationExists }
@@ -225,10 +246,10 @@ enum StoryboardExporter {
         try fm.createDirectory(at: staging, withIntermediateDirectories: false)
         defer { try? fm.removeItem(at: staging) }
         for row in rows { try Task.checkCancellation(); if let data = row.frame.image { try data.write(to: staging.appendingPathComponent(imageName(row)), options: .atomic) } }
-        try csv(document: document, scenes: scenes, includeUnrendered: includeUnrendered).write(to: staging.appendingPathComponent("shots.csv"))
+        try csv(document: document, scenes: scenes, includeUnrendered: includeUnrendered, includeCharacters: includeCharacters, includeProps: includeProps).write(to: staging.appendingPathComponent("shots.csv"))
         let encoder = JSONEncoder(); encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         let json = ExportData(title: document.title, production: document.production, scenes: document.scenes.filter { scenes.contains($0.id) },
-                              shots: rows.map { ExportData.Shot(id: $0.frame.id, sceneID: $0.scene.id, number: $0.number, title: $0.frame.title, size: $0.frame.shot.rawValue, description: $0.description, details: $0.frame.details, image: $0.frame.image == nil ? nil : imageName($0)) })
+                              shots: rows.map { ExportData.Shot(id: $0.frame.id, sceneID: $0.scene.id, number: $0.number, title: $0.frame.title, size: $0.frame.shot.rawValue, description: $0.description, details: $0.frame.details, image: $0.frame.image == nil ? nil : imageName($0), characters: includeCharacters ? $0.characters : nil, props: includeProps ? $0.props : nil) })
         try encoder.encode(json).write(to: staging.appendingPathComponent("storyboard.json"))
         try fm.moveItem(at: staging, to: folder)
     }
@@ -254,6 +275,8 @@ private struct ExportData: Codable {
         var description: String
         var details: ShotDetails
         var image: String?
+        var characters: [ExportParticipant]?
+        var props: [ExportParticipant]?
     }
 }
 

@@ -46,6 +46,8 @@ Rendering prompts favor plain, unmarked surfaces.  An on-device text check may r
 
 Export selected scenes as PDF, PNG images with JSON and CSV data, or a CSV shot list.  PDFs support Letter and A4, portrait and landscape, and 2, 3, 4, 6, 12, or 16 panels per page.  Choose whether to include descriptions, production details, and unrendered shots.  Long notes continue onto extra pages instead of being discarded.
 
+The export sheet also offers independent Characters and Props options.  Enabled lists use the library pills in each shot description, preserve first-mention order, and show each entry once.  Plain-text mentions and location pills do not add characters or props.  These names appear under each PDF shot, including when descriptions are hidden, and as optional columns or fields in CSV and JSON exports.
+
 Optional production fields include company, director, storyboard artist, revision, and date.  Shot fields include production number, lens, duration, camera movement, dialogue, and notes.  Paper size is chosen at export unless a preference is saved.
 
 ### Languages
@@ -82,7 +84,7 @@ Enable the local push guard after cloning:
 git config core.hooksPath .githooks
 ```
 
-The guard blocks direct updates to an existing remote `main` and rejects release tags that do not match a version on `main`.  The release-policy workflow checks release pull requests without building the app.  Compile, test, sign, and notarize release archives deliberately; routine development commits do not publish releases.
+The guard blocks direct updates to an existing remote `main` and rejects release tags that do not match a version on `main`.  The release-policy workflow checks release pull requests without building the app.  Server-side enforcement for a private repository depends on the GitHub account plan; keep the local guard enabled when that protection is unavailable.  Compile, test, sign, and notarize release archives deliberately; routine development commits do not publish releases.
 
 ## Validation and release readiness
 
