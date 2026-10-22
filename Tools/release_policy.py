@@ -20,7 +20,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base", default="origin/main")
     parser.add_argument("--candidate", default="HEAD")
-    parser.add_argument("--head", default=os.environ.get("GITHUB_HEAD_REF", "dev"))
+    parser.add_argument("--head", default=os.environ.get("GITHUB_HEAD_REF") or os.environ.get("GITHUB_REF_NAME", "dev"))
     args = parser.parse_args()
     if args.head != "dev" and not args.head.startswith("release/"):
         raise ValueError("Release pull requests must come from dev or a release/ branch.")
