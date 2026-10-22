@@ -90,6 +90,8 @@ private final class EntityAttachment: NSTextAttachment {
     required init?(coder: NSCoder) { return nil }
 }
 private final class PillTextView: NSTextView {
+    // Document snapshots own Undo/Redo, including rich-text attachment changes.
+    override var undoManager: UndoManager? { nil }
     var entities: [StoryEntity] = []
     private let tokenType = NSPasteboard.PasteboardType("com.adachis.storyboard.token-text")
     override func copy(_ sender: Any?) {

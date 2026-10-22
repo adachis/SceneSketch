@@ -2,6 +2,7 @@ import AppKit
 import Foundation
 import SwiftUI
 import FluxTextEncoders
+import MLX
 
 @main
 struct StoryboardCheck {
@@ -12,7 +13,34 @@ struct StoryboardCheck {
         let root = try RenderService.modelDirectory()
         TextEncoderModelDownloader.customModelsDirectory = root
         TextEncoderModelDownloader.reconfigureHubApi()
-        if mode == "props" {
+        if mode == "fidelity" {
+            var document = StoryboardDocument()
+            document.scenes[0].title = "INT. LIVING ROOM - EVENING"
+            let person = StoryEntity(kind: .character, name: "Mildred", description: "A young girl with an oval face and long straight brown hair.")
+            let tv = StoryEntity(kind: .prop, name: "TV", description: "A box-shaped black CRT television with a curved glass screen.")
+            document.entities = [person, tv]
+            document.frames[0].description = EntityTokens.token(person.id) + " lowers the binoculars, glancing over to the " + EntityTokens.token(tv.id) + "."
+            if args.count > 3 {
+                let source = try ReferenceImages.cgImage(Data(contentsOf: URL(fileURLWithPath: args[3])), maximumEdge: 2048)
+                let bounds = CGRect(x: Double(source.width) * 0.184, y: Double(source.height) * 0.239, width: Double(source.width) * 0.533, height: Double(source.height) * 0.498)
+                if let crop = source.cropping(to: bounds) {
+                    let bitmap = NSBitmapImageRep(cgImage: crop)
+                    let ref = ReferenceImage(name: "Character reference", data: bitmap.representation(using: .png, properties: [:])!)
+                    document.references = [ref]; document.entities[0].referenceIDs = [ref.id]
+                }
+            }
+            document.frames[0].seed = 5700
+            let result = try await RenderService.shared.render(frame: document.frames[0], document: document, adapterURL: URL(fileURLWithPath: args[1])) { print($0) }
+            try result.image.write(to: URL(fileURLWithPath: args[2]))
+            print("Prompt: " + result.prompt)
+            print("MLX active: \(MLX.Memory.activeMemory); peak: \(MLX.Memory.peakMemory)")
+        } else if mode == "synthesis" {
+            print(try await RenderService.shared.synthesizeDescription(existing: args[1], observations: [args[2]], kind: EntityKind(rawValue: args[3]) ?? .character))
+        } else if mode == "editor-check" {
+            try await ReleaseChecks.editor()
+        } else if mode == "release" {
+            try await ReleaseChecks.run()
+        } else if mode == "props" {
             try PropChecks.run()
         } else if mode == "lettering-check" {
             for path in args.dropFirst() {

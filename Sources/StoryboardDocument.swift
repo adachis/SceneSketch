@@ -58,7 +58,26 @@ struct StoryScene: Identifiable, Codable, Equatable, Sendable {
     var sourceText = ""
 }
 
-struct StoryboardFrame: Identifiable, Codable, Sendable {
+struct RenderVersion: Identifiable, Codable, Equatable, Sendable {
+    var id: UUID
+    var createdAt: Date
+    var image: Data
+    var prompt: String
+    var seed: UInt64
+    var description: String
+    var shot: CameraShot
+    var referenceIDs: [UUID]
+}
+
+enum ShotFilter: String, CaseIterable, Identifiable {
+    case all = "All shots", missing = "Missing images", unapproved = "Unapproved", approved = "Approved"
+    var id: String { rawValue }
+    func includes(_ frame: StoryboardFrame) -> Bool {
+        switch self { case .all: true; case .missing: frame.image == nil; case .unapproved: !frame.approved; case .approved: frame.approved }
+    }
+}
+
+struct StoryboardFrame: Identifiable, Codable, Equatable, Sendable {
     var id = UUID()
     var title = L("Untitled frame")
     var description = ""
@@ -72,8 +91,39 @@ struct StoryboardFrame: Identifiable, Codable, Sendable {
     var selectedReferenceIDs: [UUID]?
     var sourceText = ""
     var details = ShotDetails()
+    var approved = false
+    var history: [RenderVersion] = []
+    var renderedAt = Date()
+    var renderedDescription: String?
+    var renderedShot: CameraShot?
+    var renderedReferenceIDs: [UUID] = []
 
-    enum CodingKeys: String, CodingKey { case id, title, description, shot, seed, image, renderedPrompt, imageRevision, sceneID, referenceIDs, selectedReferenceIDs, sourceText, details }
+    var currentVersion: RenderVersion? {
+        image.map { RenderVersion(id: imageRevision, createdAt: renderedAt, image: $0, prompt: renderedPrompt ?? "", seed: seed,
+            description: renderedDescription ?? description, shot: renderedShot ?? shot, referenceIDs: renderedReferenceIDs) }
+    }
+    var versions: [RenderVersion] { (history + (currentVersion.map { [$0] } ?? [])).sorted { $0.createdAt > $1.createdAt } }
+    mutating func storeRender(image: Data, prompt: String, seed: UInt64, source: StoryboardFrame, referenceIDs: [UUID]) {
+        if let currentVersion { history.append(currentVersion) }
+        self.image = image; renderedPrompt = prompt; self.seed = seed; imageRevision = UUID(); renderedAt = Date()
+        renderedDescription = source.description; renderedShot = source.shot; renderedReferenceIDs = referenceIDs; approved = false
+    }
+    mutating func selectVersion(_ id: UUID) {
+        guard let index = history.firstIndex(where: { $0.id == id }) else { return }
+        let selected = history.remove(at: index)
+        if let currentVersion { history.append(currentVersion) }
+        image = selected.image; renderedPrompt = selected.prompt; seed = selected.seed; imageRevision = selected.id
+        renderedAt = selected.createdAt; renderedDescription = selected.description; renderedShot = selected.shot
+        renderedReferenceIDs = selected.referenceIDs; approved = false
+    }
+    func duplicated() -> Self {
+        var copy = self; copy.id = UUID(); copy.title = L("%@ copy", title); copy.seed = UInt64.random(in: 1...UInt64(UInt32.max))
+        copy.image = nil; copy.history = []; copy.renderedPrompt = nil; copy.renderedDescription = nil
+        copy.renderedShot = nil; copy.renderedReferenceIDs = []; copy.imageRevision = UUID(); copy.approved = false
+        return copy
+    }
+
+    enum CodingKeys: String, CodingKey { case id, title, description, shot, seed, image, renderedPrompt, imageRevision, sceneID, referenceIDs, selectedReferenceIDs, sourceText, details, approved, history, renderedAt, renderedDescription, renderedShot, renderedReferenceIDs }
     init(title: String = L("Untitled frame"), description: String = "", shot: CameraShot = .wide, image: Data? = nil, sceneID: UUID? = nil) {
         self.title = title; self.description = description; self.shot = shot; self.image = image; self.sceneID = sceneID
     }
@@ -92,12 +142,19 @@ struct StoryboardFrame: Identifiable, Codable, Sendable {
         selectedReferenceIDs = try c.decodeIfPresent([UUID].self, forKey: .selectedReferenceIDs)
         sourceText = try c.decodeIfPresent(String.self, forKey: .sourceText) ?? ""
         details = try c.decodeIfPresent(ShotDetails.self, forKey: .details) ?? ShotDetails()
+        approved = try c.decodeIfPresent(Bool.self, forKey: .approved) ?? false
+        history = try c.decodeIfPresent([RenderVersion].self, forKey: .history) ?? []
+        renderedAt = try c.decodeIfPresent(Date.self, forKey: .renderedAt) ?? Date(timeIntervalSince1970: 0)
+        renderedDescription = try c.decodeIfPresent(String.self, forKey: .renderedDescription)
+        renderedShot = try c.decodeIfPresent(CameraShot.self, forKey: .renderedShot)
+        renderedReferenceIDs = try c.decodeIfPresent([UUID].self, forKey: .renderedReferenceIDs) ?? []
+        guard Set(history.map(\.id)).count == history.count, !history.contains(where: { $0.id == imageRevision }) else { throw CocoaError(.fileReadCorruptFile) }
     }
 }
 
-struct StoryboardDocument: FileDocument, Sendable {
+struct StoryboardDocument: FileDocument, Equatable, Sendable {
     static var readableContentTypes: [UTType] { [.storyboard] }
-    var version = 3
+    var version = 4
     var title = L("Untitled story")
     var production = ProductionDetails()
     var entities: [StoryEntity] = []
@@ -112,7 +169,7 @@ struct StoryboardDocument: FileDocument, Sendable {
     }
     init(data: Data) throws {
         let payload = try JSONDecoder().decode(Payload.self, from: data)
-        guard (1...3).contains(payload.version) else { throw CocoaError(.fileReadUnsupportedScheme) }
+        guard (1...4).contains(payload.version) else { throw CocoaError(.fileReadUnsupportedScheme) }
         title = payload.title ?? L("Untitled story")
         production = payload.production ?? ProductionDetails()
         entities = payload.entities ?? []; references = payload.references ?? []
@@ -127,7 +184,7 @@ struct StoryboardDocument: FileDocument, Sendable {
     }
     func fileWrapper(configuration: WriteConfiguration) throws -> FileWrapper { FileWrapper(regularFileWithContents: try encodedData()) }
     func encodedData() throws -> Data {
-        try JSONEncoder().encode(Payload(version: 3, title: title, production: production, entities: entities, references: references, scenes: scenes, frames: frames))
+        try JSONEncoder().encode(Payload(version: 4, title: title, production: production, entities: entities, references: references, scenes: scenes, frames: frames))
     }
     private struct Payload: Codable {
         var version: Int
@@ -156,7 +213,7 @@ struct StoryboardDocument: FileDocument, Sendable {
         entities.removeAll { $0.id == sourceID }
     }
     mutating func removeUnusedReferences() {
-        let used = Set(entities.flatMap(\.referenceIDs) + frames.flatMap(\.referenceIDs))
+        let used = Set(entities.flatMap(\.referenceIDs) + frames.flatMap(\.referenceIDs) + frames.flatMap(\.renderedReferenceIDs) + frames.flatMap { $0.history.flatMap(\.referenceIDs) })
         references.removeAll { !used.contains($0.id) }
     }
 }

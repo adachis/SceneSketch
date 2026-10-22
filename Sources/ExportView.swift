@@ -172,19 +172,3 @@ struct ProductionDetailsView: View {
         }.frame(width: 550, height: 380)
     }
 }
-
-private struct ExportActionKey: FocusedValueKey { typealias Value = () -> Void }
-extension FocusedValues {
-    var exportStoryboard: (() -> Void)? {
-        get { self[ExportActionKey.self] }
-        set { self[ExportActionKey.self] = newValue }
-    }
-}
-struct ExportCommands: Commands {
-    @FocusedValue(\.exportStoryboard) private var export
-    @AppStorage("interfaceLanguage") private var interfaceLanguage = ""
-    var body: some Commands {
-        let _ = interfaceLanguage
-        CommandGroup(after: .saveItem) { Button(L("Export Storyboard…")) { export?() }.keyboardShortcut("e", modifiers: [.command, .shift]).disabled(export == nil) }
-    }
-}

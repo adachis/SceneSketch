@@ -201,6 +201,11 @@ enum ScreenplayImporter {
                 if !entities[index].description.localizedCaseInsensitiveContains(mention.phrase) { entities[index].description += "; " + mention.phrase }
             } else { entities.append(StoryEntity(kind: .prop, name: mention.name, description: mention.phrase)) }
         }
+        // Compile name patterns once for the screenplay, not once per action paragraph.
+        let characterMatchers = entities.filter { $0.kind == .character }.map { entity in
+            (entity.id, try! NSRegularExpression(pattern: "(?<![\\p{L}\\p{N}])" + NSRegularExpression.escapedPattern(for: entity.name) + "(?![\\p{L}\\p{N}])", options: .caseInsensitive))
+        }
+        let propLinker = ScreenplayProps.Linker(mentions: propMentions, entities: entities)
         var scenes: [StoryScene] = []; var frames: [StoryboardFrame] = []; var speaker = ""
         for (index, paragraph) in paragraphs.enumerated() {
             let text = paragraph.text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -226,10 +231,9 @@ enum ScreenplayImporter {
                         }
                         entities[locationIndex].description = String(sentences.joined(separator: ". ").prefix(280))
                     }
-                    var description = ScreenplayProps.link(text, mentions: propMentions, entities: entities)
-                    for entity in entities where entity.kind == .character {
-                        let regex = try! NSRegularExpression(pattern: "(?<![\\p{L}\\p{N}])" + NSRegularExpression.escapedPattern(for: entity.name) + "(?![\\p{L}\\p{N}])", options: .caseInsensitive)
-                        description = regex.stringByReplacingMatches(in: description, range: NSRange(location: 0, length: (description as NSString).length), withTemplate: EntityTokens.token(entity.id))
+                    var description = propLinker.link(text)
+                    for (id, regex) in characterMatchers {
+                        description = regex.stringByReplacingMatches(in: description, range: NSRange(location: 0, length: (description as NSString).length), withTemplate: EntityTokens.token(id))
                     }
                     var frame = StoryboardFrame(title: L("Shot %@", String(frames.filter { $0.sceneID == scenes[sceneIndex].id }.count + 1)), description: description, sceneID: scenes[sceneIndex].id)
                     frame.sourceText = text; frames.append(frame)

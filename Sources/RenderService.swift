@@ -10,6 +10,7 @@ struct RenderedFrame: Sendable {
     let image: Data
     let prompt: String
     let seed: UInt64
+    let referenceIDs: [UUID]
 }
 
 actor RenderService {
@@ -48,7 +49,7 @@ actor RenderService {
             for entity in context.entities { englishDescriptions[entity.id] = RenderTextPolicy.prepare(try await PromptNormalizer.translateIfNeeded(entity.description, modelRoot: root)) }
             let englishScene = RenderTextPolicy.prepare(try await PromptNormalizer.translateIfNeeded(context.sceneContext, modelRoot: root))
             MLX.Memory.clearCache()
-            let prompt = try context.prompt(sceneDescription: RenderTextPolicy.prepare(cleaned), englishDescriptions: englishDescriptions, englishScene: englishScene)
+            let prompt = try context.prompt(sceneDescription: RenderTextPolicy.prepare(ShotStaging.prepare(cleaned)), englishDescriptions: englishDescriptions, englishScene: englishScene)
             progress(L("Preparing the image model…"))
             let textDirectory = root.appendingPathComponent("text")
             let localText = FileManager.default.fileExists(atPath: textDirectory.appendingPathComponent("config.json").path) ? textDirectory : nil
@@ -114,7 +115,7 @@ actor RenderService {
             }
             CGImageDestinationAddImage(destination, image, nil)
             guard CGImageDestinationFinalize(destination) else { throw RenderError.encoding }
-            return RenderedFrame(image: data as Data, prompt: prompt, seed: seed)
+            return RenderedFrame(image: data as Data, prompt: prompt, seed: seed, referenceIDs: context.references.map(\.id))
         }.value
     }
 
@@ -128,6 +129,17 @@ actor RenderService {
         return try await Task.detached(priority: .userInitiated) {
             try ModelPaths.require(.vision)
             return try await VisualDescriber.describe(image: image, kind: kind, modelRoot: Self.modelDirectory())
+        }.value
+    }
+
+    func synthesizeDescription(existing: String, observations: [String], kind: EntityKind) async throws -> String {
+        guard !busy else { throw RenderError.busy }
+        busy = true
+        defer { busy = false; MLX.Memory.clearCache(); Task { @MainActor in RuntimeActivity.shared.isRendering = false } }
+        guard await MainActor.run(body: { !ModelManager.shared.isWorking }) else { throw RenderError.busy }
+        await MainActor.run { RuntimeActivity.shared.isRendering = true }
+        return try await Task.detached(priority: .userInitiated) {
+            try await PromptNormalizer.synthesizeDescription(existing: existing, observations: observations, kind: kind, modelRoot: Self.modelDirectory())
         }.value
     }
 

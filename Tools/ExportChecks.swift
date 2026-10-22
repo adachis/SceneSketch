@@ -27,7 +27,7 @@ enum ExportChecks {
         }
         let all = Set(document.scenes.map(\.id))
         let restored = try StoryboardDocument(data: document.encodedData())
-        precondition(restored.version == 3 && restored.production == document.production && restored.frames[0].details == document.frames[0].details)
+        precondition(restored.version == 4 && restored.production == document.production && restored.frames[0].details == document.frames[0].details)
         let selected = try StoryboardExporter.shots(document: document, scenes: [second.id], includeUnrendered: false)
         precondition(selected.count == 6 && selected.allSatisfy { $0.scene.id == second.id })
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
