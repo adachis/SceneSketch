@@ -61,7 +61,7 @@ import PDFKit
         do { _ = try StoryContext(frame: bad, document: doc); preconditionFailure("Must reject over-limit input") } catch StoryContextError.tooManyReferences {}
         let legacy: [String: Any] = ["version": 1, "frames": [["id": UUID().uuidString, "title": "Legacy", "description": "An old frame.", "shot": "Wide shot", "seed": 22]]]
         let migrated = try StoryboardDocument(data: JSONSerialization.data(withJSONObject: legacy))
-        precondition(migrated.frames[0].sceneID == migrated.scenes[0].id && migrated.version == 3)
+        precondition(migrated.frames[0].sceneID == migrated.scenes[0].id && migrated.version == 4)
         var mergeDoc = restored
         let duplicate = StoryEntity(kind: .character, name: "Alias", description: "Same person")
         mergeDoc.entities.append(duplicate)

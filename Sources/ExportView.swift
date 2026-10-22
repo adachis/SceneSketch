@@ -37,7 +37,7 @@ struct ExportView: View {
             HStack { Text(L("Export storyboard")).font(.title2.bold()); Spacer(); Button(L("Done")) { dismiss() }.disabled(exporting) }.padding(20)
             Divider()
             HStack(spacing: 0) {
-                VStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading, spacing: 12) {
                     Picker(L("Format"), selection: $format) { ForEach(ExportFormat.allCases) { Text(L($0.rawValue)).tag($0) } }
                     if format == .pdf {
                         Picker(L("Paper"), selection: $paperChoice) {
@@ -50,6 +50,8 @@ struct ExportView: View {
                         Toggle(L("Include production and shot details"), isOn: $options.includeMetadata)
                         Toggle(L("Start each scene on a new page"), isOn: $options.newPagePerScene)
                     }
+                    Toggle(L("Characters"), isOn: $options.includeCharacters)
+                    Toggle(L("Props"), isOn: $options.includeProps)
                     Toggle(L("Include shots without images"), isOn: $options.includeUnrendered)
                     HStack {
                         Text(L("Scenes")).font(.headline); Spacer()
@@ -101,6 +103,7 @@ struct ExportView: View {
     }
     private func export() {
         let snapshot = document, scenes = selected, includeUnrendered = options.includeUnrendered
+        let includeCharacters = options.includeCharacters, includeProps = options.includeProps
         if format == .images {
             let panel = NSOpenPanel(); panel.canChooseDirectories = true; panel.canChooseFiles = false
             panel.canCreateDirectories = true; panel.prompt = L("Export Here")
@@ -114,7 +117,7 @@ struct ExportView: View {
                 let target = folder; exporting = true; error = ""
                 Task {
                     do {
-                        try await Task.detached { try StoryboardExporter.bundle(document: snapshot, scenes: scenes, to: target, includeUnrendered: includeUnrendered) }.value
+                        try await Task.detached { try StoryboardExporter.bundle(document: snapshot, scenes: scenes, to: target, includeUnrendered: includeUnrendered, includeCharacters: includeCharacters, includeProps: includeProps) }.value
                         exportedURL = target
                     } catch { self.error = error.localizedDescription }
                     exporting = false
@@ -131,7 +134,7 @@ struct ExportView: View {
                 Task {
                     do {
                         try await Task.detached {
-                            let data = try isPDF ? (pdfData ?? Data()) : StoryboardExporter.csv(document: snapshot, scenes: scenes, includeUnrendered: includeUnrendered)
+                            let data = try isPDF ? (pdfData ?? Data()) : StoryboardExporter.csv(document: snapshot, scenes: scenes, includeUnrendered: includeUnrendered, includeCharacters: includeCharacters, includeProps: includeProps)
                             try data.write(to: url, options: .atomic)
                         }.value
                         exportedURL = url
@@ -167,21 +170,5 @@ struct ProductionDetailsView: View {
                 TextField(L("Date"), text: $details.date)
             }.formStyle(.grouped)
         }.frame(width: 550, height: 380)
-    }
-}
-
-private struct ExportActionKey: FocusedValueKey { typealias Value = () -> Void }
-extension FocusedValues {
-    var exportStoryboard: (() -> Void)? {
-        get { self[ExportActionKey.self] }
-        set { self[ExportActionKey.self] = newValue }
-    }
-}
-struct ExportCommands: Commands {
-    @FocusedValue(\.exportStoryboard) private var export
-    @AppStorage("interfaceLanguage") private var interfaceLanguage = ""
-    var body: some Commands {
-        let _ = interfaceLanguage
-        CommandGroup(after: .saveItem) { Button(L("Export Storyboard…")) { export?() }.keyboardShortcut("e", modifiers: [.command, .shift]).disabled(export == nil) }
     }
 }

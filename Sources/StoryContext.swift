@@ -65,7 +65,7 @@ struct StoryContext: Sendable {
         self.frame = frame
         description = try EntityTokens.resolve(frame.description, entities: document.entities)
         let scene = document.scenes.first(where: { $0.id == frame.sceneID })
-        sceneContext = [scene?.title, scene?.synopsis].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: ". ")
+        sceneContext = [scene?.title].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: ". ")
         var linked = EntityTokens.mentioned(frame.description, entities: document.entities)
         if let scene = document.scenes.first(where: { $0.id == frame.sceneID }),
            let location = document.entities.first(where: { $0.id == scene.locationID }), !linked.contains(where: { $0.id == location.id }) { linked.append(location) }
@@ -87,11 +87,17 @@ struct StoryContext: Sendable {
         missingSelectionCount = available.count - references.count
     }
     func prompt(sceneDescription: String, englishDescriptions: [UUID: String] = [:], englishScene: String? = nil) throws -> String {
-        let identities = entities.map { "\($0.kind.promptLabel) \($0.name): \(englishDescriptions[$0.id] ?? $0.description)" }.joined(separator: "\n")
+        let identities = entities.filter { !$0.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }.map { "\($0.kind.promptLabel) \($0.name): \(englishDescriptions[$0.id] ?? $0.description)" }.joined(separator: "\n")
         let guide = references.enumerated().map { index, ref in
-            "Reference image \(index + 1): \(ref.label)." + (ref.kind == .character ? " Preserve this person's face and physical identity; use only clothing specified for this shot." : ref.kind == .location ? " Preserve this location's architecture and layout." : ref.kind == .prop ? " Preserve this object's shape, materials, colors, and distinctive physical features." : " Use for this shot's staging.")
+            "Reference image \(index + 1): \(ref.label)." + (ref.kind == .character ? " Use this person's facial identity only. Follow the new shot for pose, gaze, action, and clothing." : ref.kind == .location ? " Preserve this location's architecture and layout." : ref.kind == .prop ? " Preserve this object's shape, materials, colors, and distinctive physical features." : " Use as visual context; follow the new shot for action and pose.")
         }.joined(separator: "\n")
-        let result = "SBFRM7. One continuous shot, with each named character shown once and no inset portraits. A single full-color cinematic storyboard frame with loose colored-pencil outlines, visible hatching, and soft painted shading. Clean wordless composition. Every surface is plain and unmarked, with blank panels, undecorated walls, and solid-color covers. \(frame.shot.rawValue). \(sceneDescription)\nScene: \(englishScene ?? sceneContext)\n\(identities)\n\(guide)\nPlain unmarked surfaces and blank panels throughout."
+        let setting = (englishScene ?? sceneContext).isEmpty ? "" : "Setting, only where compatible with the shot: \(englishScene ?? sceneContext)."
+        let result = "SBFRM7. \(frame.shot.rawValue). \(sceneDescription)\n" +
+            "The shot above determines the visible action, gaze, positions, and objects. One continuous frame; each named character appears once. " +
+            "Loose colored-pencil outlines, visible hatching, soft painted shading, full-color cinematic storyboard.\n" +
+            "\(setting)\n\(identities)\n\(guide)\n" +
+            "Reference images supply appearance only; do not copy their pose or composition unless the shot requests it. Clean wordless composition with blank panels and plain unmarked surfaces."
+
         guard result.count <= 5000 else { throw StoryContextError.descriptionTooLong }
         return result
     }

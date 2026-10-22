@@ -14,15 +14,18 @@ xcodegen generate
 mkdir -p Storyboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
 cp Package.resolved Storyboard.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
 BUILD_ROOT="${STORYBOARD_DERIVED_DATA:-$PROJECT_ROOT/build}"
+PATH_MAPS="-ffile-prefix-map=\"$BUILD_ROOT\"=Build -ffile-prefix-map=\"$PROJECT_ROOT\"=SceneSketch"
 xcodebuild -project Storyboard.xcodeproj -scheme Storyboard -configuration Release \
   -derivedDataPath "$BUILD_ROOT" -onlyUsePackageVersionsFromResolvedFile \
-  -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO build
+  -skipPackagePluginValidation CODE_SIGNING_ALLOWED=NO \
+  "OTHER_CFLAGS=\$(inherited) $PATH_MAPS" "OTHER_CPLUSPLUSFLAGS=\$(inherited) $PATH_MAPS" build
 APP_PATH="$BUILD_ROOT/Build/Products/Release/SceneSketch.app"
 SIGN_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/storyboard-sign.XXXXXX")"
 trap 'rm -rf "$SIGN_ROOT"' EXIT
 STAGED_APP="$SIGN_ROOT/SceneSketch.app"
 ditto --norsrc --noextattr "$APP_PATH" "$STAGED_APP"
 xattr -cr "$STAGED_APP"
+strip -S "$STAGED_APP/Contents/MacOS/SceneSketch"
 SIGN_IDENTITY="${STORYBOARD_SIGN_IDENTITY:--}"
 if [[ "$SIGN_IDENTITY" == "-" ]]; then
   codesign --force --deep --sign - "$STAGED_APP"

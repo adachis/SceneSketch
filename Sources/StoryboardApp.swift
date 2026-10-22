@@ -10,7 +10,7 @@ struct StoryboardApp: App {
             BoardEditor(document: configuration.$document)
         }
         .defaultSize(width: 1240, height: 800)
-        .commands { ExportCommands() }
+        .commands { StoryboardCommands() }
         Settings { SceneSketchSettings() }
     }
 }

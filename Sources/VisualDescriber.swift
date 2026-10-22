@@ -15,6 +15,12 @@ struct StableAppearance {
         ("hair_length", ["short hair", "medium-length hair", "long hair"]),
         ("facial_hair", ["clean-shaven", "mustache", "short beard", "full beard"])
     ]
+    static func supportedDescription(from response: String, evidence: String) -> String {
+        let known = Set(evidence.lowercased().components(separatedBy: CharacterSet.letters.inverted).filter { !$0.isEmpty })
+        return description(from: response).components(separatedBy: ", ").filter { phrase in
+            phrase.split(separator: " ").allSatisfy { known.contains(String($0)) }
+        }.joined(separator: ", ")
+    }
     static func description(from response: String) -> String {
         guard let start = response.firstIndex(of: "{"), let end = response.lastIndex(of: "}"), start <= end,
               let data = String(response[start...end]).data(using: .utf8),

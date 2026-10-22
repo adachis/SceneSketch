@@ -55,8 +55,8 @@ targets:
         CFBundleName: SceneSketch
         CFBundleDisplayName: SceneSketch
         CFBundleIconFile: AppIcon
-        CFBundleShortVersionString: '0.3.0'
-        CFBundleVersion: '4'
+        CFBundleShortVersionString: '1.0.0'
+        CFBundleVersion: '5'
         LSMinimumSystemVersion: '15.0'
         NSHighResolutionCapable: true
         CFBundleDocumentTypes:

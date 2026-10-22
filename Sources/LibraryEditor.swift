@@ -18,9 +18,10 @@ struct LibraryEditor: View {
     @State private var mergeTarget: UUID?
     @State private var showMerge = false
     private var index: Int? { document.entities.firstIndex { $0.id == selection } }
-    init(document: Binding<StoryboardDocument>, initialKind: EntityKind = .character) {
+    init(document: Binding<StoryboardDocument>, initialKind: EntityKind = .character, initialSelection: UUID? = nil) {
         _document = document
         _kind = State(initialValue: initialKind)
+        _selection = State(initialValue: initialSelection)
     }
     var body: some View {
         VStack(spacing: 0) {
@@ -33,7 +34,9 @@ struct LibraryEditor: View {
             GeometryReader { space in
                 HSplitView {
                     VStack {
-                        Picker(L("Library"), selection: $kind) { ForEach(EntityKind.allCases) { Text(L($0.label)).tag($0) } }.pickerStyle(.segmented)
+                        Picker(L("Story Library"), selection: $kind) { ForEach(EntityKind.allCases) { Text(L($0.label)).tag($0) } }
+                            .pickerStyle(.segmented).labelsHidden()
+                            .accessibilityLabel(L("Story Library"))
                         List(selection: $selection) { ForEach(document.entities.filter { $0.kind == kind }) { entity in Label(entity.name, systemImage: entity.kind.symbol).tag(entity.id) } }
                         HStack {
                             Button { let value = StoryEntity(kind: kind, name: kind.newName); document.entities.append(value); selection = value.id } label: { Label(L("Add"), systemImage: "plus") }
@@ -103,7 +106,7 @@ struct LibraryEditor: View {
                 Button(L("Enhance existing description")) { describe(replace: false) }
                 Button(L("Recreate description…")) { describe(replace: true) }
             } else { Button(L("Create description…")) { describe(replace: true) } }
-        } message: { Text(L("Enhance keeps the current description.  Recreate proposes a replacement for review.")) }
+        } message: { Text(L("Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying.")) }
         .sheet(item: $proposal) { value in
             DescriptionReview(proposal: value) { description in
                 if let i = document.entities.firstIndex(where: { $0.id == value.entityID }) { document.entities[i].description = description; message = L("Description updated.") }
@@ -142,8 +145,7 @@ struct LibraryEditor: View {
                     let value = try await RenderService.shared.describe(image: image, kind: entity.kind)
                     if !parts.contains(value) { parts.append(value) }
                 }
-                let generated = parts.joined(separator: ". ")
-                let text = !replace && !entity.description.isEmpty ? entity.description + "\n" + generated : generated
+                let text = try await RenderService.shared.synthesizeDescription(existing: replace ? "" : entity.description, observations: parts, kind: entity.kind)
                 proposal = DescriptionProposal(entityID: entity.id, name: entity.name, description: text, replacing: replace, creating: entity.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 message = L("Review the proposed description.")
             } catch { message = (error as? ModelError)?.localizedDescription ?? (error as? DescriptionError)?.localizedDescription ?? L("The description couldn’t be generated.  Your images are saved; try again or edit the description manually.") }

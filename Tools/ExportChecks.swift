@@ -15,6 +15,7 @@ enum ExportChecks {
         let character = StoryEntity(kind: .character, name: "Mara", description: "Short wavy hair.")
         document.entities = [character]
         let imageData = try Data(contentsOf: image)
+        try ParticipantExportChecks.run(image: imageData)
         for (sceneIndex, scene) in document.scenes.enumerated() {
             for index in 0..<7 {
                 var frame = StoryboardFrame(title: "Shot \(index + 1)", description: EntityTokens.token(character.id) + " waits beside the café table. The window is on the left.", image: index == 6 ? nil : imageData, sceneID: scene.id)
@@ -26,7 +27,7 @@ enum ExportChecks {
         }
         let all = Set(document.scenes.map(\.id))
         let restored = try StoryboardDocument(data: document.encodedData())
-        precondition(restored.version == 3 && restored.production == document.production && restored.frames[0].details == document.frames[0].details)
+        precondition(restored.version == 4 && restored.production == document.production && restored.frames[0].details == document.frames[0].details)
         let selected = try StoryboardExporter.shots(document: document, scenes: [second.id], includeUnrendered: false)
         precondition(selected.count == 6 && selected.allSatisfy { $0.scene.id == second.id })
         try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)

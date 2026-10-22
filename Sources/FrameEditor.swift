@@ -6,6 +6,7 @@ struct FrameEditor: View {
     let frameID: UUID
     let busy: Bool
     let status: String
+    @Binding var showHistory: Bool
     let generate: () -> Void
     @State private var insertion: UUID?
     @State private var showReferences = false
@@ -24,6 +25,11 @@ struct FrameEditor: View {
                 ScrollView {
                   VStack(alignment: .leading, spacing: 14) {
                     TextField(L("Shot title"), text: $document.frames[index].title).font(.title2).textFieldStyle(.plain)
+                    HStack {
+                        Toggle(L("Approved"), isOn: $document.frames[index].approved).toggleStyle(.checkbox).disabled(document.frames[index].image == nil)
+                        Spacer()
+                        Button(L("History…")) { showHistory = true }.disabled(document.frames[index].image == nil)
+                    }
                     Picker(L("Scene"), selection: $document.frames[index].sceneID) { ForEach(document.scenes) { Text($0.title).tag(Optional($0.id)) } }
                     Picker(L("Camera"), selection: $document.frames[index].shot) { ForEach(CameraShot.allCases) { Text(L($0.rawValue)).tag($0) } }
                     HStack {
@@ -58,10 +64,11 @@ struct FrameEditor: View {
                     if !message.isEmpty { Text(message).font(.caption).foregroundStyle(.secondary) }
                     if !document.frames[index].sourceText.isEmpty { DisclosureGroup(L("Screenplay source")) { ScrollView { Text(document.frames[index].sourceText).font(.caption).textSelection(.enabled) }.frame(maxHeight: 90) } }
                     Button(action: generate) { Label(busy ? L("Generating…") : (document.frames[index].image == nil ? L("Generate frame") : L("Generate another")), systemImage: "pencil.and.outline").frame(maxWidth: .infinity) }
-                        .buttonStyle(.borderedProminent).controlSize(.large).disabled(document.frames[index].description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty).keyboardShortcut(.return, modifiers: .command)
+                        .buttonStyle(.borderedProminent).controlSize(.large).disabled(document.frames[index].description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                   }.padding(20)
                 }.frame(minWidth: 310, idealWidth: 350, maxWidth: 400).disabled(busy)
             }
+            .sheet(isPresented: $showHistory) { RenderHistoryView(document: $document, frameID: frameID) }
             .fileImporter(isPresented: $importing, allowedContentTypes: [.image], allowsMultipleSelection: true) { result in
                 do {
                     let urls = try result.get(); let remaining = 3-document.frames[index].referenceIDs.count

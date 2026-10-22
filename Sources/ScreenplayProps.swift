@@ -65,23 +65,35 @@ enum ScreenplayProps {
         }
     }
 
-    static func link(_ text: String, mentions: [Mention], entities: [StoryEntity]) -> String {
-        var aliases: [String: [UUID]] = [:]
-        for mention in mentions {
-            guard let entity = entities.first(where: { $0.kind == .prop && $0.name.normalizedName == mention.name.normalizedName }) else { continue }
-            for alias in [mention.name, mention.noun, String(mention.noun.split(separator: " ").last ?? "")] {
-                if !(aliases[alias.lowercased()] ?? []).contains(entity.id) { aliases[alias.lowercased(), default: []].append(entity.id) }
+    struct Linker {
+        private let rules: [(NSRegularExpression, String)]
+        init(mentions: [Mention], entities: [StoryEntity]) {
+            var aliases: [String: [UUID]] = [:]
+            var entitiesByName: [String: UUID] = [:]
+            for entity in entities where entity.kind == .prop { entitiesByName[entity.name.normalizedName] = entity.id }
+            for mention in mentions {
+                guard let id = entitiesByName[mention.name.normalizedName] else { continue }
+                for alias in [mention.name, mention.noun, String(mention.noun.split(separator: " ").last ?? "")] {
+                    if !(aliases[alias.lowercased()] ?? []).contains(id) { aliases[alias.lowercased(), default: []].append(id) }
+                }
+            }
+            let bare = Set(mentions.flatMap { [$0.noun, String($0.noun.split(separator: " ").last ?? "")] })
+            rules = aliases.keys.sorted { $0.count == $1.count ? $0 < $1 : $0.count > $1.count }.compactMap { alias in
+                guard let ids = aliases[alias], ids.count == 1 else { return nil }
+                let isBareNoun = bare.contains(alias)
+                let prefix = isBareNoun ? #"(\b(?:the|a|an|her|his|their|its|my|your|our|this|that)\s+)"# : #"(?<![\p{L}\p{N}])"#
+                let pattern = prefix + NSRegularExpression.escapedPattern(for: alias) + #"(?![\p{L}\p{N}])"#
+                return (try! NSRegularExpression(pattern: pattern, options: .caseInsensitive), (isBareNoun ? "$1" : "") + EntityTokens.token(ids[0]))
             }
         }
-        var result = text
-        for alias in aliases.keys.sorted(by: { $0.count > $1.count }) {
-            guard let ids = aliases[alias], ids.count == 1 else { continue }
-            let isBareNoun = mentions.contains { $0.noun == alias || $0.noun.split(separator: " ").last.map(String.init) == alias }
-            let prefix = isBareNoun ? #"(\b(?:the|a|an|her|his|their|its|my|your|our|this|that)\s+)"# : #"(?<![\p{L}\p{N}])"#
-            let pattern = prefix + NSRegularExpression.escapedPattern(for: alias) + #"(?![\p{L}\p{N}])"#
-            let replacement = (isBareNoun ? "$1" : "") + EntityTokens.token(ids[0])
-            result = result.replacingOccurrences(of: pattern, with: replacement, options: [.regularExpression, .caseInsensitive])
+        func link(_ text: String) -> String {
+            rules.reduce(text) { value, rule in
+                rule.0.stringByReplacingMatches(in: value, range: NSRange(location: 0, length: (value as NSString).length), withTemplate: rule.1)
+            }
         }
-        return result
+    }
+
+    static func link(_ text: String, mentions: [Mention], entities: [StoryEntity]) -> String {
+        Linker(mentions: mentions, entities: entities).link(text)
     }
 }

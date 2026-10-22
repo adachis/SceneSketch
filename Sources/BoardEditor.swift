@@ -3,7 +3,15 @@ import AppKit
 import UniformTypeIdentifiers
 
 struct BoardEditor: View {
-    @Binding var document: StoryboardDocument
+    @Binding private var storedDocument: StoryboardDocument
+    init(document: Binding<StoryboardDocument>) { _storedDocument = document }
+    private var document: StoryboardDocument {
+        get { storedDocument }
+        nonmutating set { DocumentEditing.apply(newValue, to: $storedDocument, undoManager: undoManager) }
+    }
+    private var documentBinding: Binding<StoryboardDocument> {
+        Binding(get: { storedDocument }, set: { DocumentEditing.apply($0, to: $storedDocument, undoManager: undoManager) })
+    }
     @Environment(\.undoManager) private var undoManager
     @State private var selectedID: UUID?
     @State private var collapsedScenes = Set<UUID>()
@@ -20,6 +28,12 @@ struct BoardEditor: View {
     @State private var showExport = false
     @State private var showProduction = false
     @State private var showSetup = false
+    @State private var showHistory = false
+    @State private var showRecovery = false
+    @State private var filter = ShotFilter.all
+    @State private var recoverySession = UUID()
+    @State private var recoveryTask: Task<Void, Never>?
+    @State private var recoveryWarning = ""
     @State private var models = ModelManager.shared
     @AppStorage("hasOfferedModelSetup") private var hasOfferedModelSetup = false
     @AppStorage("interfaceLanguage") private var interfaceLanguage = ""
@@ -29,20 +43,24 @@ struct BoardEditor: View {
     var body: some View {
         NavigationSplitView {
             VStack(spacing: 0) {
-                TextField(L("Story title"), text: $document.title).font(.headline).textFieldStyle(.plain).padding(16)
+                TextField(L("Story title"), text: documentBinding.title).font(.headline).textFieldStyle(.plain).padding(16)
+                Picker(L("Filter shots"), selection: $filter) { ForEach(ShotFilter.allCases) { Text(L($0.rawValue)).tag($0) } }
+                    .labelsHidden().accessibilityLabel(L("Filter shots")).padding(.horizontal, 12).padding(.bottom, 8)
                 List(selection: $selectedID) {
                     ForEach(document.scenes) { scene in
                         Section(isExpanded: Binding(get: { !collapsedScenes.contains(scene.id) }, set: { if $0 { collapsedScenes.remove(scene.id) } else { collapsedScenes.insert(scene.id) } })) {
-                            ForEach(document.frames.filter { $0.sceneID == scene.id }) { frame in
+                            ForEach(document.frames.filter { $0.sceneID == scene.id && filter.includes($0) }) { frame in
                                 HStack(spacing: 9) {
                                     FrameImage(data: frame.image).frame(width: 70, height: 40).clipped().cornerRadius(4)
                                     Text(frame.title).lineLimit(1)
+                                    Spacer(minLength: 0)
+                                    if frame.approved { Image(systemName: "checkmark.seal.fill").foregroundStyle(.green).accessibilityLabel(L("Approved")) }
                                 }.padding(.vertical, 4).tag(frame.id)
                             }
                             .onMove { source, destination in moveFrames(sceneID: scene.id, source: source, destination: destination) }
                         } header: {
                             Button { sceneID = scene.id; selectedID = nil } label: {
-                                HStack { Text(scene.title).lineLimit(2); Spacer(); Text("\(document.frames.filter { $0.sceneID == scene.id }.count)").monospacedDigit() }
+                                HStack { Text(scene.title).lineLimit(2); Spacer(); Text(filter == .all ? "\(document.frames.filter { $0.sceneID == scene.id }.count)" : "\(document.frames.filter { $0.sceneID == scene.id && filter.includes($0) }.count) / \(document.frames.filter { $0.sceneID == scene.id }.count)").monospacedDigit() }
                             }.buttonStyle(.plain).contextMenu {
                                 Button(L("Edit scene")) { sceneID = scene.id; selectedID = nil }
                                 Button(L("Move scene up")) { moveScene(scene.id, offset: -1) }
@@ -54,7 +72,7 @@ struct BoardEditor: View {
             }.navigationSplitViewColumnWidth(min: 220, ideal: 270, max: 340)
         } detail: {
             if let index = selectedIndex {
-                FrameEditor(document: $document, frameID: document.frames[index].id, busy: busy, status: status, generate: { generate(ids: [document.frames[index].id]) })
+                FrameEditor(document: documentBinding, frameID: document.frames[index].id, busy: busy, status: status, showHistory: $showHistory, generate: { generate(ids: [document.frames[index].id]) })
             } else if let sceneIndex = document.scenes.firstIndex(where: { $0.id == currentSceneID }) {
                 sceneEditor(sceneIndex)
             } else { ContentUnavailableView(L("Add a scene to begin"), systemImage: "rectangle.stack") }
@@ -68,6 +86,7 @@ struct BoardEditor: View {
                 Menu {
                     Button(L("Add shot"), action: addFrame)
                     Button(L("Add scene"), action: addScene)
+                    Button(L("Duplicate shot"), action: duplicateFrame).disabled(selectedIndex == nil)
                 } label: { Label(L("Add"), systemImage: "plus") }.disabled(busy)
                 Button { showLibrary = true } label: { Label(L("Story Library"), systemImage: "person.2.crop.square.stack") }.disabled(busy)
                 Button { importingScript = true } label: { Label(L("Import screenplay"), systemImage: "doc.badge.arrow.up") }.disabled(busy)
@@ -75,8 +94,11 @@ struct BoardEditor: View {
                 Menu {
                     Button(L("Production details…")) { showProduction = true }
                     Button(L("Model setup…")) { showSetup = true }
+                    Button(L("Recover storyboard…")) { showRecovery = true }
                     Divider()
                     Button(L("Generate this scene")) { generate(ids: document.frames.filter { $0.sceneID == currentSceneID }.map(\.id)) }
+                    Button(L("Generate missing images")) { generate(ids: document.frames.filter { $0.sceneID == currentSceneID && $0.image == nil }.map(\.id)) }
+                    Button(L("Render history…")) { showHistory = true }.disabled(selectedIndex.flatMap { document.frames[$0].image } == nil)
                     Button(L("Export selected image…"), action: exportImage).disabled(selectedIndex.flatMap { document.frames[$0].image } == nil)
                     Divider()
                     Button(L("Delete selected shot"), role: .destructive) { showDelete = true }.disabled(selectedIndex == nil)
@@ -89,14 +111,34 @@ struct BoardEditor: View {
             if selectedID == nil { selectedID = document.frames.first?.id }; sceneID = document.scenes.first?.id
             if !hasOfferedModelSetup && !models.allReady { hasOfferedModelSetup = true; showSetup = true }
         }
-        .focusedSceneValue(\.exportStoryboard, { showExport = true })
-        .sheet(isPresented: $showExport) { ExportView(document: $document) }
-        .sheet(isPresented: $showProduction) { ProductionDetailsView(details: $document.production) }
+        .focusedSceneValue(\.boardCommands, BoardCommandContext(available: availableCommands, perform: perform))
+        .onChange(of: storedDocument) { _, snapshot in
+            if let selectedID, !snapshot.frames.contains(where: { $0.id == selectedID && filter.includes($0) }) {
+                self.selectedID = snapshot.frames.first(where: { filter.includes($0) })?.id
+            }
+            recoveryTask?.cancel()
+            let session = recoverySession
+            recoveryTask = Task {
+                do {
+                    try await Task.sleep(for: .seconds(2))
+                    try await RecoveryStorage.shared.save(snapshot, session: session)
+                    recoveryWarning = ""
+                } catch is CancellationError {} catch { recoveryWarning = L("Recovery snapshot couldn’t be saved.  Save your storyboard with File > Save.") }
+            }
+        }
+        .onChange(of: filter) { _, value in
+            if !document.frames.contains(where: { $0.id == selectedID && value.includes($0) }) {
+                selectedID = document.frames.first(where: { value.includes($0) })?.id
+            }
+        }
+        .sheet(isPresented: $showRecovery) { RecoveryView { value in document = value; selectedID = value.frames.first?.id; sceneID = value.scenes.first?.id } }
+        .overlay(alignment: .bottom) { if !recoveryWarning.isEmpty { Text(recoveryWarning).padding(8).background(.regularMaterial) } }
+        .sheet(isPresented: $showExport) { ExportView(document: documentBinding) }
+        .sheet(isPresented: $showProduction) { ProductionDetailsView(details: documentBinding.production) }
         .sheet(isPresented: $showSetup) { ModelSetupView() }
-        .sheet(isPresented: $showLibrary) { LibraryEditor(document: $document) }
+        .sheet(isPresented: $showLibrary) { LibraryEditor(document: documentBinding) }
         .sheet(item: $draft) { value in
             ImportReview(draft: value) { approved in
-                let prior = document; registerUndo(prior, name: L("Import screenplay"))
                 document = approved.applying(to: document); selectedID = document.frames.last?.id; sceneID = document.scenes.last?.id
                 status = L("Imported scenes: %@. Shots: %@.", String(approved.scenes.count), String(approved.frames.count))
             }
@@ -107,13 +149,13 @@ struct BoardEditor: View {
         .alert(L("Couldn’t complete the action"), isPresented: Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })) { Button(L("OK")) { errorMessage = nil } } message: { Text(errorMessage ?? L("Please try again.")) }
         .confirmationDialog(L("Delete this shot and its image?"), isPresented: $showDelete, titleVisibility: .visible) {
             Button(L("Delete shot"), role: .destructive) {
-                guard let index = selectedIndex else { return }; registerUndo(document, name: "Delete shot")
+                guard let index = selectedIndex else { return }
                 let preservedScene = currentSceneID; document.frames.remove(at: index); document.removeUnusedReferences(); sceneID = preservedScene; selectedID = document.frames.first(where: { $0.sceneID == preservedScene })?.id
             }
         }
         .confirmationDialog(L("Delete this scene and all its shots?"), isPresented: $deleteScene, titleVisibility: .visible) {
             Button(L("Delete scene"), role: .destructive) {
-                let id = currentSceneID; registerUndo(document, name: "Delete scene")
+                let id = currentSceneID
                 document.frames.removeAll { $0.sceneID == id }; document.scenes.removeAll { $0.id == id }; document.removeUnusedReferences()
                 selectedID = document.frames.first?.id; sceneID = document.scenes.first?.id
             }
@@ -122,12 +164,12 @@ struct BoardEditor: View {
     }
     private func sceneEditor(_ index: Int) -> some View {
         Form {
-            TextField(L("Scene"), text: $document.scenes[index].title)
-            Picker(L("Location"), selection: $document.scenes[index].locationID) {
+            TextField(L("Scene"), text: documentBinding.scenes[index].title)
+            Picker(L("Location"), selection: documentBinding.scenes[index].locationID) {
                 Text(L("None")).tag(Optional<UUID>.none)
                 ForEach(document.entities.filter { $0.kind == .location }) { Text($0.name).tag(Optional($0.id)) }
             }
-            TextField(L("Scene notes"), text: $document.scenes[index].synopsis, axis: .vertical).lineLimit(4...8)
+            TextField(L("Scene notes"), text: documentBinding.scenes[index].synopsis, axis: .vertical).lineLimit(4...8)
             HStack {
                 Button(L("Add shot"), action: addFrame)
                 Button(L("Generate scene")) { generate(ids: document.frames.filter { $0.sceneID == document.scenes[index].id }.map(\.id)) }
@@ -150,14 +192,60 @@ struct BoardEditor: View {
         document.scenes.swapAt(index, index+offset)
     }
     private func moveFrames(sceneID: UUID, source: IndexSet, destination: Int) {
+        guard filter == .all else { return }
         var local = document.frames.filter { $0.sceneID == sceneID }; local.move(fromOffsets: source, toOffset: destination)
         var iterator = local.makeIterator()
         for i in document.frames.indices where document.frames[i].sceneID == sceneID { if let next = iterator.next() { document.frames[i] = next } }
     }
-    private func registerUndo(_ prior: StoryboardDocument, name: String) {
-        let binding = $document
-        undoManager?.registerUndo(withTarget: UndoToken.shared) { _ in binding.wrappedValue = prior }
-        undoManager?.setActionName(name)
+    private var availableCommands: Set<BoardAction> {
+        if busy { return stopRequested ? [] : [.stop] }
+        if showLibrary || showExport || showProduction || showSetup || showRecovery || showHistory || importingScript || showDelete || deleteScene || draft != nil { return [] }
+        var result: Set<BoardAction> = [.library, .addShot, .addScene, .importScript, .export, .production, .setup, .recover]
+        if currentSceneID != nil { result.formUnion([.renderScene, .renderMissing]) }
+        if !document.frames.isEmpty { result.formUnion([.previous, .next]) }
+        if selectedIndex != nil {
+            result.formUnion([.duplicate, .delete])
+            if let i = selectedIndex, !document.frames[i].description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { result.insert(.render) }
+            if let i = selectedIndex, document.frames[i].image != nil { result.formUnion([.approve, .history]) }
+        }
+        return result
+    }
+    private func perform(_ action: BoardAction) {
+        guard availableCommands.contains(action) else { return }
+        switch action {
+        case .library: showLibrary = true
+        case .addShot: addFrame()
+        case .addScene: addScene()
+        case .duplicate: duplicateFrame()
+        case .importScript: importingScript = true
+        case .export: showExport = true
+        case .production: showProduction = true
+        case .setup: showSetup = true
+        case .recover: showRecovery = true
+        case .render: if let selectedID { generate(ids: [selectedID]) }
+        case .renderScene: generate(ids: document.frames.filter { $0.sceneID == currentSceneID }.map(\.id))
+        case .renderMissing: generate(ids: document.frames.filter { $0.sceneID == currentSceneID && $0.image == nil }.map(\.id))
+        case .stop: stopRequested = true
+        case .previous: navigate(-1)
+        case .next: navigate(1)
+        case .approve: if let i = selectedIndex { document.frames[i].approved.toggle() }
+        case .history: showHistory = true
+        case .delete: showDelete = true
+        }
+    }
+    private func navigate(_ offset: Int) {
+        let frames = document.scenes.flatMap { scene in document.frames.filter { $0.sceneID == scene.id && filter.includes($0) } }
+        guard !frames.isEmpty else { return }
+        let current = frames.firstIndex(where: { $0.id == selectedID }) ?? 0
+        let next = max(0, min(frames.count - 1, current + offset))
+        selectedID = frames[next].id
+        if let scene = frames[next].sceneID { collapsedScenes.remove(scene) }
+    }
+    private func duplicateFrame() {
+        guard let i = selectedIndex else { return }
+        let copy = document.frames[i].duplicated()
+        document.frames.insert(copy, at: i + 1); selectedID = copy.id
+        filter = .all
     }
     private func generate(ids: [UUID]) {
         models.refresh()
@@ -178,8 +266,7 @@ struct BoardEditor: View {
                     status = L("Shot %@ of %@: preparing…", String(offset+1), String(ids.count))
                     let result = try await RenderService.shared.render(frame: request, document: snapshot) { update in Task { @MainActor in status = L("Shot %@ of %@: %@", String(offset+1), String(ids.count), update) } }
                     if let i = document.frames.firstIndex(where: { $0.id == id }) {
-                        document.frames[i].seed = result.seed; document.frames[i].image = result.image
-                        document.frames[i].renderedPrompt = result.prompt; document.frames[i].imageRevision = UUID(); completed += 1
+                        document.frames[i].storeRender(image: result.image, prompt: result.prompt, seed: result.seed, source: request, referenceIDs: result.referenceIDs); completed += 1
                     }
                 } catch { errorMessage = RenderService.userMessage(for: error); failed = true; break }
             }
@@ -205,7 +292,6 @@ struct BoardEditor: View {
         }
     }
 }
-@MainActor private final class UndoToken: NSObject { static let shared = UndoToken() }
 
 struct FrameImage: View {
     let data: Data?
