@@ -33,7 +33,9 @@ struct LibraryEditor: View {
             GeometryReader { space in
                 HSplitView {
                     VStack {
-                        Picker(L("Library"), selection: $kind) { ForEach(EntityKind.allCases) { Text(L($0.label)).tag($0) } }.pickerStyle(.segmented)
+                        Picker(L("Story Library"), selection: $kind) { ForEach(EntityKind.allCases) { Text(L($0.label)).tag($0) } }
+                            .pickerStyle(.segmented).labelsHidden()
+                            .accessibilityLabel(L("Story Library"))
                         List(selection: $selection) { ForEach(document.entities.filter { $0.kind == kind }) { entity in Label(entity.name, systemImage: entity.kind.symbol).tag(entity.id) } }
                         HStack {
                             Button { let value = StoryEntity(kind: kind, name: kind.newName); document.entities.append(value); selection = value.id } label: { Label(L("Add"), systemImage: "plus") }
