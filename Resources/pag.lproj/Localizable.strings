@@ -301,3 +301,10 @@
 "Use image" = "Usaren so litrato";
 "History…" = "History…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Say Enhance et mangi-rewrites ed saray kasalukuyan a notes ed saray visual details. Say Recreate et manumpal ed saray litrato. Duara ira et i-review antis ya i-apply.";
+
+"Merge" = "Pagsamaen";
+"Merge shots" = "Pagsamaen so saray film shots";
+"Merge selected shots" = "Pagsamaen so saray pinili ya film shots";
+"%@ shots selected" = "%1$@ saray film shots so apili";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Say pagsasama et mangilalanor ed saray deskripsyon, orihinal a teksto, saray reperensiya, tan saray detalye na film shot. Say titulo tan kamera na unonan film shot so mansiansia, tan balang sakey a na-render ya imahen et mansiansia ed historya.";
+"Select shots in one scene to merge." = "Pilien iray film shots ed sakey a eksena pian napagsama.";

@@ -301,3 +301,10 @@
 "Use image" = "使用图像";
 "History…" = "历史…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "“增强”用视觉细节重写现有注释。“重新创建”从图像开始。两者在应用前都会经过审核。";
+
+"Merge" = "合并";
+"Merge shots" = "合并镜头";
+"Merge selected shots" = "合并所选镜头";
+"%@ shots selected" = "已选择%1$@个镜头";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "合并会结合描述、源文本、参考和镜头详细信息。第一个镜头的标题和相机设置将保留，并且每个渲染图像都会保留在历史记录中。";
+"Select shots in one scene to merge." = "选择同一场景中的镜头进行合并。";

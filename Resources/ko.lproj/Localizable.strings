@@ -301,3 +301,10 @@
 "Use image" = "이미지 사용";
 "History…" = "기록…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "강화는 기존 노트를 시각적 세부 정보로 다시 작성합니다. 다시 만들기는 이미지부터 시작합니다. 둘 다 적용하기 전에 검토됩니다.";
+
+"Merge" = "병합";
+"Merge shots" = "장면 병합";
+"Merge selected shots" = "선택한 장면 병합";
+"%@ shots selected" = "%1$@개 장면 선택됨";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "병합하면 설명, 원본 텍스트, 참조 및 장면 세부 정보가 결합됩니다. 첫 번째 장면의 제목과 카메라는 유지되며, 렌더링된 모든 이미지는 기록에 남습니다.";
+"Select shots in one scene to merge." = "병합할 장면을 한 장면에서 선택하십시오.";

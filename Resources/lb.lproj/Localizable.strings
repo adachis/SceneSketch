@@ -301,3 +301,10 @@
 "Use image" = "Bild benotzen";
 "History…" = "Historique…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance schreift déi existent Notize mat visuellen Detailer ëm. Recreate fänkt bei de Biller un. Béid gi virum Uwennung iwwerpréift.";
+
+"Merge" = "Fusioun";
+"Merge shots" = "Schëss fusionéieren";
+"Merge selected shots" = "Ausgewielte Schëss fusionéieren";
+"%@ shots selected" = "%1$@ Schëss ausgewielt";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Fusioun kombinéiert Beschreiwungen, Quelltext, Referenzen an Schossdetailer. Den Titel an d'Kamera vum éischte Schoss bleiwen erhalen, an all gerendert Bild bleift an der Geschicht.";
+"Select shots in one scene to merge." = "Wielt Schëss an enger Zeen aus fir ze fusionéieren.";

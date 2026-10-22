@@ -301,3 +301,10 @@
 "Use image" = "ਚਿੱਤਰ ਵਰਤੋ";
 "History…" = "ਇਤਿਹਾਸ…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "ਐਨਹਾਂਸ ਮੌਜੂਦਾ ਨੋਟਸ ਨੂੰ ਵਿਜ਼ੂਅਲ ਵੇਰਵਿਆਂ ਨਾਲ ਦੁਬਾਰਾ ਲਿਖਦਾ ਹੈ। ਰੀਕ੍ਰੀਏਟ ਚਿੱਤਰਾਂ ਤੋਂ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ। ਦੋਵਾਂ ਨੂੰ ਲਾਗੂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਸਮੀਖਿਆ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।";
+
+"Merge" = "ਮਰਜ ਕਰੋ";
+"Merge shots" = "ਸ਼ਾਟਸ ਮਰਜ ਕਰੋ";
+"Merge selected shots" = "ਚੁਣੇ ਹੋਏ ਸ਼ਾਟਸ ਮਰਜ ਕਰੋ";
+"%@ shots selected" = "%1$@ ਸ਼ਾਟਸ ਚੁਣੇ ਗਏ";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "ਮਰਜ ਵਰਣਨ, ਸਰੋਤ ਟੈਕਸਟ, ਹਵਾਲੇ, ਅਤੇ ਸ਼ਾਟ ਵੇਰਵਿਆਂ ਨੂੰ ਜੋੜਦਾ ਹੈ। ਪਹਿਲੇ ਸ਼ਾਟ ਦਾ ਸਿਰਲੇਖ ਅਤੇ ਕੈਮਰਾ ਰੱਖਿਆ ਜਾਂਦਾ ਹੈ, ਅਤੇ ਹਰ ਰੈਂਡਰ ਕੀਤੀ ਤਸਵੀਰ ਇਤਿਹਾਸ ਵਿੱਚ ਰਹਿੰਦੀ ਹੈ।";
+"Select shots in one scene to merge." = "ਮਰਜ ਕਰਨ ਲਈ ਇੱਕ ਸੀਨ ਵਿੱਚ ਸ਼ਾਟਸ ਚੁਣੋ।";

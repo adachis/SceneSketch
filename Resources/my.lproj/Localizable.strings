@@ -301,3 +301,10 @@
 "Use image" = "ပုံအသုံးပြုရန်";
 "History…" = "မှတ်တမ်း…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance သည် ရှိပြီးသားမှတ်စုများကို ရုပ်ပိုင်းဆိုင်ရာအသေးစိတ်အချက်အလက်များဖြင့် ပြန်လည်ရေးသားသည်။ Recreate သည် ပုံများမှစတင်သည်။ နှစ်ခုစလုံးကို အသုံးမပြုမီ ပြန်လည်သုံးသပ်သည်။";
+
+"Merge" = "ပေါင်းစည်းရန်";
+"Merge shots" = "ရိုက်ချက်များ ပေါင်းစည်းရန်";
+"Merge selected shots" = "ရွေးချယ်ထားသော ရိုက်ချက်များ ပေါင်းစည်းရန်";
+"%@ shots selected" = "%1$@ ရိုက်ချက် ရွေးချယ်ထားသည်";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "ပေါင်းစည်းခြင်းသည် ဖော်ပြချက်များ၊ မူရင်းစာသား၊ ရည်ညွှန်းချက်များနှင့် ရိုက်ချက်အသေးစိတ်များကို ပေါင်းစပ်ပေးသည်။ ပထမဆုံး ရိုက်ချက်၏ ခေါင်းစဉ်နှင့် ကင်မရာကို ထိန်းသိမ်းထားပြီး ပုံဖော်ထားသော ပုံတိုင်းသည် မှတ်တမ်းတွင် ရှိနေမည်ဖြစ်သည်။";
+"Select shots in one scene to merge." = "ပေါင်းစည်းရန် မြင်ကွင်းတစ်ခုတည်းရှိ ရိုက်ချက်များကို ရွေးချယ်ပါ။";

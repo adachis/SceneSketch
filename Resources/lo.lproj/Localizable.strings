@@ -301,3 +301,10 @@
 "Use image" = "ໃຊ້ຮູບພາບ";
 "History…" = "ປະຫວັດ…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance ຂຽນບັນທຶກທີ່ມີຢູ່ຄືນໃໝ່ດ້ວຍລາຍລະອຽດທາງສາຍຕາ. Recreate ເລີ່ມຕົ້ນຈາກຮູບພາບ. ທັງສອງຈະຖືກກວດສອບກ່ອນນຳໃຊ້.";
+
+"Merge" = "ລວມ";
+"Merge shots" = "ລວມຊັອດ";
+"Merge selected shots" = "ລວມຊັອດທີ່ເລືອກ";
+"%@ shots selected" = "ເລືອກ %1$@ ຊັອດ";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "ການລວມຈະລວມຄຳອະທິບາຍ, ຂໍ້ຄວາມຕົ້ນສະບັບ, ການອ້າງອີງ, ແລະລາຍລະອຽດຂອງຊັອດ. ຊື່ເລື່ອງ ແລະກ້ອງຂອງຊັອດທຳອິດຈະຖືກເກັບໄວ້, ແລະທຸກຮູບພາບທີ່ສະແດງຜົນຈະຍັງຄົງຢູ່ໃນປະຫວັດ.";
+"Select shots in one scene to merge." = "ເລືອກຊັອດໃນສາກດຽວກັນເພື່ອລວມ.";

@@ -301,3 +301,10 @@
 "Use image" = "画像を使用";
 "History…" = "履歴…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "「強化」は既存のメモを視覚的な詳細で書き換え、「再作成」は画像から開始します。どちらも適用前にレビューされます。";
+
+"Merge" = "結合";
+"Merge shots" = "ショットを結合";
+"Merge selected shots" = "選択したショットを結合";
+"%@ shots selected" = "%1$@個のショットを選択中";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "結合すると、説明、ソーステキスト、参照、ショットの詳細が統合されます。最初のショットのタイトルとカメラは保持され、すべてのレンダリングされた画像は履歴に残ります。";
+"Select shots in one scene to merge." = "結合するシーン内のショットを選択してください。";

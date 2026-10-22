@@ -301,3 +301,10 @@
 "Use image" = "படத்தைப் பயன்படுத்து";
 "History…" = "வரலாறு…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "மேம்படுத்து என்பது ஏற்கனவே உள்ள குறிப்புகளை காட்சி விவரங்களுடன் மீண்டும் எழுதுகிறது. மீண்டும் உருவாக்கு என்பது படங்களிலிருந்து தொடங்குகிறது. இரண்டுமே பயன்படுத்துவதற்கு முன் மதிப்பாய்வு செய்யப்படுகின்றன.";
+
+"Merge" = "இணை";
+"Merge shots" = "ஷாட்களை இணை";
+"Merge selected shots" = "தேர்ந்தெடுக்கப்பட்ட ஷாட்களை இணை";
+"%@ shots selected" = "%1$@ ஷாட்கள் தேர்ந்தெடுக்கப்பட்டன";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "இணைப்பது விளக்கங்கள், மூல உரை, குறிப்புகள் மற்றும் ஷாட் விவரங்களை ஒருங்கிணைக்கிறது. முதல் ஷாட்டின் தலைப்பு மற்றும் கேமரா வைக்கப்படும், மேலும் ஒவ்வொரு ரெண்டர் செய்யப்பட்ட படமும் வரலாற்றில் இருக்கும்.";
+"Select shots in one scene to merge." = "இணைக்க ஒரு காட்சியில் ஷாட்களைத் தேர்ந்தெடுக்கவும்.";

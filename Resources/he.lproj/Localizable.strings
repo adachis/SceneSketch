@@ -301,3 +301,10 @@
 "Use image" = "השתמש בתמונה";
 "History…" = "היסטוריה…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "״שפר״ כותב מחדש את ההערות הקיימות עם פרטים ויזואליים. ״צור מחדש״ מתחיל מהתמונות. שניהם נבדקים לפני היישום.";
+
+"Merge" = "מיזוג";
+"Merge shots" = "מיזוג שוטים";
+"Merge selected shots" = "מיזוג שוטים נבחרים";
+"%@ shots selected" = "%1$@ שוטים נבחרו";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "מיזוג משלב תיאורים, טקסט מקור, הפניות ופרטי שוטים. הכותרת והמצלמה של השוט הראשון נשמרות, וכל תמונה מעובדת נשארת בהיסטוריה.";
+"Select shots in one scene to merge." = "בחר שוטים בסצנה אחת למיזוג.";

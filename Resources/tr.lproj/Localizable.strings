@@ -301,3 +301,10 @@
 "Use image" = "Görüntüyü kullan";
 "History…" = "Geçmiş…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Geliştir, mevcut notları görsel detaylarla yeniden yazar. Yeniden oluştur, görüntülerden başlar. Her ikisi de uygulamadan önce incelenir.";
+
+"Merge" = "Birleştir";
+"Merge shots" = "Çekimleri birleştir";
+"Merge selected shots" = "Seçili çekimleri birleştir";
+"%@ shots selected" = "%1$@ çekim seçildi";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Birleştirme, açıklamaları, kaynak metni, referansları ve çekim detaylarını birleştirir. İlk çekimin başlığı ve kamerası korunur ve her oluşturulan görüntü geçmişte kalır.";
+"Select shots in one scene to merge." = "Birleştirmek için bir sahnedeki çekimleri seçin.";

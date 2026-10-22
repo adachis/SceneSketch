@@ -301,3 +301,10 @@
 "Use image" = "Dòpara imàgine";
 "History…" = "Stòrego…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Mejora riscrive łe note esistenti co detaji vizuałi. Ricrea scumisia da łe imagini. Entranbi i vien revizionà prima de èsar aplicà.";
+
+"Merge" = "Fóndar";
+"Merge shots" = "Fóndar inquadradure";
+"Merge selected shots" = "Fóndar inquadradure selesionàe";
+"%@ shots selected" = "%1$@ inquadradure selesionàe";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Fóndar conbina descrision, testo orizenal, referense e detaji de l'inquadradura. El tìtoło e ła màchina de ła prima inquadradura i vien mantegnesti, e ogni imàjine rendesta ła resta inte ła stòria.";
+"Select shots in one scene to merge." = "Sełesiona inquadradure inte na sena par fóndarle.";

@@ -301,3 +301,10 @@
 "Use image" = "Afbeelding gebruiken";
 "History…" = "Geschiedenis…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Verbeteren herschrijft de bestaande notities met visuele details. Opnieuw maken begint bij de afbeeldingen. Beide worden beoordeeld voordat ze worden toegepast.";
+
+"Merge" = "Voeg samen";
+"Merge shots" = "Voeg shots samen";
+"Merge selected shots" = "Voeg geselecteerde shots samen";
+"%@ shots selected" = "%1$@ shots geselecteerd";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Samenvoegen combineert beschrijvingen, brontekst, referenties en shotdetails. De titel en camera van het eerste shot blijven behouden, en elke gerenderde afbeelding blijft in de geschiedenis.";
+"Select shots in one scene to merge." = "Selecteer shots in één scène om samen te voegen.";

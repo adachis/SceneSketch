@@ -301,3 +301,10 @@
 "Use image" = "Usar imagen";
 "History…" = "Historial…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Mejorar reescribe las notas existentes con detalles visuales. Recrear comienza desde las imágenes. Ambos se revisan antes de aplicar.";
+
+"Merge" = "Fusionar";
+"Merge shots" = "Fusionar tomas";
+"Merge selected shots" = "Fusionar tomas seleccionadas";
+"%@ shots selected" = "%1$@ tomas seleccionadas";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Fusionar combina descripciones, texto fuente, referencias y detalles de toma. Se mantienen el título y la cámara de la primera toma, y cada imagen renderizada permanece en el historial.";
+"Select shots in one scene to merge." = "Selecciona tomas en una escena para fusionar.";

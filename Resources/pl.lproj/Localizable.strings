@@ -301,3 +301,10 @@
 "Use image" = "Użyj obrazu";
 "History…" = "Historia…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Ulepszanie przepisuje istniejące notatki o szczegóły wizualne. Odtwarzanie zaczyna się od obrazów. Oba są przeglądane przed zastosowaniem.";
+
+"Merge" = "Scal";
+"Merge shots" = "Scal ujęcia";
+"Merge selected shots" = "Scal wybrane ujęcia";
+"%@ shots selected" = "Wybrano %1$@ ujęć";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Scalanie łączy opisy, tekst źródłowy, odniesienia i szczegóły ujęcia. Zachowany zostaje tytuł i kamera pierwszego ujęcia, a każdy wyrenderowany obraz pozostaje w historii.";
+"Select shots in one scene to merge." = "Wybierz ujęcia w jednej scenie, aby je scalić.";

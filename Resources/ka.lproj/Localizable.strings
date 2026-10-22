@@ -301,3 +301,10 @@
 "Use image" = "სურათის გამოყენება";
 "History…" = "ისტორია…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance არსებულ ჩანაწერებს ვიზუალური დეტალებით გადაწერს. Recreate სურათებიდან იწყებს. ორივე გამოყენებამდე განიხილება.";
+
+"Merge" = "შერწყმა";
+"Merge shots" = "კადრების შერწყმა";
+"Merge selected shots" = "არჩეული კადრების შერწყმა";
+"%@ shots selected" = "%1$@ კადრი არჩეულია";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "შერწყმა აერთიანებს აღწერილობებს, საწყის ტექსტს, მითითებებს და კადრის დეტალებს. პირველი კადრის სათაური და კამერა შენარჩუნებულია, და ყოველი რენდერირებული გამოსახულება რჩება ისტორიაში.";
+"Select shots in one scene to merge." = "აირჩიეთ კადრები ერთ სცენაში შერწყმისთვის.";

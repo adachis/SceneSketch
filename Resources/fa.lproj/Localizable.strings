@@ -301,3 +301,10 @@
 "Use image" = "استفاده از تصویر";
 "History…" = "تاریخچه…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "«بهبود» یادداشت‌های موجود را با جزئیات بصری بازنویسی می‌کند. «بازآفرینی» از تصاویر شروع می‌شود. هر دو قبل از اعمال بررسی می‌شوند.";
+
+"Merge" = "ادغام";
+"Merge shots" = "ادغام نماها";
+"Merge selected shots" = "ادغام نماهای انتخاب‌شده";
+"%@ shots selected" = "%1$@ نمای انتخاب‌شده";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "ادغام، توضیحات، متن منبع، مراجع و جزئیات نما را ترکیب می‌کند. عنوان و دوربین نمای اول حفظ می‌شود و هر تصویر رندر شده در تاریخچه باقی می‌ماند.";
+"Select shots in one scene to merge." = "نماها را در یک صحنه برای ادغام انتخاب کنید.";

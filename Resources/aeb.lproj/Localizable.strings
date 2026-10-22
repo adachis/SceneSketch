@@ -301,3 +301,10 @@
 "Use image" = "إستعمال التصويرة";
 "History…" = "تاريخ…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance تعاود تكتب الملاحظات الموجودة بتفاصيل بصرية. Recreate تبدا من التصاور. الزوز يتراجعو قبل التطبيق.";
+
+"Merge" = "إدمج";
+"Merge shots" = "إدمج اللقطات";
+"Merge selected shots" = "إدمج اللقطات المحدّدة";
+"%@ shots selected" = "%1$@ لقطات مختارة";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "الدمج يجمع الأوصاف، النص الأصلي، المراجع، وتفاصيل اللقطة. عنوان اللقطة الأولى والكاميرا متاعها يقعدو كيما هوما، وكل صورة تترسم تقعد في التاريخ.";
+"Select shots in one scene to merge." = "إختار لقطات في مشهد واحد باش تدمجهم.";

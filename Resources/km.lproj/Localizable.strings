@@ -301,3 +301,10 @@
 "Use image" = "ប្រើរូបភាព";
 "History…" = "ប្រវត្តិ…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "ពង្រឹងកែសម្រួលកំណត់ចំណាំដែលមានស្រាប់ជាមួយនឹងព័ត៌មានលម្អិតដែលមើលឃើញ។ បង្កើតឡើងវិញចាប់ផ្តើមពីរូបភាព។ ទាំងពីរត្រូវបានពិនិត្យមុនពេលអនុវត្ត។";
+
+"Merge" = "បង្រួម";
+"Merge shots" = "បង្រួមឈុត";
+"Merge selected shots" = "បង្រួមឈុតដែលបានជ្រើសរើស";
+"%@ shots selected" = "បានជ្រើសរើស %1$@ ឈុត";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "ការបង្រួមបញ្ចូលគ្នានូវការពិពណ៌នា អត្ថបទប្រភព ឯកសារយោង និងព័ត៌មានលម្អិតនៃឈុត។ ចំណងជើង និងកាមេរ៉ារបស់ឈុតទីមួយត្រូវបានរក្សាទុក ហើយរូបភាពដែលបានបង្ហាញនីមួយៗនៅតែមាននៅក្នុងប្រវត្តិ។";
+"Select shots in one scene to merge." = "ជ្រើសរើសឈុតក្នុងឈុតមួយដើម្បីបង្រួម។";

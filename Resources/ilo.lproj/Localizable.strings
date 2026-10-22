@@ -301,3 +301,10 @@
 "Use image" = "Usaren ti ladawan";
 "History…" = "History…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Ti enhance ket isurat manen dagiti adda a nota nga addaan kadagiti visual a detalye. Ti recreate ket mangrugi manipud kadagiti ladawan. Agpada a ma-review dagitoy sakbay nga i-apply.";
+
+"Merge" = "Pagtipunen";
+"Merge shots" = "Pagtipunen dagiti shots";
+"Merge selected shots" = "Pagtipunen dagiti napili a shots";
+"%@ shots selected" = "%1$@ a shots ti napili";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Ti panagtipon ket pagtipunen dagiti deskripsion, orihinal a teksto, dagiti reperensia, ken dagiti detalye ti shot. Ti titulo ken kamera ti umuna a shot ket mataginayon, ken tunggal maysa a naaramid a ladawan ket agtalinaed iti pakasaritaan.";
+"Select shots in one scene to merge." = "Pilien dagiti shots iti maysa a eksena tapno pagtipunen.";

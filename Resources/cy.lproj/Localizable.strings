@@ -301,3 +301,10 @@
 "Use image" = "Defnyddio delwedd";
 "History…" = "Hanes…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Mae Gwella yn ailysgrifennu'r nodiadau presennol gyda manylion gweledol. Mae Ail-greu yn dechrau o'r delweddau. Caiff y ddau eu hadolygu cyn eu cymhwyso.";
+
+"Merge" = "Cyfuno";
+"Merge shots" = "Cyfuno ergydion";
+"Merge selected shots" = "Cyfuno ergydion dethol";
+"%@ shots selected" = "%1$@ ergyd wedi'u dewis";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Mae cyfuno yn cyfuno disgrifiadau, testun ffynhonnell, cyfeiriadau, a manylion ergyd. Cedwir teitl a chamera'r ergyd gyntaf, ac mae pob delwedd a rendrir yn aros yn hanes.";
+"Select shots in one scene to merge." = "Dewiswch ergydion mewn un olygfa i'w cyfuno.";

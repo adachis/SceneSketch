@@ -301,3 +301,10 @@
 "Use image" = "Користи слика";
 "History…" = "Историја…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Подобри ги препишува постоечките белешки со визуелни детали. Пресоздај започнува од сликите. И двете се прегледуваат пред да се применат.";
+
+"Merge" = "Спојување";
+"Merge shots" = "Спој кадри";
+"Merge selected shots" = "Спој избрани кадри";
+"%@ shots selected" = "%1$@ избрани кадри";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Спојувањето ги комбинира описите, изворниот текст, референците и деталите за кадарот. Насловот и камерата на првиот кадар се задржуваат, а секоја рендерирана слика останува во историјата.";
+"Select shots in one scene to merge." = "Изберете кадри во една сцена за спојување.";

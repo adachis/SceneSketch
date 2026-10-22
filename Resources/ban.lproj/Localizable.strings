@@ -301,3 +301,10 @@
 "Use image" = "Anggen gambar";
 "History…" = "Riwayat…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance nyurat ulang catetan sane sampun wenten antuk detail visual. Recreate ngawitin saking gambar. Kekalihnyane katureksain sadurung kaanggen.";
+
+"Merge" = "Gabung";
+"Merge shots" = "Gabungang film shots";
+"Merge selected shots" = "Gabungang film shots sané kapilih";
+"%@ shots selected" = "%1$@ film shots kapilih";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Gabungang ngawetuang deskripsi, teks sumber, referensi, miwah detail film shot. Judul miwah kamera film shot kapertama tetep kaanggén, miwah sabilang gambar sané karéndér tetep wenten ring riwayat.";
+"Select shots in one scene to merge." = "Pilih film shots ring silih sinunggil adegan sané jagi kagabungang.";

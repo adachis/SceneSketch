@@ -301,3 +301,10 @@
 "Use image" = "Χρήση εικόνας";
 "History…" = "Ιστορικό…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Η βελτίωση ξαναγράφει τις υπάρχουσες σημειώσεις με οπτικές λεπτομέρειες. Η αναδημιουργία ξεκινά από τις εικόνες. Και οι δύο αναθεωρούνται πριν την εφαρμογή.";
+
+"Merge" = "Συγχώνευση";
+"Merge shots" = "Συγχώνευση πλάνων";
+"Merge selected shots" = "Συγχώνευση επιλεγμένων πλάνων";
+"%@ shots selected" = "%1$@ πλάνα επιλέχθηκαν";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Η συγχώνευση συνδυάζει περιγραφές, αρχικό κείμενο, αναφορές και λεπτομέρειες πλάνου. Ο τίτλος και η κάμερα του πρώτου πλάνου διατηρούνται, και κάθε αποδοθείσα εικόνα παραμένει στο ιστορικό.";
+"Select shots in one scene to merge." = "Επιλέξτε πλάνα σε μία σκηνή για συγχώνευση.";

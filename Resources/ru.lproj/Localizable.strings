@@ -301,3 +301,10 @@
 "Use image" = "Использовать изображение";
 "History…" = "История…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Улучшить переписывает существующие заметки с визуальными деталями. Пересоздать начинает с изображений. Оба варианта просматриваются перед применением.";
+
+"Merge" = "Объединить";
+"Merge shots" = "Объединить кадры";
+"Merge selected shots" = "Объединить выбранные кадры";
+"%@ shots selected" = "Выбрано кадров: %1$@";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Объединение совмещает описания, исходный текст, ссылки и детали кадра. Заголовок и камера первого кадра сохраняются, а каждое отрендеренное изображение остается в истории.";
+"Select shots in one scene to merge." = "Выберите кадры в одной сцене для объединения.";

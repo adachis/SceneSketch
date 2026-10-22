@@ -301,3 +301,10 @@
 "Use image" = "تصویر استعمال کریں";
 "History…" = "ہسٹری…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "بہتر بنائیں موجودہ نوٹس کو بصری تفصیلات کے ساتھ دوبارہ لکھتا ہے۔ دوبارہ بنائیں تصاویر سے شروع ہوتا ہے۔ دونوں کو لاگو کرنے سے پہلے جائزہ لیا جاتا ہے۔";
+
+"Merge" = "ضم کریں";
+"Merge shots" = "شاٹس ضم کریں";
+"Merge selected shots" = "منتخب کردہ شاٹس ضم کریں";
+"%@ shots selected" = "%1$@ شاٹس منتخب";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "ضم کرنے سے تفصیلات، ماخذ متن، حوالہ جات، اور شاٹ کی تفصیلات یکجا ہو جاتی ہیں۔ پہلے شاٹ کا عنوان اور کیمرہ برقرار رہتا ہے، اور ہر رینڈر شدہ تصویر تاریخ میں رہتی ہے۔";
+"Select shots in one scene to merge." = "ضم کرنے کے لیے ایک منظر میں شاٹس منتخب کریں۔";

@@ -301,3 +301,10 @@
 "Use image" = "प्रतिमा वापरा";
 "History…" = "इतिहास…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "व्हिज्युअल तपशीलांसह विद्यमान नोट्स सुधारित करते. प्रतिमांमधून पुन्हा तयार करणे सुरू होते. दोन्ही लागू करण्यापूर्वी पुनरावलोकन केले जातात.";
+
+"Merge" = "विलीन करा";
+"Merge shots" = "शॉट्स विलीन करा";
+"Merge selected shots" = "निवडलेले शॉट्स विलीन करा";
+"%@ shots selected" = "%1$@ शॉट्स निवडले";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "विलीन केल्याने वर्णन, मूळ मजकूर, संदर्भ आणि शॉट तपशील एकत्र येतात. पहिल्या शॉटचे शीर्षक आणि कॅमेरा ठेवले जातात आणि प्रत्येक प्रस्तुत केलेली प्रतिमा इतिहासात राहते.";
+"Select shots in one scene to merge." = "विलीन करण्यासाठी एका दृश्यातील शॉट्स निवडा.";

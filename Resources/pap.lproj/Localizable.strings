@@ -301,3 +301,10 @@
 "Use image" = "Usa potret";
 "History…" = "Historia…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance ta re-skirbi e notanan eksistente ku detaye visual. Recreate ta kuminsá for di e potretnan. Tur dos ta wòrdu revisá promé ku apliká.";
+
+"Merge" = "Kombiná";
+"Merge shots" = "Kombiná toma";
+"Merge selected shots" = "Kombiná toma selektá";
+"%@ shots selected" = "%1$@ toma selektá";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Kombiná ta pone deskripshonnan, teksto fuente, referensianan, i detaye di toma huntu. E título i kámara di e promé toma ta keda, i kada imágen renderisá ta keda den historia.";
+"Select shots in one scene to merge." = "Selektá tomanan den un solo esena pa kombiná.";

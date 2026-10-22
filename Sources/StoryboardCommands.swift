@@ -2,6 +2,7 @@ import SwiftUI
 
 enum BoardAction: String, CaseIterable {
     case library = "Story Library", addShot = "Add shot", addScene = "Add scene", duplicate = "Duplicate shot"
+    case merge = "Merge selected shots"
     case importScript = "Import screenplay", export = "Export Storyboard…", production = "Production details…", setup = "Model setup…"
     case render = "Generate frame", renderScene = "Generate this scene", renderMissing = "Generate missing images", stop = "Stop after frame"
     case previous = "Previous shot", next = "Next shot", approve = "Toggle approval", history = "Render history…", recover = "Recover storyboard…", delete = "Delete selected shot"
@@ -14,6 +15,7 @@ enum BoardAction: String, CaseIterable {
         case .export: "e"
         case .production: "p"
         case .setup: "m"
+        case .merge: "m"
         case .render, .renderScene, .renderMissing: .return
         case .stop: "."
         case .previous: "["
@@ -52,7 +54,7 @@ struct StoryboardCommands: Commands {
         CommandMenu(L("Storyboard")) {
             command(.library); command(.production); command(.setup)
             Divider()
-            command(.addShot); command(.addScene); command(.duplicate); command(.delete)
+            command(.addShot); command(.addScene); command(.duplicate); command(.merge); command(.delete)
             Divider()
             command(.previous); command(.next); command(.approve); command(.history)
             Divider()

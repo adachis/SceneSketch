@@ -301,3 +301,10 @@
 "Use image" = "Кескінді пайдалану";
 "History…" = "Тарих…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Жетілдіру бар жазбаларды визуалды мәліметтермен қайта жазады. Қайта жасау кескіндерден басталады. Екеуі де қолданар алдында қарастырылады.";
+
+"Merge" = "Біріктіру";
+"Merge shots" = "Кадрларды біріктіру";
+"Merge selected shots" = "Таңдалған кадрларды біріктіру";
+"%@ shots selected" = "%1$@ кадр таңдалды";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Біріктіру сипаттамаларды, бастапқы мәтінді, сілтемелерді және кадр мәліметтерін біріктіреді. Бірінші кадрдың атауы мен камерасы сақталады, ал әрбір көрсетілген кескін тарихта қалады.";
+"Select shots in one scene to merge." = "Біріктіру үшін бір көріністегі кадрларды таңдаңыз.";

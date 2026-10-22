@@ -301,3 +301,10 @@
 "Use image" = "Uporabi sliko";
 "History…" = "Zgodovina…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Izboljšaj prepiše obstoječe opombe z vizualnimi podrobnostmi. Ponovno ustvari začne s slikami. Oboje je pregledano pred uporabo.";
+
+"Merge" = "Združi";
+"Merge shots" = "Združi posnetke";
+"Merge selected shots" = "Združi izbrane posnetke";
+"%@ shots selected" = "Izbranih je %1$@ posnetkov";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Združevanje združuje opise, izvorno besedilo, reference in podrobnosti posnetka. Naslov in kamera prvega posnetka se ohranita, vsaka upodobljena slika pa ostane v zgodovini.";
+"Select shots in one scene to merge." = "Izberite posnetke v enem prizoru za združitev.";

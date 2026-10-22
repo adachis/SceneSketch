@@ -301,3 +301,10 @@
 "Use image" = "Һүрәтте ҡулланыу";
 "History…" = "Тарих…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Яҡшыртыу булған яҙмаларҙы визуаль деталдәр менән яңырта. Ҡабаттан булдырыу һүрәттәрҙән башлана. Икеһе лә ҡулланыр алдынан ҡарала.";
+
+"Merge" = "Берләштереү";
+"Merge shots" = "Кадрҙарҙы берләштереү";
+"Merge selected shots" = "Һайланған кадрҙарҙы берләштереү";
+"%@ shots selected" = "%1$@ кадр һайланған";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Берләштереү тасуирламаларҙы, сығанаҡ тексты, һылтанмаларҙы һәм кадр деталдәрен берләштерә. Беренсе кадрҙың исеме һәм камераһы һаҡлана, һәм һәр күрһәтелгән һүрәт тарихта ҡала.";
+"Select shots in one scene to merge." = "Бер күренештәге кадрҙарҙы берләштереү өсөн һайлағыҙ.";

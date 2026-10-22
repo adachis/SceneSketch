@@ -55,8 +55,8 @@ targets:
         CFBundleName: SceneSketch
         CFBundleDisplayName: SceneSketch
         CFBundleIconFile: AppIcon
-        CFBundleShortVersionString: '1.0.0'
-        CFBundleVersion: '5'
+        CFBundleShortVersionString: '1.1.0'
+        CFBundleVersion: '6'
         LSMinimumSystemVersion: '15.0'
         NSHighResolutionCapable: true
         CFBundleDocumentTypes:
@@ -74,6 +74,10 @@ targets:
   StoryboardCheck:
     type: tool
     platform: macOS
+    settings:
+      base:
+        SWIFT_OPTIMIZATION_LEVEL: '-Onone'
+        SWIFT_COMPILATION_MODE: singlefile
     sources:
       - path: Sources
         excludes: [StoryboardApp.swift]

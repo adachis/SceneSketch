@@ -301,3 +301,10 @@
 "Use image" = "Itilize imaj";
 "History…" = "Istorik…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Amelyore reekri nòt ki egziste deja yo ak detay vizyèl. Rekreye kòmanse apati imaj yo. Tou de revize anvan yo aplike.";
+
+"Merge" = "Fizyone";
+"Merge shots" = "Fizyone plan yo";
+"Merge selected shots" = "Fizyone plan yo chwazi yo";
+"%@ shots selected" = "%1$@ plan chwazi";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Fizyone konbine deskripsyon, tèks sous, referans, ak detay plan yo. Tit ak kamera premye plan an konsève, epi chak imaj rann rete nan istwa.";
+"Select shots in one scene to merge." = "Chwazi plan nan yon sèn pou fizyone.";

@@ -301,3 +301,10 @@
 "Use image" = "Dopera l'imagin";
 "History…" = "Istòria…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Enhance el riscriv i not esistente cont detaj visiv. Recreate el scomincia di imagin. Tucc e du hinn revist prima de vess aplicad.";
+
+"Merge" = "Fónd";
+"Merge shots" = "Fónd i scènn";
+"Merge selected shots" = "Fónd i scènn selezionade";
+"%@ shots selected" = "%1$@ scènn selezionade";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "El fónd el met insèma descrizion, test sorgent, referenz e detali de la scèna. El titol e la telecamera de la prima scèna i vegnen tegnud, e ògni imàgin renderizada la resta in la stòria.";
+"Select shots in one scene to merge." = "Seleziona i scènn in d'ona scèna per fondij.";

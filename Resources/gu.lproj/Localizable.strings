@@ -301,3 +301,10 @@
 "Use image" = "છબીનો ઉપયોગ કરો";
 "History…" = "ઇતિહાસ…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "એન્હાન્સ હાલની નોંધોને વિઝ્યુઅલ વિગતો સાથે ફરીથી લખે છે. રીક્રિએટ છબીઓથી શરૂ થાય છે. બંને લાગુ કરતાં પહેલાં સમીક્ષા કરવામાં આવે છે.";
+
+"Merge" = "મર્જ કરો";
+"Merge shots" = "શોટ્સ મર્જ કરો";
+"Merge selected shots" = "પસંદ કરેલા શોટ્સ મર્જ કરો";
+"%@ shots selected" = "%1$@ શોટ્સ પસંદ કરેલા છે";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "મર્જ કરવાથી વર્ણનો, સ્રોત ટેક્સ્ટ, સંદર્ભો અને શૉટ વિગતો એકસાથે આવે છે. પ્રથમ શૉટનું શીર્ષક અને કૅમેરા જાળવી રાખવામાં આવે છે, અને દરેક રેન્ડર કરેલી છબી ઇતિહાસમાં રહે છે.";
+"Select shots in one scene to merge." = "મર્જ કરવા માટે એક દ્રશ્યમાં શોટ્સ પસંદ કરો.";

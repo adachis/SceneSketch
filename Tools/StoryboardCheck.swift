@@ -42,6 +42,12 @@ struct StoryboardCheck {
             try await ReleaseChecks.run()
         } else if mode == "props" {
             try PropChecks.run()
+        } else if mode == "parser" {
+            try ParsingChecks.run()
+        } else if mode == "merge" {
+            try MergeChecks.run()
+        } else if mode == "selection-check" {
+            try await MergeChecks.selection()
         } else if mode == "lettering-check" {
             for path in args.dropFirst() {
                 let image = try ReferenceImages.cgImage(Data(contentsOf: URL(fileURLWithPath: path)), maximumEdge: 2048)

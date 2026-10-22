@@ -301,3 +301,10 @@
 "Use image" = "Úsáid íomhá";
 "History…" = "Stair…";
 "Enhance rewrites the existing notes with visual details.  Recreate starts from the images.  Both are reviewed before applying." = "Athscríobhann Feabhsaigh na nótaí atá ann cheana le sonraí amhairc. Tosaíonn Athchruthaigh ó na híomhánna. Déantar athbhreithniú ar an dá cheann sula gcuirtear i bhfeidhm iad.";
+
+"Merge" = "Cumaisc";
+"Merge shots" = "Cumaisc seatanna";
+"Merge selected shots" = "Cumaisc na seatanna roghnaithe";
+"%@ shots selected" = "%1$@ seat roghnaithe";
+"Merge combines descriptions, source text, references, and shot details.  The first shot’s title and camera are kept, and every rendered image stays in history." = "Comhcheanglaíonn cumasc tuairiscí, téacs foinse, tagairtí, agus sonraí seatanna. Coimeádtar teideal agus ceamara an chéad seat, agus fanann gach íomhá rindreáilte sa stair.";
+"Select shots in one scene to merge." = "Roghnaigh seatanna i radharc amháin le cumasc.";
