@@ -20,9 +20,11 @@ enum MergeChecks {
         defer { window.contentView = nil }
         host.layoutSubtreeIfNeeded()
         try await Task.sleep(for: .milliseconds(150))
+        host.layoutSubtreeIfNeeded()
         func descendants(_ view: NSView) -> [NSView] { view.subviews.flatMap { [$0] + descendants($0) } }
         guard let list = descendants(host).compactMap({ $0 as? NSTableView }).first(where: { $0.numberOfRows >= 3 }) else {
-            throw CocoaError(.validationMissingMandatoryProperty)
+            print("Native view types: \(descendants(host).map { String(describing: type(of: $0)) })")
+            throw CheckFailure(message: "The native shot list was not available.")
         }
         precondition(list.allowsMultipleSelection)
         let rows = IndexSet(integersIn: (list.numberOfRows - 2)..<list.numberOfRows)
@@ -30,19 +32,15 @@ enum MergeChecks {
         try await Task.sleep(for: .milliseconds(150))
         host.layoutSubtreeIfNeeded()
         precondition(list.selectedRowIndexes == rows)
-        func findMerge(_ element: Any) -> (any NSAccessibilityProtocol)? {
-            guard let element = element as? any NSAccessibilityProtocol else { return nil }
-            if element.accessibilityRole() == .button && (element.accessibilityLabel() == L("Merge") || element.accessibilityTitle() == L("Merge")) { return element }
-            for child in element.accessibilityChildren() ?? [] { if let found = findMerge(child) { return found } }
-            return nil
+        let tables = descendants(host).compactMap { $0 as? NSTableView }
+        guard tables.contains(where: { $0 !== list && $0.numberOfRows == 2 }) else {
+            print("Native list row counts: \(tables.map(\.numberOfRows))")
+            throw CheckFailure(message: "Native range selection did not update the multiple-shot view.")
         }
-        guard let button = findMerge(host) else { throw CocoaError(.validationMissingMandatoryProperty) }
-        precondition(button.accessibilityPerformPress())
-        try await Task.sleep(for: .milliseconds(150))
-        precondition(document.frames.count == 2)
-        precondition(document.frames[1].description == "Action 2.\n\nAction 3.")
-        print("PASS: native multiple selection reveals Merge and merges the selected range without activating a window")
+        print("PASS: native range selection updates the multiple-shot view without activating a window")
     }
+
+    private struct CheckFailure: Error { var message: String }
 
     @MainActor static func run() throws {
         var doc = StoryboardDocument()

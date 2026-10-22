@@ -23,7 +23,7 @@ enum ScreenplayStructure {
         for var paragraph in input {
             paragraph.text = paragraph.text.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !paragraph.text.isEmpty else { continue }
-            if paragraph.kind == "Transition" || isTransition(paragraph.text) {
+            if paragraph.kind == "Transition" || (paragraph.kind == "Action" && isTransition(paragraph.text)) {
                 pendingHeading = false
                 continuesAction = false
                 continue

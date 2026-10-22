@@ -25,6 +25,8 @@ enum ParsingChecks {
         let forced = ScreenplayImporter.parseText("INT. ROOM - DAY\n\n!MARA SHUTS THE DOOR\n\n@MARA\nWait.", title: "Forced elements")
         precondition(forced.frames.count == 1 && forced.frames[0].sourceText.contains("MARA SHUTS THE DOOR"))
         precondition(forced.frames[0].sourceText.contains("Mara: Wait."))
+        let spokenTransition = ScreenplayImporter.parseText("INT. ROOM - DAY\n\nMara waits.\n\nMARA\nCUT TO:\nA car, please.", title: "Spoken words")
+        precondition(spokenTransition.frames.count == 1 && spokenTransition.frames[0].sourceText.contains("Mara: CUT TO: A car, please."))
         let introduction = ScreenplayImporter.parseText("INT. ROOM - DAY\n\nA NEWS ANCHORWOMAN (20s) sits at a desk.\n\nANCHORWOMAN\nA storm is coming.", title: "Introduction")
         precondition(introduction.entities.filter { $0.kind == .character }.map(\.name) == ["Anchorwoman"])
 
@@ -62,6 +64,13 @@ enum ParsingChecks {
             .init(text: "It is time.", bounds: CGRect(x: 180, y: 726, width: 150, height: 12))]
         let dialogue = ScreenplayImporter.positionedParagraphs(dialoguePage, inDialogue: &inDialogue, leftMargin: 108)
         precondition(dialogue.map(\.kind) == ["Character", "Dialogue"])
+        inDialogue = false
+        let spokenLines: [ScreenplayImporter.PositionedScriptLine] = [
+            .init(text: "MARA", bounds: CGRect(x: 252, y: 750, width: 80, height: 12)),
+            .init(text: "CUT TO:", bounds: CGRect(x: 180, y: 726, width: 100, height: 12))]
+        let spokenParagraphs = ScreenplayImporter.positionedParagraphs(spokenLines, inDialogue: &inDialogue, leftMargin: 108)
+        precondition(spokenParagraphs.map(\.kind) == ["Character", "Dialogue"])
+        precondition(ScreenplayStructure.grouped(spokenParagraphs).last?.text == "CUT TO:")
 
         let fdx = """
         <?xml version="1.0" encoding="UTF-8"?>

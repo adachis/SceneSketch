@@ -124,8 +124,10 @@ enum ScreenplayImporter {
             if isHeading(text) {
                 flush(); result.append(.init(kind: "Scene Heading", text: text)); inDialogue = false; previous = line.bounds; continue
             }
-            if ScreenplayStructure.isTransition(text) { flush(); result.append(.init(kind: "Transition", text: text)); inDialogue = false; previous = line.bounds; continue }
-            if ScreenplayStructure.isShotHeading(text) {
+            if ScreenplayStructure.isTransition(text), !inDialogue || line.bounds.minX <= left+15 || line.bounds.minX >= left+260 {
+                flush(); result.append(.init(kind: "Transition", text: text)); inDialogue = false; previous = line.bounds; continue
+            }
+            if ScreenplayStructure.isShotHeading(text), !inDialogue || line.bounds.minX <= left+15 {
                 flush(); result.append(.init(kind: "Action", text: text)); inDialogue = false; previous = line.bounds; continue
             }
             if line.bounds.minX >= left+105 && isCue(text) {
@@ -158,8 +160,8 @@ enum ScreenplayImporter {
             if line.first == "!" { flush(); dialogue = false; action.append(String(line.dropFirst())); continue }
             if isHeading(line) { flush(); dialogue = false; paragraphs.append(.init(kind: "Scene Heading", text: line)); continue }
             let transition = line.hasPrefix(">") ? String(line.dropFirst()).trimmingCharacters(in: .whitespaces) : line
-            if ScreenplayStructure.isTransition(transition) { flush(); paragraphs.append(.init(kind: "Transition", text: transition)); dialogue = false; continue }
-            if ScreenplayStructure.isShotHeading(line) { flush(); dialogue = false; paragraphs.append(.init(kind: "Action", text: line)); continue }
+            if !dialogue, ScreenplayStructure.isTransition(transition) { flush(); paragraphs.append(.init(kind: "Transition", text: transition)); continue }
+            if !dialogue, ScreenplayStructure.isShotHeading(line) { flush(); paragraphs.append(.init(kind: "Action", text: line)); continue }
             let next = index + 1 < lines.count ? lines[index + 1] : ""
             let isolated = index == 0 || lines[index - 1].isEmpty
             if (line.first == "@" || isolated), isCue(line), !next.isEmpty {
