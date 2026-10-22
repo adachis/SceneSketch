@@ -6,6 +6,8 @@ Story content and reference images stay local.  After the initial model download
 
 [Download SceneSketch](https://github.com/adachis/SceneSketch/releases/latest)
 
+![SceneSketch storyboard workspace with scenes, a rendered frame, and linked character and prop descriptions](docs/images/storyboard.png)
+
 ## Requirements
 
 - Apple Silicon Mac running macOS 15 or later.
@@ -14,7 +16,7 @@ Story content and reference images stay local.  After the initial model download
 
 ## Getting started
 
-Install the signed app from a release archive when available, move it to Applications, and open it.  First launch offers one download for all local features.  The trained sketch adapter is included with the app.
+Download the release archive, extract it, move the signed SceneSketch app to Applications, and open it.  First launch offers one download for all local features.  The trained sketch adapter is included with the app.
 
 Downloads can pause and resume.  Completed files are checked against pinned SHA-256 hashes.  Settings provides model downloads, verification, storage selection, language, prompt cleanup, and export defaults.  Existing model files from earlier Storyboard versions are reused.
 
