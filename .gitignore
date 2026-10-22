@@ -7,3 +7,10 @@ Resources/*.safetensors
 Models/
 *.log
 dist/
+*.app/
+*.dSYM/
+.swiftpm/
+*.safetensors
+*.gguf
+.env
+.env.*

@@ -1,0 +1,16 @@
+name: Release policy
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  release-policy:
+    name: Release policy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+      - name: Validate release version
+        run: python3 Tools/release_policy.py --base origin/main

@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""Keep ongoing work on dev and version tags on released main commits."""
+import re
+import subprocess
+import sys
+
+
+def git(*args):
+    return subprocess.check_output(["git", *args], text=True).strip()
+
+
+updates = [line.split() for line in sys.stdin if line.strip()]
+zero = "0" * 40
+for local_ref, local_sha, remote_ref, remote_sha in updates:
+    if remote_ref == "refs/heads/main" and remote_sha != zero:
+        sys.exit("Push ongoing work to dev. Update main through a release pull request.")
+    if remote_ref.startswith("refs/tags/v"):
+        if local_sha == zero:
+            sys.exit("Release tags are kept permanently.")
+        if remote_sha != zero and remote_sha != local_sha:
+            sys.exit("Release tags cannot be replaced.")
+        commit = git("rev-parse", f"{local_sha}^{{commit}}")
+        main = next((sha for _, sha, ref, _ in updates if ref == "refs/heads/main" and sha != zero), None)
+        main = main or git("rev-parse", "refs/heads/main")
+        if subprocess.run(["git", "merge-base", "--is-ancestor", commit, main]).returncode:
+            sys.exit("Release tags must point to commits on main.")
+        source = git("show", f"{commit}:project.yml")
+        version = re.search(r"CFBundleShortVersionString:\s*['\"]([^'\"]+)['\"]", source)
+        if not version or remote_ref != f"refs/tags/v{version[1]}":
+            sys.exit("The release tag must match the version in project.yml.")
